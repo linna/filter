@@ -1,0 +1,31 @@
+{
+    "name": "linna/filter",
+    "type": "library",
+    "description": "Linna Filter",
+    "keywords": ["form", "validator", "php", "filter"],
+    "homepage": "https://github.com/linna/filter",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sebastian Rapetti",
+            "email": "sebastian.rapetti@alice.it"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/linna/filter/issues"
+    },
+    "require": {
+        "php": "^7.0.0"
+    },
+    "require-dev": {
+        "infection/infection": "^0.6",
+        "phpstan/phpstan": "^0.8.5",
+        "phpunit/phpunit": "^6.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Linna\\Filter\\": "src/",
+            "Linna\\Filter\\Rules\\": "src/Rules"
+        }
+    }
+}
