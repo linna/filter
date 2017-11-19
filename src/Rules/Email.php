@@ -48,9 +48,7 @@ class Email implements RuleInterface
     public function test(): bool
     {
         $data = filter_var($this->received, FILTER_VALIDATE_EMAIL);
-        
-        var_dump($data);
-        
+
         if ($data === false) {
             return true;
         }
