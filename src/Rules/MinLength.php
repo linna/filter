@@ -11,43 +11,19 @@ declare(strict_types = 1);
 
 namespace Linna\Filter\Rules;
 
-use Linna\Filter\RuleInterface;
-
 /**
  * Check maximum length.
  */
-class MinLength implements RuleInterface
+class MinLength
 {
     /**
-     * @var string Received value.
-     */
-    private $received;
-    
-    /**
-     * @var int Min allowed length.
-     */
-    private $minLength;
-
-    /**
-     * Class constructor.
-     *
-     * @param string $received
-     * @param int $minLength
-     */
-    public function __construct(string $received, int $minLength)
-    {
-        $this->received = $received;
-        $this->minLength = $minLength;
-    }
-
-    /**
-     * Test.
+     * Validate.
      *
      * @return bool
      */
-    public function test(): bool
+    public function validate(string $received, int $minLength): bool
     {
-        if (strlen($this->received) > $this->minLength) {
+        if (strlen($received) < $minLength) {
             return true;
         }
 

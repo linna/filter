@@ -20,20 +20,20 @@ class RuleInterpreter
      * @var array Accepted rules.
      */
     private static $keywords = [
-        'required' => ['Required', 'boolean'],
-        'number' => ['Number', 'boolean'],
-        'date' => ['Date', 'boolean'],
-        'email' => ['Email', 'boolean'],
-        'min' => ['Min', 'number'],
-        'max' => ['Max', 'number'],
-        'between' => ['Between', 'number'],
-        'length' => ['Length', 'number'],
-        'maxlength' => ['MaxLength', 'number'],
-        'minlength' => ['MinLength', 'number'],
-        'datebefore' => ['DateBefore', 'string'],
-        'dateafter' => ['DateAfter', 'string'],
-        'datebetween' => ['DateBetween', 'string'],
-        'use' => ['Use', 'string']
+        'required' => ['Required', 'boolean', 0],
+        'number' => ['Number', 'boolean', 0],
+        'date' => ['Date', 'boolean', 0],
+        'email' => ['Email', 'boolean', 0],
+        'min' => ['Min', 'number', 1],
+        'max' => ['Max', 'number', 1],
+        'between' => ['Between', 'number', 2],
+        'length' => ['Length', 'number', 1],
+        'maxlength' => ['MaxLength', 'number', 1],
+        'minlength' => ['MinLength', 'number', 1],
+        'datebefore' => ['DateBefore', 'string', 1],
+        'dateafter' => ['DateAfter', 'string', 1],
+        'datebetween' => ['DateBetween', 'string', 2],
+        'use' => ['Use', 'string', 1]
     ];
     
     /**
@@ -80,7 +80,7 @@ class RuleInterpreter
 
         foreach ($chars as $char) {
             if (in_array(ord($char), [32, 44, 58, 59])) {
-                $words[$word++] = implode($temp);
+                $words[$word++] = implode('', $temp);
                 $temp = [];
                 continue;
             }

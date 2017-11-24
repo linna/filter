@@ -11,50 +11,19 @@ declare(strict_types = 1);
 
 namespace Linna\Filter\Rules;
 
-use Linna\Filter\RuleInterface;
-
 /**
  * Check if value is between a intervall.
  */
-class Between implements RuleInterface
+class Between
 {
     /**
-     * @var mixed Received value.
-     */
-    private $received;
-    
-    /**
-     * @var mixed Min expected value.
-     */
-    private $min;
-    
-    /**
-     * @var mixed Max expected value.
-     */
-    private $max;
-
-    /**
-     * Class constructor.
-     *
-     * @param mixed $received
-     * @param mixed $min
-     * @param mixed $max
-     */
-    public function __construct($received, $min, $max)
-    {
-        $this->received = $received;
-        $this->min = $min;
-        $this->max = $max;
-    }
-
-    /**
-     * Test.
+     * Validate.
      *
      * @return bool
      */
-    public function test(): bool
+    public function validate($received, $min, $max): bool
     {
-        if ($this->received < $this->min || $this->received > $this->max) {
+        if ($received < $min || $received > $max) {
             return true;
         }
 

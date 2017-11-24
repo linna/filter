@@ -11,43 +11,19 @@ declare(strict_types = 1);
 
 namespace Linna\Filter\Rules;
 
-use Linna\Filter\RuleInterface;
-
 /**
  * Check maximum length.
  */
-class MaxLength implements RuleInterface
+class MaxLength
 {
     /**
-     * @var string Received value.
-     */
-    private $received;
-    
-    /**
-     * @var int Max allowed length.
-     */
-    private $maxLength;
-
-    /**
-     * Class constructor.
-     *
-     * @param string $received
-     * @param int $maxLength
-     */
-    public function __construct(string $received, int $maxLength)
-    {
-        $this->received = $received;
-        $this->maxLength = $maxLength;
-    }
-
-    /**
-     * Test.
+     * Validate.
      *
      * @return bool
      */
-    public function test(): bool
+    public function validate(string $received, int $maxLength): bool
     {
-        if (strlen($this->received) > $this->maxLength) {
+        if (strlen($received) > $maxLength) {
             return true;
         }
 

@@ -11,43 +11,19 @@ declare(strict_types = 1);
 
 namespace Linna\Filter\Rules;
 
-use Linna\Filter\RuleInterface;
-
 /**
  * Check if value is above a maximum.
  */
-class Max implements RuleInterface
+class Max
 {
     /**
-     * @var mixed Received value.
-     */
-    private $received;
-    
-    /**
-     * @var mixed Max expected value.
-     */
-    private $max;
-
-    /**
-     * Class constructor.
-     *
-     * @param mixed $received
-     * @param mixed $max
-     */
-    public function __construct($received, $max)
-    {
-        $this->received = $received;
-        $this->max = $max;
-    }
-
-    /**
-     * Test.
+     * Validate.
      *
      * @return bool
      */
-    public function test(): bool
+    public function validate($received, $max): bool
     {
-        if ($this->received > $this->max) {
+        if ($received > $max) {
             return true;
         }
 

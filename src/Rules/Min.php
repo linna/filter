@@ -11,42 +11,19 @@ declare(strict_types = 1);
 
 namespace Linna\Filter\Rules;
 
-use Linna\Filter\RuleInterface;
-
 /**
  * Check if value is below a minum.
  */
-class Min implements RuleInterface
+class Min
 {
     /**
-     * @var mixed Received value.
-     */
-    private $received;
-    
-    /**
-     * @var mixed Min expected value.
-     */
-    private $min;
-
-    /**
-     *
-     * @param mixed $received
-     * @param mixed $min
-     */
-    public function __construct($received, $min)
-    {
-        $this->received = $received;
-        $this->min = $min;
-    }
-
-    /**
-     * Test.
+     * Validate.
      *
      * @return bool
      */
-    public function test(): bool
+    public function validate($received, $min): bool
     {
-        if ($this->received < $this->min) {
+        if ($received < $min) {
             return true;
         }
 

@@ -11,45 +11,19 @@ declare(strict_types = 1);
 
 namespace Linna\Filter\Rules;
 
-use \Linna\Filter\RuleInterface;
-
 /**
  * Check required.
  */
-class Required implements RuleInterface
+class Required
 {
     /**
-     * @var mixed Received value.
-     */
-    private $received;
-    
-    /**
-     * @var bool Expected value, not used.
-     */
-    private $expected;
-
-    /**
-     * Class constructor.
-     *
-     * @param mixed $received
-     * @param bool $expected
-     */
-    public function __construct($received, $expected)
-    {
-        $this->received = $received;
-        $this->expected = $expected;
-    }
-
-    /**
-     * Test.
+     * Validate.
      *
      * @return bool
      */
-    public function test(): bool
+    public function validate($received): bool
     {
-        $data = $this->received;
-        
-        if (strlen($data) === 0 || $data === '' || $data === null) {
+        if (strlen($received) === 0 || $received === '' || $received === null) {
             return true;
         }
 

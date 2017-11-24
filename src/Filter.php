@@ -22,17 +22,17 @@ class Filter
      * @var array Rules for filtering.
      */
     private $rules = [];
-    
+
     /**
      * @var array User data.
      */
     private $data = [];
-    
+
     /**
      * @var array Error messages.
      */
     private $messages = [];
-    
+
     /**
      * @var int Occurred errors.
      */
@@ -73,12 +73,22 @@ class Filter
     }
 
     /**
+     * Return passed data.
+     *
+     * @return array
+     */
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    /**
      * Get parsed rules.
      */
     private function getRules()
     {
         $rules = $this->rules;
-        
+
         foreach ($rules as $rule) {
             $this->ruleToField((new RuleInterpreter($rule))->get());
         }
@@ -94,26 +104,33 @@ class Filter
         foreach ($rules as $rule) {
             $field = $rule[0];
             $filter = $rule[2][0];
-            $expected = $rule[3];
-            $args = [];
-            
-            $received = (isset($this->data[$field])) ? $this->data[$field] : '';
 
-            if (is_array($expected)) {
-                array_unshift($expected, $received);
-                $args = $expected;
+            $instance = (new ReflectionClass('Linna\Filter\Rules\\' . $filter))->newInstance();
+
+            $received = '';
+
+            if (isset($this->data[$field])) {
+                $received = $this->data[$field];
             }
 
-            if (!is_array($expected)) {
-                $args = [$received, $expected];
-            }
-
-            $instance = (new ReflectionClass('Linna\Filter\Rules\\' . $filter))->newInstanceArgs($args);
-
-            if ($instance->test()) {
+            if (call_user_func_array([$instance, 'validate'], $this->getArguments($rule[2][2], $rule[3], $received))) {
                 $this->errors++;
-                $this->messages[$field][$filter] = ['expected' => $expected, 'received' => $received];
+                $this->messages[$field][$filter] = ['expected' => $rule[3], 'received' => $received];
             }
         }
+    }
+
+    private function getArguments(int $args, $expected, &$received): array
+    {
+        if ($args === 0) {
+            return [$received];
+        }
+
+        if (is_array($expected)) {
+            array_unshift($expected, $received);
+            return $expected;
+        }
+
+        return [$received, $expected];
     }
 }
