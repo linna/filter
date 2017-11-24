@@ -22,7 +22,6 @@ class RuleInterpreter
     private static $keywords = [
         'required' => ['Required', 'boolean', 0],
         'number' => ['Number', 'boolean', 0],
-        'date' => ['Date', 'boolean', 0],
         'email' => ['Email', 'boolean', 0],
         'min' => ['Min', 'number', 1],
         'max' => ['Max', 'number', 1],
@@ -30,6 +29,7 @@ class RuleInterpreter
         'length' => ['Length', 'number', 1],
         'maxlength' => ['MaxLength', 'number', 1],
         'minlength' => ['MinLength', 'number', 1],
+        'date' => ['Date', 'string', 1],
         'datebefore' => ['DateBefore', 'string', 1],
         'dateafter' => ['DateAfter', 'string', 1],
         'datebetween' => ['DateBetween', 'string', 2],
@@ -88,7 +88,7 @@ class RuleInterpreter
             $temp[] = $char;
         }
 
-        $words[$word] = implode($temp);
+        $words[$word] = implode('', $temp);
 
         return array_values(array_filter($words, 'trim'));
     }
@@ -114,15 +114,12 @@ class RuleInterpreter
     {
         $array = [];
         $actualWord = '';
-        $field = '';
+        $field = $words[0];
+        $count = count($words);
         
-        foreach ($words as $key => $word) {
-            if ($key === 0) {
-                $field = $word;
-                $array[$field] = [];
-                continue;
-            }
-
+        for ($i = 1; $i < $count; $i++) {
+            $word = $words[$i];
+            
             if (isset(self::$keywords[$word])) {
                 $actualWord = $word;
                 $array[$field][$word] = [];
@@ -131,7 +128,7 @@ class RuleInterpreter
 
             $array[$field][$actualWord][] = $word;
         }
-
+        
         $words = $array;
     }
 

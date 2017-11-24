@@ -11,22 +11,29 @@ declare(strict_types = 1);
 
 namespace Linna\Filter\Rules;
 
+use DateTime;
+
 /**
  * Check required.
  */
-class Number
+class Date
 {
+    /**
+     * @var DateTime Valid date.
+     */
+    private $date;
+    
     /**
      * Validate.
      *
      * @return bool
      */
-    public function validate($received): bool
+    public function validate($received, string $format): bool
     {
-        if (is_numeric($received)) {
+        if (($this->date = date_create_from_format($format, $received))) {
             return false;
         }
-
+        
         return true;
     }
     
@@ -37,11 +44,6 @@ class Number
      */
     public function sanitize(&$value)
     {
-        if (fmod((float) $value, 1.0) === 0.0) {
-            settype($value, 'integer');
-            return;
-        }
-
-        settype($value, 'float');
+        $value = $this->date;
     }
 }

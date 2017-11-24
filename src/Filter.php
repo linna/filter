@@ -105,22 +105,37 @@ class Filter
             $field = $rule[0];
             $filter = $rule[2][0];
 
-            $instance = (new ReflectionClass('Linna\Filter\Rules\\' . $filter))->newInstance();
-
+            $reflection = new ReflectionClass('Linna\Filter\Rules\\' . $filter);
+            $instance = $reflection->newInstance();
+            
             $received = '';
 
             if (isset($this->data[$field])) {
                 $received = $this->data[$field];
             }
-
+            
             if (call_user_func_array([$instance, 'validate'], $this->getArguments($rule[2][2], $rule[3], $received))) {
                 $this->errors++;
                 $this->messages[$field][$filter] = ['expected' => $rule[3], 'received' => $received];
+                continue;
+            }
+            
+            if ($reflection->hasMethod('sanitize')) {
+                $instance->sanitize($this->data[$field]);
             }
         }
     }
 
-    private function getArguments(int $args, $expected, &$received): array
+    /**
+     * Return arguments for validation.
+     *
+     * @param int $args
+     * @param mixed $expected
+     * @param mixed $received
+     *
+     * @return array
+     */
+    private function getArguments(int $args, $expected, $received): array
     {
         if ($args === 0) {
             return [$received];
