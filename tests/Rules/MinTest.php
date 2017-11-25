@@ -26,25 +26,25 @@ class MinTest extends TestCase
     public function numericMinProvider() : array
     {
         return [
-          [10, false],
-          [11, false],
+          [10, true],
+          [11, true],
           [12, false],
-          [13, true],
-          [14, true],
-          [15, true]
+          [13, false],
+          [14, false],
+          [15, false]
         ];
     }
     
     /**
-     * Test numeric value min.
+     * Test numeric min.
      *
      * @dataProvider numericMinProvider
      *
      * @param int $min
      * @param bool $result
      */
-    public function testNumericValueMax(int $min, bool $result)
+    public function testNumericMin(int $min, bool $result)
     {
-        $this->assertEquals($result, (new Min())->validate(12, $min));
+        $this->assertEquals($result, (new Min())->validate($min, 12));
     }
 }

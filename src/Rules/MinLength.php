@@ -23,10 +23,6 @@ class MinLength
      */
     public function validate(string $received, int $minLength): bool
     {
-        if (strlen($received) < $minLength) {
-            return true;
-        }
-
-        return false;
+        return strlen($received) < $minLength;
     }
 }

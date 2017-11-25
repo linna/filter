@@ -23,11 +23,7 @@ class Number
      */
     public function validate($received): bool
     {
-        if (is_numeric($received)) {
-            return false;
-        }
-
-        return true;
+        return !is_numeric($received);
     }
     
     /**

@@ -12,6 +12,7 @@ declare(strict_types = 1);
 namespace Linna\Filter;
 
 use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * Filter.
@@ -105,22 +106,25 @@ class Filter
             $field = $rule[0];
             $filter = $rule[2][0];
 
-            $reflection = new ReflectionClass('Linna\Filter\Rules\\' . $filter);
-            $instance = $reflection->newInstance();
-            
-            $received = '';
+            $class = 'Linna\Filter\Rules\\' . $filter;
+            $refClass = new ReflectionClass($class);
+            $refMethod = new ReflectionMethod($class, 'validate');
+                    
+            $instance = $refClass->newInstance();
 
-            if (isset($this->data[$field])) {
-                $received = $this->data[$field];
-            }
-            
-            if (call_user_func_array([$instance, 'validate'], $this->getArguments($rule[2][2], $rule[3], $received))) {
+            if (!isset($this->data[$field])) {
                 $this->errors++;
-                $this->messages[$field][$filter] = ['expected' => $rule[3], 'received' => $received];
+                $this->messages[$field][$filter] = "{$field} field missing";
                 continue;
             }
-            
-            if ($reflection->hasMethod('sanitize')) {
+
+            if ($refMethod->invokeArgs($instance, $this->getArguments($rule[2][2], $rule[3], $this->data[$field]))) {
+                $this->errors++;
+                $this->messages[$field][$filter] = ['expected' => $rule[3], 'received' => $this->data[$field]];
+                continue;
+            }
+
+            if ($refClass->hasMethod('sanitize')) {
                 $instance->sanitize($this->data[$field]);
             }
         }

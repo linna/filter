@@ -23,10 +23,6 @@ class MaxLength
      */
     public function validate(string $received, int $maxLength): bool
     {
-        if (strlen($received) > $maxLength) {
-            return true;
-        }
-
-        return false;
+        return strlen($received) > $maxLength;
     }
 }

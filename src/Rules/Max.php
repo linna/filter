@@ -23,10 +23,6 @@ class Max
      */
     public function validate($received, $max): bool
     {
-        if ($received > $max) {
-            return true;
-        }
-
-        return false;
+        return $received > $max;
     }
 }

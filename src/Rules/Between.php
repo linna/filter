@@ -26,7 +26,7 @@ class Between
         if ($received < $min || $received > $max) {
             return true;
         }
-
+        
         return false;
     }
 }

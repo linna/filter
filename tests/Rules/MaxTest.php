@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
  */
 class MaxTest extends TestCase
 {
-    
     /**
      * Numeric max provider.
      *
@@ -26,25 +25,25 @@ class MaxTest extends TestCase
     public function numericMaxProvider() : array
     {
         return [
-          [10, true],
-          [11, true],
+          [10, false],
+          [11, false],
           [12, false],
-          [13, false],
-          [14, false],
-          [15, false]
+          [13, true],
+          [14, true],
+          [15, true]
         ];
     }
     
     /**
-     * Test numeric value max.
+     * Test numeric max.
      *
      * @dataProvider numericMaxProvider
      *
      * @param int $max
      * @param bool $result
      */
-    public function testNumericValueMax(int $max, bool $result)
+    public function testNumericMax(int $max, bool $result)
     {
-        $this->assertEquals($result, (new Max())->validate(12, $max));
+        $this->assertEquals($result, (new Max())->validate($max, 12));
     }
 }

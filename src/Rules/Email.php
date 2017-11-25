@@ -23,10 +23,6 @@ class Email
      */
     public function validate(string $received): bool
     {
-        if (filter_var($received, FILTER_VALIDATE_EMAIL) === false) {
-            return true;
-        }
-
-        return false;
+        return !filter_var($received, FILTER_VALIDATE_EMAIL);
     }
 }

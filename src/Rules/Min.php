@@ -23,10 +23,6 @@ class Min
      */
     public function validate($received, $min): bool
     {
-        if ($received < $min) {
-            return true;
-        }
-
-        return false;
+        return $received < $min;
     }
 }
