@@ -46,4 +46,14 @@ class RuleInterpreterTest extends TestCase
     {
         $this->assertSame($expected, (new RuleInterpreter($rule))->get());
     }
+    
+    /**
+     * Test with wrong rule.
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testWrongRule()
+    {
+        (new RuleInterpreter('age minn 18'))->get();
+    }
 }
