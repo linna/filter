@@ -174,10 +174,8 @@ class RuleInterpreter
                 throw new InvalidArgumentException("Unknow rule provided ({$field})");
             }
 
-            $temp[$key] = array_map([$this, 'parserTypeCasting'], $word, array_fill(0, $rules[$key][2], $rules[$key][1]));
+            $words[$field][$key] = array_map([$this, 'parserTypeCasting'], $word, array_fill(0, $rules[$key][2], $rules[$key][1]));
         }
-
-        $words[$field] = $temp;
     }
 
     /**
@@ -186,7 +184,7 @@ class RuleInterpreter
      * @param mixed $param
      * @param string $type
      *
-     * @return void
+     * @return mixed
      */
     private function parserTypeCasting($param, string $type)
     {
