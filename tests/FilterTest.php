@@ -48,6 +48,7 @@ class FilterTest extends TestCase
           [['email email'],['email' => 'foo@bazcom'],1],
           [['email email'],['email' => 'foobazcom'],1],
           [['email required email'],['email' => ''],2],
+          [['email required email'],['email' => 'f'],1],
           [['email required email'],['email' => 'foobazcom'],1],
           [['email required email'],['email' => 'foo@baz.com'],0],
         ];
@@ -138,5 +139,58 @@ class FilterTest extends TestCase
         $this->assertEquals($error, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
         $this->assertInternalType('integer', $filter->getData()['age']);
+    }
+    
+    /**
+     * Test filter with multiple rules.
+     *
+     * @param array $rule
+     * @param array $data
+     * @param array $result
+     * @param int $error
+     */
+    public function testFilterMultipleRules()
+    {
+        $rule = ['age number min 18 max 22', 'born date Y-m-d'];
+        $data = ['age' => '19', 'born' => '1998-01-01'];
+        $result = ['age' => 19, 'born' => new DateTime('1998-01-01')];
+        
+        $filter = new Filter($rule, $data);
+        
+        $this->assertEquals(0, $filter->getErrors());
+        $this->assertEquals($result, $filter->getData());
+        $this->assertInternalType('integer', $filter->getData()['age']);
+        
+        $this->assertInstanceOf(DateTime::class, $filter->getData()['born']);
+    }
+    
+    /**
+     * Test filter with multiple rules with missing field.
+     */
+    public function testFilterMultipleRulesWithMissingField()
+    {
+        $rule = ['age number min 18 max 22', 'born date Y-m-d'];
+        $data = ['born' => '1998-01-01'];
+        $result = ['born' => new DateTime('1998-01-01')];
+        
+        $filter = new Filter($rule, $data);
+        
+        $this->assertEquals(3, $filter->getErrors());
+        $this->assertEquals($result, $filter->getData());
+        $this->assertInstanceOf(DateTime::class, $filter->getData()['born']);
+    }
+    
+    /**
+     * Test filter get errors messages.
+     */
+    public function testFilterGetMessages()
+    {
+        $rule = ['age min 18'];
+        $data = [];
+        
+        $filter = new Filter($rule, $data);
+        
+        $this->assertEquals(1, $filter->getErrors());
+        $this->assertEquals('age field missing', $filter->getMessages()['age']['Min']);
     }
 }

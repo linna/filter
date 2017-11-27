@@ -11,6 +11,8 @@ declare(strict_types = 1);
 
 namespace Linna\Filter;
 
+use InvalidArgumentException;
+
 /**
  * Translate rules from phrase to array.
  */
@@ -32,7 +34,7 @@ class RuleInterpreter
         'date' => ['Date', 'string', 1],
         'datebefore' => ['DateBefore', 'string', 1],
         'dateafter' => ['DateAfter', 'string', 1],
-        'datebetween' => ['DateBetween', 'string', 2],
+        'datebetween' => ['DateBetween', 'string', 3],
         'use' => ['Use', 'string', 1]
     ];
     
@@ -61,7 +63,7 @@ class RuleInterpreter
         $words = $this->lexer($this->phrase);
 
         $this->parser($words);
-        
+
         return $words;
     }
 
@@ -74,13 +76,11 @@ class RuleInterpreter
     private function lexer(string $period) : array
     {
         $chars = str_split(rtrim(ltrim($period)));
-        
         $words = $temp = [];
-        $word = 0;
-
+        
         foreach ($chars as $char) {
             if (in_array(ord($char), [32, 44, 58, 59])) {
-                $words[$word++] = implode('', $temp);
+                $words[] = implode('', $temp);
                 $temp = [];
                 continue;
             }
@@ -88,7 +88,7 @@ class RuleInterpreter
             $temp[] = $char;
         }
 
-        $words[$word] = implode('', $temp);
+        $words[] = implode('', $temp);
 
         return array_values(array_filter($words, 'trim'));
     }
@@ -101,8 +101,8 @@ class RuleInterpreter
     private function parser(array &$array)
     {
         $this->parserExtractParams($array);
-        $this->parserNormalizeParam($array);
         $this->parserApplyTypes($array);
+        $this->parserNormalizeParam($array);
     }
     
     /**
@@ -116,10 +116,10 @@ class RuleInterpreter
         $actualWord = '';
         $field = $words[0];
         $count = count($words);
-        
+
         for ($i = 1; $i < $count; $i++) {
             $word = $words[$i];
-            
+
             if (isset(self::$keywords[$word])) {
                 $actualWord = $word;
                 $array[$field][$word] = [];
@@ -128,7 +128,7 @@ class RuleInterpreter
 
             $array[$field][$actualWord][] = $word;
         }
-        
+
         $words = $array;
     }
 
@@ -141,7 +141,7 @@ class RuleInterpreter
     {
         $field = array_keys($words)[0];
         $temp = [];
-        
+
         foreach ($words[$field] as $key => $word) {
             if (count($word) === 0) {
                 $words[$field][$key] = true;
@@ -150,10 +150,10 @@ class RuleInterpreter
             if (count($word) === 1) {
                 $words[$field][$key] = $word[0];
             }
-            
+
             $temp[] = [$field, $key, self::$keywords[$key], $words[$field][$key]];
         }
-        
+
         $words = $temp;
     }
 
@@ -162,40 +162,22 @@ class RuleInterpreter
      *
      * @param array $words
      *
-     * @throws \InvalidArgumentException If unknow keyword is provided.
+     * @throws InvalidArgumentException If unknow keyword is provided.
      */
     private function parserApplyTypes(array &$words)
     {
         $rules = &self::$keywords;
+        $field = key($words);
 
-        foreach ($words as $key => $word) {
-            $rule = &$words[$key][1];
-            $params = &$words[$key][3];
-            
-            if (!isset($rules[$rule])) {
-                throw new \InvalidArgumentException('Unknow rule keyword provided');
-            }
-            
-            if (is_array($params)) {
-                $this->parserTypeCastingArray($params, $rules[$rule][1]);
-                continue;
+        foreach ($words[$field] as $key => $word) {
+            if (!isset($rules[$key])) {
+                throw new InvalidArgumentException("Unknow rule provided ({$field})");
             }
 
-            $this->parserTypeCastingOthers($params, $rules[$rule][1]);
+            $temp[$key] = array_map([$this, 'parserTypeCasting'], $word, array_fill(0, $rules[$key][2], $rules[$key][1]));
         }
-    }
 
-    /**
-     * Apply types when there is more than one parameter.
-     *
-     * @param array $params
-     * @param string $type
-     */
-    private function parserTypeCastingArray(array &$params, string &$type)
-    {
-        foreach ($params as $key => $value) {
-            $this->parserTypeCastingOthers($params[$key], $type);
-        }
+        $words[$field] = $temp;
     }
 
     /**
@@ -206,14 +188,16 @@ class RuleInterpreter
      *
      * @return void
      */
-    private function parserTypeCastingOthers(&$param, string &$type)
+    private function parserTypeCasting($param, string $type)
     {
         if ($type === 'number') {
             settype($param, $this->strtonum($param));
-            return;
+            return $param;
         }
 
         settype($param, $type);
+
+        return $param;
     }
 
     /**
@@ -225,10 +209,10 @@ class RuleInterpreter
      */
     private function strtonum(string $number): string
     {
-        if (fmod((float) $number, 1.0) === 0.0) {
-            return 'integer';
+        if (fmod((float) $number, 1.0) !== 0.0) {
+            return 'float';
         }
 
-        return 'float';
+        return 'integer';
     }
 }

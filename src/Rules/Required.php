@@ -23,7 +23,7 @@ class Required
      */
     public function validate($received): bool
     {
-        if (strlen($received) === 0 || $received === '' || $received === null) {
+        if (strlen($received) === 0 || $received === null) {
             return true;
         }
 

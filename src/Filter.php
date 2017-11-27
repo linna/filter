@@ -20,11 +20,6 @@ use ReflectionMethod;
 class Filter
 {
     /**
-     * @var array Rules for filtering.
-     */
-    private $rules = [];
-
-    /**
      * @var array User data.
      */
     private $data = [];
@@ -47,10 +42,10 @@ class Filter
      */
     public function __construct(array $rules, array $data)
     {
-        $this->rules = $rules;
+        //$this->rules = $rules;
         $this->data = $data;
 
-        $this->getRules();
+        $this->interpreteRules($rules);
     }
 
     /**
@@ -86,10 +81,8 @@ class Filter
     /**
      * Get parsed rules.
      */
-    private function getRules()
+    private function interpreteRules(&$rules)
     {
-        $rules = $this->rules;
-
         foreach ($rules as $rule) {
             $this->ruleToField((new RuleInterpreter($rule))->get());
         }

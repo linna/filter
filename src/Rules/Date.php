@@ -31,6 +31,7 @@ class Date
     public function validate($received, string $format): bool
     {
         if (($this->date = date_create_from_format($format, $received))) {
+            $this->date->setTime(0, 0, 0);
             return false;
         }
         
