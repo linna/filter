@@ -75,8 +75,8 @@ class Escape
         $chars = preg_split('//u', $string, 0, PREG_SPLIT_NO_EMPTY);
         $escaped = '';
 
-        foreach ($chars as $key => $char) {
-            $ord = $this->ordutf8($char, $key);
+        foreach ($chars as $char) {
+            $ord = $this->ordutf8($char);
 
             if (
                 ($ord > 32 && $ord < 48) ||
