@@ -49,7 +49,7 @@ class RuleInterpreterTest extends TestCase
     
     /**
      * Test with wrong rule.
-     * 
+     *
      * @expectedException InvalidArgumentException
      */
     public function testWrongRule()

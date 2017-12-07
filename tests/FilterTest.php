@@ -193,4 +193,39 @@ class FilterTest extends TestCase
         $this->assertEquals(1, $filter->getErrors());
         $this->assertEquals('age field missing', $filter->getMessages()['age']['Min']);
     }
+    
+    /**
+     * Need escaped data provider.
+     *
+     * @return array
+     */
+    public function needEscapedProvider() : array
+    {
+        return [
+            [' !"#$%&'."'()*+,-./0", ' &#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#42;&#43;&#44;&#45;&#46;&#47;0'],
+            ['9:;<=>?@A', '9&#58;&#59;&#60;&#61;&#62;&#63;&#64;A'],
+            ['Z[\]^_`a', 'Z&#91;&#92;&#93;&#94;&#95;&#96;a'],
+            ['z{|}~', 'z&#123;&#124;&#125;&#126;'],
+            ['¡߹ऀ𐌀', '&#161;&#2041;&#2304;&#66304;'],
+            ['߀','&#1984;'],
+            ['豈','&#63744;']
+        ];
+    }
+    
+    /**
+     * Test filter escape
+     *
+     * @dataProvider needEscapedProvider
+     */
+    public function testFilterEscape(string $data, string $result)
+    {
+        $rule = ['passed_data escape'];
+        $data = ['passed_data' => $data];
+        
+        $filter = new Filter($rule, $data);
+        
+        $result = ['passed_data' => $result];
+        //$this->assertEquals(1, $filter->getErrors());
+        $this->assertSame($result, $filter->getData());
+    }
 }

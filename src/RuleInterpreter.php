@@ -25,6 +25,7 @@ class RuleInterpreter
         'required' => ['Required', 'boolean', 0],
         'number' => ['Number', 'boolean', 0],
         'email' => ['Email', 'boolean', 0],
+        'escape' => ['Escape', 'string', 0],
         'min' => ['Min', 'number', 1],
         'max' => ['Max', 'number', 1],
         'between' => ['Between', 'number', 2],
@@ -174,7 +175,7 @@ class RuleInterpreter
                 throw new InvalidArgumentException("Unknow rule provided ({$field})");
             }
 
-            $words[$field][$key] = array_map([$this, 'parserTypeCasting'], $word, array_fill(0, $rules[$key][2], $rules[$key][1]));
+            $words[$field][$key] = array_map([$this, 'parserTypeCasting'], $word, array_fill(10, $rules[$key][2], $rules[$key][1]));
         }
     }
 

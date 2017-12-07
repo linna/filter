@@ -101,8 +101,7 @@ class Filter
 
             $class = 'Linna\Filter\Rules\\' . $filter;
             $refClass = new ReflectionClass($class);
-            $refMethod = new ReflectionMethod($class, 'validate');
-                    
+                   
             $instance = $refClass->newInstance();
 
             if (!isset($this->data[$field])) {
@@ -110,19 +109,23 @@ class Filter
                 $this->messages[$field][$filter] = "{$field} field missing";
                 continue;
             }
-
-            if ($refMethod->invokeArgs($instance, $this->getArguments($rule[2][2], $rule[3], $this->data[$field]))) {
-                $this->errors++;
-                $this->messages[$field][$filter] = ['expected' => $rule[3], 'received' => $this->data[$field]];
-                continue;
+            
+            if ($refClass->hasMethod('validate')) {
+                $refMethod = new ReflectionMethod($class, 'validate');
+                
+                if ($refMethod->invokeArgs($instance, $this->getArguments($rule[2][2], $rule[3], $this->data[$field]))) {
+                    $this->errors++;
+                    $this->messages[$field][$filter] = ['expected' => $rule[3], 'received' => $this->data[$field]];
+                    continue;
+                }
             }
-
+            
             if ($refClass->hasMethod('sanitize')) {
                 $instance->sanitize($this->data[$field]);
             }
         }
     }
-
+    
     /**
      * Return arguments for validation.
      *
