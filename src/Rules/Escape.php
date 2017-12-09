@@ -36,29 +36,19 @@ class Escape
     {
         $code = ord(substr($char, 0, 1));
 
+        if ($code > 239) {
+            return ((ord(substr($char, 1, 1)) - 128) *
+                    64 + ord(substr($char, 2, 1)) - 128) *
+                    64 + ord(substr($char, 3, 1)) - 128;
+        }
+
+        if ($code > 223) {
+            return (($code - 224) * 64 + ord(substr($char, 1, 1)) - 128)
+                    * 64 + ord(substr($char, 2, 1)) - 128;
+        }
+
         if ($code > 127) {
-
-            //110xxxxx
-            $bytes = 2;
-            $count = 0;
-
-            if ($code > 223) {
-                //1110xxxx
-                $bytes = 3;
-                $count = 32;
-            }
-
-            if ($code > 239) {
-                //11110xxx
-                $bytes = 4;
-                $count = 48;
-            }
-
-            $temp = $code - 192 - $count;
-
-            for ($i = 1; $i < $bytes; $i++) {
-                $code = $temp = $temp * 64 + ord(substr($char, $i, 1)) - 128;
-            }
+            return ($code - 192) * 64 + ord(substr($char, 1, 1)) - 128;
         }
 
         return $code;
