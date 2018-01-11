@@ -33,8 +33,8 @@ class RuleInterpreter
         'maxlength' => ['MaxLength', 'number', 1],
         'minlength' => ['MinLength', 'number', 1],
         'date' => ['Date', 'string', 1],
-        'datebefore' => ['DateBefore', 'string', 1],
-        'dateafter' => ['DateAfter', 'string', 1],
+        'datemin' => ['DateMin', 'string', 2],
+        'datemax' => ['DateMax', 'string', 2],
         'datebetween' => ['DateBetween', 'string', 3],
         'use' => ['Use', 'string', 1]
     ];
@@ -119,7 +119,7 @@ class RuleInterpreter
         $count = count($words);
 
         for ($i = 1; $i < $count; $i++) {
-            $word = $words[$i];
+            $word = strtolower($words[$i]);
 
             if (isset(self::$keywords[$word])) {
                 $actualWord = $word;
@@ -127,7 +127,7 @@ class RuleInterpreter
                 continue;
             }
 
-            $array[$field][$actualWord][] = $word;
+            $array[$field][$actualWord][] = $words[$i];
         }
 
         $words = $array;

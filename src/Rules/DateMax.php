@@ -14,9 +14,9 @@ namespace Linna\Filter\Rules;
 use DateTime;
 
 /**
- * Check if one date is valid.
+ * Check if given date is equal or less than a date.
  */
-class Date
+class DateMax
 {
     /**
      * @var DateTime Valid date.
@@ -28,10 +28,20 @@ class Date
      *
      * @return bool
      */
-    public function validate($received, string $format): bool
+    public function validate($received, string $format, string $max): bool
     {
-        if ($this->date = DateTime::createFromFormat($format, $received)) {
-            $this->date->setTime(0, 0, 0);
+        $dateReceived = DateTime::createFromFormat($format, $received);
+        $dateMax = DateTime::createFromFormat($format, $max);
+        
+        if (!($dateMax && $dateReceived)) {
+            return true;
+        }
+        
+        $dateMax->setTime(0, 0, 0);
+        $dateReceived->setTime(0, 0, 0);
+            
+        if ($dateMax->format('Ymd') >= $dateReceived->format('Ymd')) {
+            $this->date = $dateReceived;
             return false;
         }
         
