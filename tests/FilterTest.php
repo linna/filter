@@ -64,7 +64,8 @@ class FilterTest extends TestCase
      */
     public function testFilter(array $rule, array $data, int $error)
     {
-        $filter = new Filter($rule, $data);
+        $filter = new Filter();
+        $filter->filterMulti($data, $rule);
         
         $this->assertEquals($error, $filter->getErrors());
     }
@@ -98,7 +99,8 @@ class FilterTest extends TestCase
      */
     public function testFilterFloatNumber(array $rule, array $data, array $result, int $error)
     {
-        $filter = new Filter($rule, $data);
+        $filter = new Filter();
+        $filter->filterMulti($data, $rule);
         
         $this->assertEquals($error, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
@@ -134,7 +136,8 @@ class FilterTest extends TestCase
      */
     public function testFilterNumber(array $rule, array $data, array $result, int $error)
     {
-        $filter = new Filter($rule, $data);
+        $filter = new Filter();
+        $filter->filterMulti($data, $rule);
         
         $this->assertEquals($error, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
@@ -155,7 +158,8 @@ class FilterTest extends TestCase
         $data = ['age' => '19', 'born' => '1998-01-01'];
         $result = ['age' => 19, 'born' => new DateTime('1998-01-01')];
         
-        $filter = new Filter($rule, $data);
+        $filter = new Filter();
+        $filter->filterMulti($data, $rule);
         
         $this->assertEquals(0, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
@@ -173,7 +177,8 @@ class FilterTest extends TestCase
         $data = ['born' => '1998-01-01'];
         $result = ['born' => new DateTime('1998-01-01')];
         
-        $filter = new Filter($rule, $data);
+        $filter = new Filter();
+        $filter->filterMulti($data, $rule);
         
         $this->assertEquals(3, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
@@ -188,10 +193,11 @@ class FilterTest extends TestCase
         $rule = ['age min 18'];
         $data = [];
         
-        $filter = new Filter($rule, $data);
+        $filter = new Filter();
+        $filter->filterMulti($data, $rule);
         
         $this->assertEquals(1, $filter->getErrors());
-        $this->assertEquals('age field missing', $filter->getMessages()['age']['Min']);
+        $this->assertEquals('Form field \'age\' missing.', $filter->getMessages()['age']['Min']);
     }
     
     /**
@@ -224,7 +230,8 @@ class FilterTest extends TestCase
         $rule = ['passed_data escape'];
         $data = ['passed_data' => $data];
         
-        $filter = new Filter($rule, $data);
+        $filter = new Filter();
+        $filter->filterMulti($data, $rule);
         
         $result = ['passed_data' => $result];
         //$this->assertEquals(1, $filter->getErrors());
