@@ -11,6 +11,8 @@ declare(strict_types = 1);
 
 namespace Linna\Filter;
 
+use InvalidArgumentException;
+
 /**
  * Description of Parser
  *
