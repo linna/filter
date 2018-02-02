@@ -33,21 +33,44 @@ class Filter
      * @var int Occurred errors.
      */
     private $errors = 0;
-
+    
     /**
-     * Class constructor.
-     *
-     * @param array $rules
-     * @param array $data
+     * @var array Filters working rules.
      */
-    public function __construct(array $rules, array $data)
+    private $rules;
+    
+    /**
+     * Class Constructor.
+     */
+    public function __construct()
     {
-        //$this->rules = $rules;
+        $this->rules = RuleBuilder::build();
+    }
+    
+    /**
+     * Filter one element with given rules.
+     *
+     * @param mixed $data
+     * @param string $rule
+     */
+    public function filterOne($data, string $rule) : void
+    {
+        $this->data = ['data' => $data];
+        $this->interpreteRules(['data '.$rule]);
+    }
+    
+    /**
+     * Filter an array of elementes with given rules.
+     *
+     * @param array $data
+     * @param array $rules
+     */
+    public function filterMulti(array $data, array $rules) : void
+    {
         $this->data = $data;
-
         $this->interpreteRules($rules);
     }
-
+    
     /**
      * Return occurred error number.
      *
@@ -81,10 +104,17 @@ class Filter
     /**
      * Get parsed rules.
      */
-    private function interpreteRules(&$rules)
+    private function interpreteRules($rules) : void
     {
+        $parser = new Parser();
+
         foreach ($rules as $rule) {
-            $this->ruleToField((new RuleInterpreter($rule))->get());
+            $this->ruleToField(
+                $parser->parse(
+                    Lexer::tokenize($rule),
+                    $this->rules
+                )
+            );
         }
     }
 
@@ -93,39 +123,39 @@ class Filter
      *
      * @param array $rules
      */
-    private function ruleToField(array $rules)
+    private function ruleToField(array $rules) : void
     {
         foreach ($rules as $rule) {
             $field = $rule[0];
-            $filter = $rule[2][0];
+            $filter = $rule[2]['class'];
 
             $class = 'Linna\Filter\Rules\\' . $filter;
             $refClass = new ReflectionClass($class);
-                   
+
             $instance = $refClass->newInstance();
 
             if (!isset($this->data[$field])) {
                 $this->errors++;
-                $this->messages[$field][$filter] = "{$field} field missing";
+                $this->messages[$field][$filter] = "Form field '{$field}' missing.";
                 continue;
             }
-            
+
             if ($refClass->hasMethod('validate')) {
                 $refMethod = new ReflectionMethod($class, 'validate');
-                
-                if ($refMethod->invokeArgs($instance, $this->getArguments($rule[2][2], $rule[3], $this->data[$field]))) {
+
+                if ($refMethod->invokeArgs($instance, $this->getArguments($rule[2]['args_count'], $rule[3], $this->data[$field]))) {
                     $this->errors++;
                     $this->messages[$field][$filter] = ['expected' => $rule[3], 'received' => $this->data[$field]];
                     continue;
                 }
             }
-            
+
             if ($refClass->hasMethod('sanitize')) {
                 $instance->sanitize($this->data[$field]);
             }
         }
     }
-    
+
     /**
      * Return arguments for validation.
      *
@@ -135,7 +165,7 @@ class Filter
      *
      * @return array
      */
-    private function getArguments(int $args, $expected, $received): array
+    private function getArguments(int $args, $expected, $received) : array
     {
         if ($args === 0) {
             return [$received];
