@@ -17,6 +17,11 @@ namespace Linna\Filter\Rules;
 class MinLength
 {
     /**
+     * @var array Arguments expected.
+     */
+    private $arguments = ['number'];
+    
+    /**
      * Validate.
      *
      * @return bool

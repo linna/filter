@@ -17,6 +17,11 @@ namespace Linna\Filter\Rules;
 class Email
 {
     /**
+     * @var array Arguments expected.
+     */
+    private $arguments = [];
+    
+    /**
      * Validate.
      *
      * @return bool

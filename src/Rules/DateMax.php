@@ -19,6 +19,11 @@ use DateTime;
 class DateMax
 {
     /**
+     * @var array Arguments expected.
+     */
+    private $arguments = ['number'];
+    
+    /**
      * @var DateTime Valid date.
      */
     private $date;

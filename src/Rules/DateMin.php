@@ -19,6 +19,11 @@ use DateTime;
 class DateMin
 {
     /**
+     * @var array Arguments expected.
+     */
+    private $arguments = ['string', 'string'];
+    
+    /**
      * @var DateTime Valid date.
      */
     private $date;

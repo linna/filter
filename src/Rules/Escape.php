@@ -17,6 +17,11 @@ namespace Linna\Filter\Rules;
 class Escape
 {
     /**
+     * @var array Arguments expected.
+     */
+    private $arguments = [];
+    
+    /**
      * Sanitize.
      *
      * @param mixed $value

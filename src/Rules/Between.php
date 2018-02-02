@@ -17,6 +17,11 @@ namespace Linna\Filter\Rules;
 class Between
 {
     /**
+     * @var array Arguments expected.
+     */
+    private $arguments = ['number', 'number'];
+    
+    /**
      * Validate.
      *
      * @return bool

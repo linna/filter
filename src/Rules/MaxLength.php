@@ -17,6 +17,11 @@ namespace Linna\Filter\Rules;
 class MaxLength
 {
     /**
+     * @var array Arguments expected.
+     */
+    private $arguments = ['string', 'string'];
+    
+    /**
      * Validate.
      *
      * @return bool

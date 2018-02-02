@@ -19,6 +19,11 @@ use DateTime;
 class Date
 {
     /**
+     * @var array Arguments expected.
+     */
+    private $arguments = ['string'];
+    
+    /**
      * @var DateTime Valid date.
      */
     private $date;

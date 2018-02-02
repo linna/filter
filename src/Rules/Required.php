@@ -17,6 +17,11 @@ namespace Linna\Filter\Rules;
 class Required
 {
     /**
+     * @var array Arguments expected.
+     */
+    private $arguments = [];
+    
+    /**
      * Validate.
      *
      * @return bool
