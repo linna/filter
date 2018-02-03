@@ -23,7 +23,7 @@ class RuleBuilder
      *
      * @return array
      */
-    public static function build() : array
+    public static function build(): array
     {
         $dir = dir(__DIR__.'/Rules');
         $rules = [];

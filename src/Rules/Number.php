@@ -36,7 +36,7 @@ class Number
      *
      * @param mixed $value
      */
-    public function sanitize(&$value)
+    public function sanitize(&$value): void
     {
         if (fmod((float) $value, 1.0) === 0.0) {
             settype($value, 'integer');

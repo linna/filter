@@ -58,7 +58,7 @@ class DateMax
      *
      * @param mixed $value
      */
-    public function sanitize(&$value)
+    public function sanitize(&$value):void
     {
         $value = $this->date;
     }

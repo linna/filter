@@ -26,7 +26,7 @@ class Escape
      *
      * @param mixed $value
      */
-    public function sanitize(&$value)
+    public function sanitize(&$value): void
     {
         $value = $this->htmlEscape($value);
     }
@@ -37,7 +37,7 @@ class Escape
      * @param string $char
      * @return int
      */
-    private function ordutf8(string $char) : int
+    private function ordutf8(string $char): int
     {
         $code = ord(substr($char, 0, 1));
 
@@ -65,7 +65,7 @@ class Escape
      * @param string $string
      * @return string
      */
-    private function htmlEscape(string $string) : string
+    private function htmlEscape(string $string): string
     {
         $chars = preg_split('//u', $string, 0, PREG_SPLIT_NO_EMPTY);
         $escaped = '';

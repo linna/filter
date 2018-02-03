@@ -53,7 +53,7 @@ class Filter
      * @param mixed $data
      * @param string $rule
      */
-    public function filterOne($data, string $rule) : void
+    public function filterOne($data, string $rule): void
     {
         $this->data = ['data' => $data];
         $this->interpreteRules(['data '.$rule]);
@@ -65,7 +65,7 @@ class Filter
      * @param array $data
      * @param array $rules
      */
-    public function filterMulti(array $data, array $rules) : void
+    public function filterMulti(array $data, array $rules): void
     {
         $this->data = $data;
         $this->interpreteRules($rules);
@@ -104,7 +104,7 @@ class Filter
     /**
      * Get parsed rules.
      */
-    private function interpreteRules($rules) : void
+    private function interpreteRules($rules): void
     {
         $parser = new Parser();
 
@@ -123,7 +123,7 @@ class Filter
      *
      * @param array $rules
      */
-    private function ruleToField(array $rules) : void
+    private function ruleToField(array $rules): void
     {
         foreach ($rules as $rule) {
             $field = $rule[0];
@@ -165,7 +165,7 @@ class Filter
      *
      * @return array
      */
-    private function getArguments(int $args, $expected, $received) : array
+    private function getArguments(int $args, $expected, $received): array
     {
         if ($args === 0) {
             return [$received];

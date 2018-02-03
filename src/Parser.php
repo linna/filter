@@ -14,9 +14,7 @@ namespace Linna\Filter;
 use InvalidArgumentException;
 
 /**
- * Description of Parser
- *
- * @author Sebastian
+ * Parser
  */
 class Parser
 {
@@ -30,7 +28,7 @@ class Parser
      *
      * @param array $array
      */
-    public function parse(array $array, array $rules) : array
+    public function parse(array $array, array $rules): array
     {
         $this->rules = $rules;
         
@@ -46,10 +44,8 @@ class Parser
      *
      * @param array $words
      */
-    private function extractParams(array &$words)
+    private function extractParams(array &$words): void
     {
-        //intervenire qui per fare in modo che funzioni anche in modalità anonima.
-        
         $array = [];
         $actualWord = '';
         $field = $words[0];
@@ -77,7 +73,7 @@ class Parser
      *
      * @throws InvalidArgumentException If unknown keyword is provided.
      */
-    private function applyTypes(array &$words)
+    private function applyTypes(array &$words): void
     {
         $rules = $this->rules;
         $field = key($words);
@@ -100,7 +96,7 @@ class Parser
      *
      * @param array $words
      */
-    private function normalizeParam(array &$words)
+    private function normalizeParam(array &$words): void
     {
         $field = array_keys($words)[0];
         $temp = [];
@@ -125,10 +121,8 @@ class Parser
      *
      * @param array $params
      * @param array $types
-     *
-     * @return mixed
      */
-    private function castTypes(array &$params, array $types)
+    private function castTypes(array &$params, array $types): void
     {
         for ($i = 0; $i < count($params); $i++) {
             $type = &$types[$i];

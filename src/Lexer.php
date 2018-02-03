@@ -22,7 +22,7 @@ class Lexer
      * @param string $period
      * @return array
      */
-    public static function tokenize(string $period) : array
+    public static function tokenize(string $period): array
     {
         $chars = str_split(rtrim(ltrim($period)));
         $words = $temp = [];
