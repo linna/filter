@@ -25,6 +25,11 @@ class Filter
     private $data = [];
 
     /**
+     * @var array Sanitized data.
+     */
+    private $sanitizedData = [];
+
+    /**
      * @var array Error messages.
      */
     private $messages = [];
@@ -33,12 +38,12 @@ class Filter
      * @var int Occurred errors.
      */
     private $errors = 0;
-    
+
     /**
      * @var array Filters working rules.
      */
     private $rules;
-    
+
     /**
      * Class Constructor.
      */
@@ -46,7 +51,7 @@ class Filter
     {
         $this->rules = RuleBuilder::build();
     }
-    
+
     /**
      * Filter one element with given rules.
      *
@@ -58,7 +63,7 @@ class Filter
         $this->data = ['data' => $data];
         $this->interpreteRules(['data '.$rule]);
     }
-    
+
     /**
      * Filter an array of elementes with given rules.
      *
@@ -70,7 +75,7 @@ class Filter
         $this->data = $data;
         $this->interpreteRules($rules);
     }
-    
+
     /**
      * Return occurred error number.
      *
@@ -134,28 +139,86 @@ class Filter
 
             $instance = $refClass->newInstance();
 
-            if (!isset($this->data[$field])) {
-                $this->errors++;
-                $this->messages[$field][$filter] = "Form field '{$field}' missing.";
+            //check if value is isset in data
+            if ($this->checkValue($field, $filter)) {
                 continue;
             }
 
-            if ($refClass->hasMethod('validate')) {
-                $refMethod = new ReflectionMethod($class, 'validate');
-
-                if ($refMethod->invokeArgs($instance, $this->getArguments($rule[2]['args_count'], $rule[3], $this->data[$field]))) {
-                    $this->errors++;
-                    $this->messages[$field][$filter] = ['expected' => $rule[3], 'received' => $this->data[$field]];
-                    continue;
-                }
+            if ($this->invokeValidate($refClass, $class, $field, $rule, $filter, $instance)) {
+                continue;
             }
-
-            if ($refClass->hasMethod('sanitize')) {
-                $instance->sanitize($this->data[$field]);
-            }
+            
+            $this->invokeSanitize($refClass, $field, $instance);
         }
     }
 
+    /**
+     * Check if a field exist in data.
+     *
+     * @param string $field
+     * @param string $filter
+     *
+     * @return bool
+     */
+    private function checkValue(string &$field, string &$filter): bool
+    {
+        if (isset($this->data[$field])) {
+            return false;
+        }
+        
+        //sollevare una ottima eccezione!
+        $this->errors++;
+        $this->messages[$field][$filter] = "Form field '{$field}' missing.";
+        
+        return true;
+    }
+    
+    /**
+     * Invoke validate.
+     *
+     * @param ReflectionClass $refClass
+     * @param string $class
+     * @param string $field
+     * @param array $rule
+     * @param string $filter
+     * @param mixed $instance
+     *
+     * @return bool
+     */
+    private function invokeValidate(
+        ReflectionClass &$refClass,
+        string &$class,
+        string &$field,
+        array &$rule,
+        string &$filter,
+        &$instance
+    ) : bool {
+        if ($refClass->hasMethod('validate')) {
+            if ((new ReflectionMethod($class, 'validate'))->invokeArgs($instance, $this->getArguments($rule[2]['args_count'], $rule[3], $this->data[$field]))) {
+                $this->errors++;
+                $this->messages[$field][$filter] = ['expected' => $rule[3], 'received' => $this->data[$field]];
+
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Invoke Sanitize.
+     *
+     * @param ReflectionClass $refClass
+     * @param string $field
+     * @param mixed $instance
+     */
+    private function invokeSanitize(ReflectionClass &$refClass, string &$field, &$instance): void
+    {
+        if ($refClass->hasMethod('sanitize')) {
+            $instance->sanitize($this->data[$field]);
+        }
+    }
+    
     /**
      * Return arguments for validation.
      *
