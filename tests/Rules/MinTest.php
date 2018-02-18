@@ -43,7 +43,7 @@ class MinTest extends TestCase
      * @param int $min
      * @param bool $result
      */
-    public function testNumericMin(int $min, bool $result)
+    public function testNumericMin(int $min, bool $result): void
     {
         $this->assertEquals($result, (new Min())->validate($min, 12));
     }

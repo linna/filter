@@ -44,7 +44,7 @@ class MinLengthTest extends TestCase
      * @param string $value
      * @param bool $result
      */
-    public function testMaxLength(string $value, bool $result)
+    public function testMaxLength(string $value, bool $result): void
     {
         $this->assertEquals($result, (new MinLength())->validate($value, 3));
     }

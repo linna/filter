@@ -26,6 +26,7 @@ class DateMinTest extends TestCase
     public function dateMinProvider() : array
     {
         return [
+          ['2018-01', true], //malformed
           ['2018-01-01', true],
           ['2018-01-02', true],
           ['2018-01-03', true],
@@ -43,7 +44,7 @@ class DateMinTest extends TestCase
      * @param string $min
      * @param bool $result
      */
-    public function testDateMin(string $min, bool $result)
+    public function testDateMin(string $min, bool $result): void
     {
         $this->assertEquals($result, (new DateMin())->validate($min, 'Y-m-d', '2018-01-04'));
     }

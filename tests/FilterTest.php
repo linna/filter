@@ -62,7 +62,7 @@ class FilterTest extends TestCase
      * @param array $data
      * @param int $error
      */
-    public function testFilter(array $rule, array $data, int $error)
+    public function testFilter(array $rule, array $data, int $error): void
     {
         $filter = new Filter();
         $filter->filterMulti($data, $rule);
@@ -97,7 +97,7 @@ class FilterTest extends TestCase
      * @param array $result
      * @param int $error
      */
-    public function testFilterFloatNumber(array $rule, array $data, array $result, int $error)
+    public function testFilterFloatNumber(array $rule, array $data, array $result, int $error): void
     {
         $filter = new Filter();
         $filter->filterMulti($data, $rule);
@@ -134,7 +134,7 @@ class FilterTest extends TestCase
      * @param array $result
      * @param int $error
      */
-    public function testFilterNumber(array $rule, array $data, array $result, int $error)
+    public function testFilterNumber(array $rule, array $data, array $result, int $error): void
     {
         $filter = new Filter();
         $filter->filterMulti($data, $rule);
@@ -152,7 +152,7 @@ class FilterTest extends TestCase
      * @param array $result
      * @param int $error
      */
-    public function testFilterMultipleRules()
+    public function testFilterMultipleRules(): void
     {
         $rule = ['age number min 18 max 22', 'born date Y-m-d'];
         $data = ['age' => '19', 'born' => '1998-01-01'];
@@ -171,7 +171,7 @@ class FilterTest extends TestCase
     /**
      * Test filter with multiple rules with missing field.
      */
-    public function testFilterMultipleRulesWithMissingField()
+    public function testFilterMultipleRulesWithMissingField(): void
     {
         $rule = ['age number min 18 max 22', 'born date Y-m-d'];
         $data = ['born' => '1998-01-01'];
@@ -188,7 +188,7 @@ class FilterTest extends TestCase
     /**
      * Test filter get errors messages.
      */
-    public function testFilterGetMessages()
+    public function testFilterGetMessages(): void
     {
         $rule = ['age min 18'];
         $data = [];
@@ -225,16 +225,11 @@ class FilterTest extends TestCase
      *
      * @dataProvider needEscapedProvider
      */
-    public function testFilterEscape(string $data, string $result)
+    public function testFilterEscape(string $data, string $result): void
     {
-        $rule = ['passed_data escape'];
-        $data = ['passed_data' => $data];
-        
         $filter = new Filter();
-        $filter->filterMulti($data, $rule);
+        $filter->filterMulti(['passed_data' => $data], ['passed_data escape']);
         
-        $result = ['passed_data' => $result];
-        //$this->assertEquals(1, $filter->getErrors());
-        $this->assertSame($result, $filter->getData());
+        $this->assertSame(['passed_data' => $result], $filter->getData());
     }
 }

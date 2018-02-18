@@ -42,7 +42,7 @@ class MaxTest extends TestCase
      * @param int $max
      * @param bool $result
      */
-    public function testNumericMax(int $max, bool $result)
+    public function testNumericMax(int $max, bool $result): void
     {
         $this->assertEquals($result, (new Max())->validate($max, 12));
     }
