@@ -24,7 +24,7 @@ Filters can be used in two different ways.
 
 ### Filter One
 
-Apply one or more rules to one value:
+Apply one or more rules to one values:
 ```php
 use Linna\Filter\Filter;
 
