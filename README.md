@@ -24,7 +24,7 @@ Filters can be used in two different ways.
 
 ### Filter One
 
-Apply one or more rules to one values:
+Apply one or more rules to one value:
 ```php
 use Linna\Filter\Filter;
 
@@ -45,7 +45,7 @@ var_dump($filter->getData());
 
 ### Filter Multi
 
-Apply one or more rules to many value:
+Apply one or more rules to many values:
 ```php
 use Linna\Filter\Filter;
 
