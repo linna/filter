@@ -22,7 +22,60 @@ class FilterTest extends TestCase
      *
      * @return array
      */
-    public function rulesDataResultProvider() : array
+    public function oneRulesDataResultProvider() : array
+    {
+        return [
+          ['min 18','19',0],
+          ['min 18','18',0],
+          ['min 18','17',1],
+          ['max 18','19',1],
+          ['max 18','18',0],
+          ['max 18','17',0],
+          ['between 18 20','17',1],
+          ['between 18 20','18',0],
+          ['between 18 20','19',0],
+          ['between 18 20','20',0],
+          ['between 18 20','21',1],
+          ['minlength 4','pas',1],
+          ['minlength 4','pass',0],
+          ['minlength 4','passw',0],
+          ['maxlength 4','pas',0],
+          ['maxlength 4','pass',0],
+          ['maxlength 4','passw',1],
+          ['email','foo@baz.com',0],
+          ['email','foobaz.com',1],
+          ['email','foo@bazcom',1],
+          ['email','foobazcom',1],
+          ['required email','',2],
+          ['required email','f',1],
+          ['required email','foobazcom',1],
+          ['required email','foo@baz.com',0],
+        ];
+    }
+    
+    /**
+     * Test Filter.
+     *
+     * @dataProvider oneRulesDataResultProvider
+     *
+     * @param string $rule
+     * @param string $data
+     * @param int $error
+     */
+    public function testFilterOne(string $rule, string $data, int $error): void
+    {
+        $filter = new Filter();
+        $filter->filterOne($data, $rule);
+        
+        $this->assertEquals($error, $filter->getErrors());
+    }
+    
+    /**
+     * Rules and data provider.
+     *
+     * @return array
+     */
+    public function multiRulesDataResultProvider() : array
     {
         return [
           [['age min 18'],['age' => '19'],0],
@@ -57,12 +110,13 @@ class FilterTest extends TestCase
     /**
      * Test Filter.
      *
-     * @dataProvider rulesDataResultProvider
+     * @dataProvider multiRulesDataResultProvider
+     *
      * @param array $rule
      * @param array $data
      * @param int $error
      */
-    public function testFilter(array $rule, array $data, int $error): void
+    public function testFilterMulti(array $rule, array $data, int $error): void
     {
         $filter = new Filter();
         $filter->filterMulti($data, $rule);
