@@ -60,7 +60,7 @@ class Filter
      */
     public function filterOne($data, string $rule): void
     {
-        $this->data = ['data' => $data];
+        $this->sanitizedData = $this->data = ['data' => $data];
         $this->interpreteRules(['data '.$rule]);
     }
 
@@ -72,7 +72,7 @@ class Filter
      */
     public function filterMulti(array $data, array $rules): void
     {
-        $this->data = $data;
+        $this->sanitizedData = $this->data = $data;
         $this->interpreteRules($rules);
     }
 
@@ -103,7 +103,7 @@ class Filter
      */
     public function getData(): array
     {
-        return $this->data;
+        return $this->sanitizedData;
     }
 
     /**
@@ -215,7 +215,7 @@ class Filter
     private function invokeSanitize(ReflectionClass &$refClass, string &$field, &$instance): void
     {
         if ($refClass->hasMethod('sanitize')) {
-            $instance->sanitize($this->data[$field]);
+            $instance->sanitize($this->sanitizedData[$field]);
         }
     }
     
