@@ -79,10 +79,6 @@ class Parser
         $field = key($words);
 
         foreach ($words[$field] as $key => $word) {
-            if (!isset($rules[$key])) {
-                throw new InvalidArgumentException("Unknown rule provided ({$field})");
-            }
-            
             $rule = $rules[$key];
             $keyword = $rule['keyword'];
             
@@ -124,7 +120,8 @@ class Parser
      */
     private function castTypes(array &$params, array $types): void
     {
-        for ($i = 0; $i < count($params); $i++) {
+        $count = count($params);
+        for ($i = 0; $i < $count; $i++) {
             $type = &$types[$i];
             $param = &$params[$i];
             
