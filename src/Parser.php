@@ -63,11 +63,11 @@ class Parser
                 continue;
             }
 
-            if (--$arguments < 0){
+            if (--$arguments < 0) {
                 throw new OutOfBoundsException("{$word} isn't a valid filter");
             }
 
-            $array[$field][$actualWord][] = $words[$i]; 
+            $array[$field][$actualWord][] = $words[$i];
         }
 
         $words = $array;

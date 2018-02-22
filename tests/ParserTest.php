@@ -22,7 +22,7 @@ class ParserTest extends TestCase
 
     /**
      * Rule provider.
-     * 
+     *
      * @return array
      */
     public function ruleProvider(): array
@@ -37,9 +37,9 @@ class ParserTest extends TestCase
 
     /**
      * Test if parser work propely.
-     * 
+     *
      * @dataProvider ruleProvider
-     * 
+     *
      * @param array $test
      * @param string $rule
      */
@@ -52,7 +52,7 @@ class ParserTest extends TestCase
 
     /**
      * Unknown rule provider.
-     * 
+     *
      * @return array
      */
     public function unknownRuleProvider(): array
@@ -70,11 +70,11 @@ class ParserTest extends TestCase
     
     /**
      * Test parser with unknown rules.
-     * 
+     *
      * @dataProvider unknownRuleProvider
-     * 
+     *
      * @expectedException OutOfBoundsException
-     * 
+     *
      * @param string $rule
      * @param string $test
      */
