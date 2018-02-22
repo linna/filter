@@ -37,14 +37,14 @@ class DateTest extends TestCase
     }
     
     /**
-     * Test date.
+     * Test validate.
      *
      * @dataProvider dateProvider
      *
      * @param string $date
      * @param bool $result
      */
-    public function testDate(string $date, string $format, bool $result): void
+    public function testValidate(string $date, string $format, bool $result): void
     {
         $this->assertEquals($result, (new Date())->validate($date, $format));
     }

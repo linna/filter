@@ -19,11 +19,11 @@ class MinTest extends TestCase
 {
     
     /**
-     * Numeric min provider.
+     * Number provider.
      *
      * @return array
      */
-    public function numericMinProvider() : array
+    public function numberProvider() : array
     {
         return [
           [10, true],
@@ -36,15 +36,15 @@ class MinTest extends TestCase
     }
     
     /**
-     * Test numeric min.
+     * Test validate.
      *
-     * @dataProvider numericMinProvider
+     * @dataProvider numberProvider
      *
-     * @param int $min
+     * @param int $number
      * @param bool $result
      */
-    public function testNumericMin(int $min, bool $result): void
+    public function testValidate(int $number, bool $result): void
     {
-        $this->assertEquals($result, (new Min())->validate($min, 12));
+        $this->assertEquals($result, (new Min())->validate($number, 12));
     }
 }

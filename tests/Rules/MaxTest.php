@@ -18,11 +18,11 @@ use PHPUnit\Framework\TestCase;
 class MaxTest extends TestCase
 {
     /**
-     * Numeric max provider.
+     * Number provider.
      *
      * @return array
      */
-    public function numericMaxProvider() : array
+    public function numberProvider() : array
     {
         return [
           [10, false],
@@ -35,15 +35,15 @@ class MaxTest extends TestCase
     }
     
     /**
-     * Test numeric max.
+     * Test validate.
      *
-     * @dataProvider numericMaxProvider
+     * @dataProvider numberProvider
      *
-     * @param int $max
+     * @param int $number
      * @param bool $result
      */
-    public function testNumericMax(int $max, bool $result): void
+    public function testValidate(int $number, bool $result): void
     {
-        $this->assertEquals($result, (new Max())->validate($max, 12));
+        $this->assertEquals($result, (new Max())->validate($number, 12));
     }
 }

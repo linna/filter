@@ -19,11 +19,11 @@ class DateMaxTest extends TestCase
 {
     
     /**
-     * Date max provider.
+     * Date provider.
      *
      * @return array
      */
-    public function dateMaxProvider() : array
+    public function dateProvider() : array
     {
         return [
           ['2018-01', true], //malformed
@@ -37,15 +37,15 @@ class DateMaxTest extends TestCase
     }
     
     /**
-     * Test date max.
+     * Test validate.
      *
-     * @dataProvider dateMaxProvider
+     * @dataProvider dateProvider
      *
-     * @param string $max
+     * @param string $date
      * @param bool $result
      */
-    public function testDateMin(string $max, bool $result): void
+    public function testValidate(string $date, bool $result): void
     {
-        $this->assertEquals($result, (new DateMax())->validate($max, 'Y-m-d', '2018-01-04'));
+        $this->assertEquals($result, (new DateMax())->validate($date, 'Y-m-d', '2018-01-04'));
     }
 }

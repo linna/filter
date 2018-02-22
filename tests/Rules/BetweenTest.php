@@ -36,14 +36,14 @@ class BetweenTest extends TestCase
     }
     
     /**
-     * Test numeric value beetwen.
+     * Test validate.
      *
      * @dataProvider numberProvider
      *
      * @param int $number
      * @param bool $result
      */
-    public function testNumericBeetwen(int $number, bool $result): void
+    public function testValidate(int $number, bool $result): void
     {
         $this->assertEquals($result, (new Between())->validate($number, 1, 5));
     }

@@ -9,43 +9,49 @@
  */
 declare(strict_types = 1);
 
-use Linna\Filter\Rules\Date;
+use Linna\Filter\Rules\Escape;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Date Test
+ * Escape Test
  */
-class DateTest extends TestCase
+class EscapeTest extends TestCase
 {
     /**
-     * Date provider.
+     * String provider.
      *
      * @return array
      */
-    public function dateProvider() : array
+    public function stringProvider() : array
     {
         return [
-          ['2017-11-01', 'Y-m-d', false],
-          ['2017-13-01', 'Y-m-d', false],
-          ['2017-11', 'Y-m', false],
-          ['20171101', 'Ymd', false],
-          ['2017-11-01', 'Ymd', true],
-          ['2017-13-01', 'Ymd', true],
-          ['2017-11', 'Ym', true],
-          ['20171101', 'Y-m-d', true]
+            [' !"#$%&'."'()*+,-./0", ' &#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#42;&#43;&#44;&#45;&#46;&#47;0'],
+            ['9:;<=>?@A', '9&#58;&#59;&#60;&#61;&#62;&#63;&#64;A'],
+            ['Z[\]^_`a', 'Z&#91;&#92;&#93;&#94;&#95;&#96;a'],
+            ['z{|}~', 'z&#123;&#124;&#125;&#126;'],
+            ['¡߹ऀ𐌀', '&#161;&#2041;&#2304;&#66304;'],
+            ['߀','&#1984;'],
+            ['豈','&#63744;'],
+            ['😀','&#128512;'],
+            ['𯯿','&#195583;'],
+            [' 0123456789',' 0123456789'],
+            ['abcdefghijklmnopqrstuvwxyz','abcdefghijklmnopqrstuvwxyz'],
+            ['ABCDEFGHIJKLMNOPQRSTUVWXYZ','ABCDEFGHIJKLMNOPQRSTUVWXYZ']
         ];
     }
     
     /**
-     * Test date.
+     * Test sanitize.
      *
-     * @dataProvider dateProvider
+     * @dataProvider stringProvider
      *
-     * @param string $date
-     * @param bool $result
+     * @param string $string
+     * @param string $result
      */
-    public function testDate(string $date, string $format, bool $result): void
+    public function testSanitize(string $string, string $result): void
     {
-        $this->assertEquals($result, (new Date())->validate($date, $format));
+        (new Escape())->sanitize($string);
+        
+        $this->assertSame($result, $string);
     }
 }

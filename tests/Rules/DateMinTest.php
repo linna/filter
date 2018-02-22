@@ -19,11 +19,11 @@ class DateMinTest extends TestCase
 {
     
     /**
-     * Date min provider.
+     * Date provider.
      *
      * @return array
      */
-    public function dateMinProvider() : array
+    public function dateProvider() : array
     {
         return [
           ['2018-01', true], //malformed
@@ -37,15 +37,15 @@ class DateMinTest extends TestCase
     }
     
     /**
-     * Test date min.
+     * Test validate.
      *
-     * @dataProvider dateMinProvider
+     * @dataProvider dateProvider
      *
-     * @param string $min
+     * @param string $date
      * @param bool $result
      */
-    public function testDateMin(string $min, bool $result): void
+    public function testValidate(string $date, bool $result): void
     {
-        $this->assertEquals($result, (new DateMin())->validate($min, 'Y-m-d', '2018-01-04'));
+        $this->assertEquals($result, (new DateMin())->validate($date, 'Y-m-d', '2018-01-04'));
     }
 }
