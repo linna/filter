@@ -11,7 +11,7 @@ declare(strict_types = 1);
 
 namespace Linna\Filter;
 
-use InvalidArgumentException;
+use OutOfBoundsException;
 
 /**
  * Parser
@@ -51,18 +51,25 @@ class Parser
         $field = $words[0];
         $count = count($words);
 
+        $arguments = -1;
+        
         for ($i = 1; $i < $count; $i++) {
             $word = strtolower($words[$i]);
 
             if (isset($this->rules[$word])) {
+                $arguments = $this->rules[$word]['args_count'];
                 $actualWord = $word;
                 $array[$field][$word] = [];
                 continue;
             }
 
-            $array[$field][$actualWord][] = $words[$i];
+            if (--$arguments < 0){
+                throw new OutOfBoundsException("{$word} isn't a valid filter");
+            }
+
+            $array[$field][$actualWord][] = $words[$i]; 
         }
-        
+
         $words = $array;
     }
     
@@ -70,8 +77,6 @@ class Parser
      * Apply types to rules parameters.
      *
      * @param array $words
-     *
-     * @throws InvalidArgumentException If unknown keyword is provided.
      */
     private function applyTypes(array &$words): void
     {
