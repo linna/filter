@@ -71,6 +71,37 @@ class FilterTest extends TestCase
     }
     
     /**
+     * Skip sanitize data provider
+     * @return array
+     */
+    public function skipSanitizeProvider() : array
+    {
+        return [
+          ['number',1,0,1],
+          ['number','2',0,2],
+          ['number','1a',1,'1a'],
+        ];
+    }
+    
+    /**
+     * Test filter when skip sanitize.
+     *
+     * @dataProvider skipSanitizeProvider
+     *
+     * @param string $rule
+     * @param mixed $data
+     * @param int $error
+     */
+    public function testFilterSkipSanitize(string $rule, $data, int $error, $expectedData): void
+    {
+        $filter = new Filter();
+        $filter->filterOne($data, $rule);
+        
+        $this->assertEquals($error, $filter->getErrors());
+        $this->assertSame($expectedData, $filter->getData()['data']);
+    }
+    
+    /**
      * Rules and data provider.
      *
      * @return array
@@ -125,86 +156,7 @@ class FilterTest extends TestCase
     }
     
     /**
-     * Rules and data provider.
-     *
-     * @return array
-     */
-    public function rulesNumberFloatProvider() : array
-    {
-        return [
-          [['price number min 18.5'],['price' => '19.5'],['price' => 19.5],0],
-          [['price number min 18.5'],['price' => '18.5'],['price' => 18.5],0],
-          [['price number min 18.5'],['price' => '17.5'],['price' => 17.5],1],
-          [['price number max 18.5'],['price' => '19.5'],['price' => 19.5],1],
-          [['price number max 18.5'],['price' => '18.5'],['price' => 18.5],0],
-          [['price number max 18.5'],['price' => '17.5'],['price' => 17.5],0]
-        ];
-    }
-    
-    /**
-     * Test filter number.
-     *
-     * @dataProvider rulesNumberFloatProvider
-     *
-     * @param array $rule
-     * @param array $data
-     * @param array $result
-     * @param int $error
-     */
-    public function testFilterFloatNumber(array $rule, array $data, array $result, int $error): void
-    {
-        $filter = new Filter();
-        $filter->filterMulti($data, $rule);
-        
-        $this->assertEquals($error, $filter->getErrors());
-        $this->assertEquals($result, $filter->getData());
-        $this->assertInternalType('float', $filter->getData()['price']);
-    }
-    
-    /**
-     * Rules and data provider.
-     *
-     * @return array
-     */
-    public function rulesNumberIntProvider() : array
-    {
-        return [
-          [['age number min 18'],['age' => '19'],['age' => 19],0],
-          [['age number min 18'],['age' => '18'],['age' => 18],0],
-          [['age number min 18'],['age' => '17'],['age' => 17],1],
-          [['age number max 18'],['age' => '19'],['age' => 19],1],
-          [['age number max 18'],['age' => '18'],['age' => 18],0],
-          [['age number max 18'],['age' => '17'],['age' => 17],0]
-        ];
-    }
-    
-    /**
-     * Test filter number.
-     *
-     * @dataProvider rulesNumberIntProvider
-     *
-     * @param array $rule
-     * @param array $data
-     * @param array $result
-     * @param int $error
-     */
-    public function testFilterNumber(array $rule, array $data, array $result, int $error): void
-    {
-        $filter = new Filter();
-        $filter->filterMulti($data, $rule);
-        
-        $this->assertEquals($error, $filter->getErrors());
-        $this->assertEquals($result, $filter->getData());
-        $this->assertInternalType('integer', $filter->getData()['age']);
-    }
-    
-    /**
      * Test filter with multiple rules.
-     *
-     * @param array $rule
-     * @param array $data
-     * @param array $result
-     * @param int $error
      */
     public function testFilterMultipleRules(): void
     {

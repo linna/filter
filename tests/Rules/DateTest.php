@@ -35,17 +35,40 @@ class DateTest extends TestCase
           ['20171101', 'Y-m-d', true]
         ];
     }
-    
+
     /**
      * Test validate.
      *
      * @dataProvider dateProvider
      *
      * @param string $date
+     * @param string $format
      * @param bool $result
      */
     public function testValidate(string $date, string $format, bool $result): void
     {
         $this->assertEquals($result, (new Date())->validate($date, $format));
+    }
+
+    /**
+     * Test sanitize.
+     *
+     * @dataProvider dateProvider
+     *
+     * @param string $date
+     * @param string $format
+     * @param bool $result
+     */
+    public function testSanitize(string $date, string $format, bool $result): void
+    {
+        $instance = new Date();
+        $validated = $instance->validate($date, $format);
+
+        if (!$validated) {
+            $instance->sanitize($date);
+            $this->assertInstanceOf(DateTime::class, $date);
+        }
+
+        $this->assertEquals($result, $validated);
     }
 }

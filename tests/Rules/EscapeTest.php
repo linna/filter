@@ -34,6 +34,9 @@ class EscapeTest extends TestCase
             ['豈','&#63744;'],
             ['😀','&#128512;'],
             ['𯯿','&#195583;'],
+            [chr(126),'&#126;'],
+            [chr(127),'&#127;'],
+            [chr(128),'&#-4224;'],
             [' 0123456789',' 0123456789'],
             ['abcdefghijklmnopqrstuvwxyz','abcdefghijklmnopqrstuvwxyz'],
             ['ABCDEFGHIJKLMNOPQRSTUVWXYZ','ABCDEFGHIJKLMNOPQRSTUVWXYZ']

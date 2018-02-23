@@ -9,43 +9,72 @@
  */
 declare(strict_types = 1);
 
-use Linna\Filter\Rules\Date;
+use Linna\Filter\Rules\Number;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Date Test
+ * Number Test
  */
-class DateTest extends TestCase
+class NumberTest extends TestCase
 {
     /**
-     * Date provider.
+     * Number provider.
      *
      * @return array
      */
-    public function dateProvider() : array
+    public function numberProvider() : array
     {
         return [
-          ['2017-11-01', 'Y-m-d', false],
-          ['2017-13-01', 'Y-m-d', false],
-          ['2017-11', 'Y-m', false],
-          ['20171101', 'Ymd', false],
-          ['2017-11-01', 'Ymd', true],
-          ['2017-13-01', 'Ymd', true],
-          ['2017-11', 'Ym', true],
-          ['20171101', 'Y-m-d', true]
+            [1, false],
+            [1.1, false],
+            ['1', false],
+            ['1.1', false],
+            ['1a', true],
+            [true, true],
+            [[], true],
+            [(object)[], true],
         ];
     }
-    
+
     /**
      * Test validate.
      *
-     * @dataProvider dateProvider
+     * @dataProvider numberProvider
      *
-     * @param string $date
+     * @param mixed $number
      * @param bool $result
      */
-    public function testValidate(string $date, string $format, bool $result): void
+    public function testValidate($number, bool $result): void
     {
-        $this->assertEquals($result, (new Date())->validate($date, $format));
+        $this->assertEquals($result, (new Number())->validate($number));
+    }
+
+    /**
+     * Test sanitize.
+     *
+     * @dataProvider numberProvider
+     *
+     * @param mixed $number
+     * @param bool $result
+     */
+    public function testSanitize($number, bool $result): void
+    {
+        $instance = new Number();
+        $validated = $instance->validate($number);
+
+        if (!$validated) {
+            $temp = $number;
+            $instance->sanitize($temp);
+            
+            if ((fmod((float) $number, 1.0) === 0.0)) {
+                $this->assertSame((int)$number, $temp);
+            }
+            
+            if ((fmod((float) $number, 1.0) !== 0.0)) {
+                $this->assertSame((float)$number, $temp);
+            }
+        }
+
+        $this->assertEquals($result, $validated);
     }
 }
