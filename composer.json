@@ -27,5 +27,8 @@
             "Linna\\Filter\\": "src/",
             "Linna\\Filter\\Rules\\": "src/Rules"
         }
+    },
+    "autoload-dev": {
+        "classmap": ["tests/"]
     }
 }
