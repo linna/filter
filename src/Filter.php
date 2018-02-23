@@ -166,7 +166,6 @@ class Filter
             return false;
         }
         
-        //sollevare una ottima eccezione!
         $this->errors++;
         $this->messages[$field][$filter] = "Form field '{$field}' missing.";
         
