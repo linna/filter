@@ -11,6 +11,7 @@ declare(strict_types = 1);
 
 namespace Linna\Filter;
 
+use Linna\Filter\Rules\Number;
 use OutOfBoundsException;
 
 /**
@@ -125,33 +126,19 @@ class Parser
      */
     private function castTypes(array &$params, array $types): void
     {
+        $number = new Number();
         $count = count($params);
+
         for ($i = 0; $i < $count; $i++) {
             $type = &$types[$i];
             $param = &$params[$i];
             
             if ($type === 'number') {
-                settype($param, $this->strtonum($param));
+                $number->sanitize($param);
                 continue;
             }
 
             settype($param, $type);
         }
-    }
-
-    /**
-     * Identify correct number type.
-     *
-     * @param string $number
-     *
-     * @return string
-     */
-    private function strtonum(string $number): string
-    {
-        if (fmod((float) $number, 1.0) !== 0.0) {
-            return 'float';
-        }
-
-        return 'integer';
     }
 }
