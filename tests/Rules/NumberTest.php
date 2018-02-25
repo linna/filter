@@ -77,4 +77,38 @@ class NumberTest extends TestCase
 
         $this->assertEquals($result, $validated);
     }
+
+    /**
+     * Number type provider.
+     *
+     * @return array
+     */
+    public function numberTypeProvider() : array
+    {
+        return [
+            ['0', 'integer'],
+            ['0.0', 'integer'],
+            ['0.5', 'double'],
+            ['1', 'integer'],
+            ['1.1', 'double'],
+            ['1.2', 'double'],
+            ['2', 'integer']
+        ];
+    }
+
+    /**
+     * Test sanitize.
+     *
+     * @dataProvider numberTypeProvider
+     *
+     * @param string $number
+     * @param string $result
+     */
+    public function testSanitizeType(string $number, string $result): void
+    {
+        $instance = new Number();
+        $instance->sanitize($number);
+        
+        $this->assertEquals($result, gettype($number));
+    }
 }
