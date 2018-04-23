@@ -40,6 +40,7 @@ class LexerTest extends TestCase
      */
     public function testFilterOne(string $data, array $expected): void
     {
-        $this->assertEquals(Lexer::tokenize($data), $expected);
+        $lexer = new Lexer();
+        $this->assertEquals($lexer->tokenize($data), $expected);
     }
 }
