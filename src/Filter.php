@@ -112,11 +112,12 @@ class Filter
     private function interpreteRules($rules): void
     {
         $parser = new Parser();
-
+        $lexer = new Lexer();
+        
         foreach ($rules as $rule) {
             $this->ruleToField(
                 $parser->parse(
-                    Lexer::tokenize($rule),
+                    $lexer->tokenize($rule),
                     $this->rules
                 )
             );

@@ -35,12 +35,30 @@ class Date
      */
     public function validate($received, string $format): bool
     {
-        if ($this->date = DateTime::createFromFormat($format, $received)) {
-            $this->date->setTime(0, 0, 0);
-            return false;
+        $date = date_parse_from_format($format, $received);
+        
+        //set to zero the date
+        $month = $day = null;
+        
+        //set to zero errors
+        $warning_count = $error_count = null;
+        
+        extract($date, EXTR_IF_EXISTS);
+        
+        settype($month, 'bool');
+        settype($day, 'bool');
+        
+        if (!($month || $day)) {
+            return true;
         }
         
-        return true;
+        if ($warning_count + $error_count) {
+            return true;
+        }
+
+        $this->date = $date;
+
+        return false;
     }
     
     /**
@@ -50,6 +68,27 @@ class Date
      */
     public function sanitize(&$value): void
     {
-        $value = $this->date;
+        //set to zero the date
+        $year = $month = $day = null;
+        
+        //set to zero the time
+        $hour = $minute = $second = $fraction = null;
+        
+        extract($this->date, EXTR_IF_EXISTS);
+
+        //force type if there is bool value
+        settype($year, 'integer');
+        settype($month, 'integer');
+        settype($day, 'integer');
+        
+        settype($hour, 'integer');
+        settype($minute, 'integer');
+        settype($second, 'integer');
+        
+        settype($fraction, 'float');
+        
+        $second += $fraction;
+        
+        $value = new DateTime($year.'-'.$month.'-'.$day.' '.$hour.':'.$minute.':'.$second);
     }
 }

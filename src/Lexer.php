@@ -22,12 +22,30 @@ class Lexer
      * @param string $period
      * @return array
      */
-    public static function tokenize(string $period): array
+    public function tokenize(string $period): array
     {
         $chars = str_split(rtrim(ltrim($period)));
         $words = $temp = [];
-        
+        $string = 0;
+
         foreach ($chars as $char) {
+            if (ord($char) === 39) {
+                $string++;
+                continue;
+            }
+
+            if ($string === 1) {
+                $temp[] = $char;
+                continue;
+            }
+
+            if ($string === 2) {
+                $words[] = implode('', $temp);
+                $temp = [];
+                $string = 0;
+                continue;
+            }
+
             if (in_array(ord($char), [32, 44, 58, 59])) {
                 $words[] = implode('', $temp);
                 $temp = [];
@@ -38,7 +56,7 @@ class Lexer
         }
 
         $words[] = implode('', $temp);
-
+        
         return array_values(array_filter($words, 'trim'));
     }
 }

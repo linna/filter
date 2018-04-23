@@ -65,7 +65,7 @@ class Parser
             }
 
             if (--$arguments < 0) {
-                throw new OutOfBoundsException("{$word} isn't a valid filter");
+                throw new OutOfBoundsException("Unknown filter provided ({$word})");
             }
 
             $array[$field][$actualWord][] = $words[$i];
