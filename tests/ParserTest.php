@@ -46,8 +46,9 @@ class ParserTest extends TestCase
     public function testParser(array $test, string $rule): void
     {
         $parser = new Parser();
-        
-        $this->assertEquals($test, $parser->parse(Lexer::tokenize($rule), RuleBuilder::build()));
+        $lexer = new Lexer();
+
+        $this->assertEquals($test, $parser->parse($lexer->tokenize($rule), RuleBuilder::build()));
     }
 
     /**
@@ -81,6 +82,8 @@ class ParserTest extends TestCase
     public function testParserWithUnknownRules(string $rule, string $test): void
     {
         $parser = new Parser();
-        $parser->parse(Lexer::tokenize($rule), RuleBuilder::build());
+        $lexer = new Lexer();
+
+        $parser->parse($lexer->tokenize($rule), RuleBuilder::build());
     }
 }
