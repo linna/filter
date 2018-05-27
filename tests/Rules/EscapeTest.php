@@ -37,9 +37,12 @@ class EscapeTest extends TestCase
             [chr(126),'&#126;'],
             [chr(127),'&#127;'],
             [chr(128),'&#-4224;'],
-            [' 0123456789',' 0123456789'],
+            ['🜀','&#128768;'],
+            ['𠀀𠀁𠀆𠏿','&#131072;&#131073;&#131078;&#132095;'],
+            ['0123456789','0123456789'],
             ['abcdefghijklmnopqrstuvwxyz','abcdefghijklmnopqrstuvwxyz'],
-            ['ABCDEFGHIJKLMNOPQRSTUVWXYZ','ABCDEFGHIJKLMNOPQRSTUVWXYZ']
+            ['ABCDEFGHIJKLMNOPQRSTUVWXYZ','ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
+            ['0123456789 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ','0123456789 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
         ];
     }
     
@@ -51,7 +54,7 @@ class EscapeTest extends TestCase
      * @param string $string
      * @param string $result
      */
-    public function testSanitize(string $string, string $result): void
+    public function testSanitize(string $string, string $result) : void
     {
         (new Escape())->sanitize($string);
         

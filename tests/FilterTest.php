@@ -66,7 +66,7 @@ class FilterTest extends TestCase
     {
         $filter = new Filter();
         $filter->filterOne($data, $rule);
-        
+
         $this->assertEquals($error, $filter->getErrors());
     }
     
@@ -96,7 +96,7 @@ class FilterTest extends TestCase
     {
         $filter = new Filter();
         $filter->filterOne($data, $rule);
-        
+
         $this->assertEquals($error, $filter->getErrors());
         $this->assertSame($expectedData, $filter->getData()['data']);
     }
@@ -151,7 +151,7 @@ class FilterTest extends TestCase
     {
         $filter = new Filter();
         $filter->filterMulti($data, $rule);
-        
+
         $this->assertEquals($error, $filter->getErrors());
     }
     
@@ -163,14 +163,14 @@ class FilterTest extends TestCase
         $rule = ['age number min 18 max 22', 'born date Y-m-d'];
         $data = ['age' => '19', 'born' => '1998-01-01'];
         $result = ['age' => 19, 'born' => new DateTime('1998-01-01')];
-        
+
         $filter = new Filter();
         $filter->filterMulti($data, $rule);
-        
+
         $this->assertEquals(0, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
         $this->assertInternalType('integer', $filter->getData()['age']);
-        
+
         $this->assertInstanceOf(DateTime::class, $filter->getData()['born']);
     }
     
@@ -182,13 +182,28 @@ class FilterTest extends TestCase
         $rule = ['age number min 18 max 22', 'born date Y-m-d'];
         $data = ['born' => '1998-01-01'];
         $result = ['born' => new DateTime('1998-01-01')];
-        
+
         $filter = new Filter();
         $filter->filterMulti($data, $rule);
-        
+
         $this->assertEquals(3, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
         $this->assertInstanceOf(DateTime::class, $filter->getData()['born']);
+    }
+    
+    /**
+     * Test filter get errors messages with void data.
+     */
+    public function testFilterGetMessagesMissingData(): void
+    {
+        $rule = ['age min 18'];
+        $data = [];
+
+        $filter = new Filter();
+        $filter->filterMulti($data, $rule);
+
+        $this->assertEquals(1, $filter->getErrors());
+        $this->assertEquals('Form field \'age\' missing.', $filter->getMessages()['age']['Min']);
     }
     
     /**
@@ -197,12 +212,12 @@ class FilterTest extends TestCase
     public function testFilterGetMessages(): void
     {
         $rule = ['age min 18'];
-        $data = [];
-        
+        $data = ['age' => '17'];
+
         $filter = new Filter();
         $filter->filterMulti($data, $rule);
-        
+
         $this->assertEquals(1, $filter->getErrors());
-        $this->assertEquals('Form field \'age\' missing.', $filter->getMessages()['age']['Min']);
+        $this->assertEquals(['age' => [ 'Min' => ['expected' => 18, 'received' => "17"]]], $filter->getMessages());
     }
 }

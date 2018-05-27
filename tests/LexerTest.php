@@ -25,8 +25,15 @@ class LexerTest extends TestCase
     public function rulesProvider() : array
     {
         return [
-          ['field: rule param',['field','rule','param']],
-          ['field: rule \'p a r a m\'',['field','rule','p a r a m']],
+            //testing delimiters
+            ['field rule param',['field','rule','param']],
+            ['field: rule param',['field','rule','param']],
+            ['field: rule param, rule1 param1',['field','rule','param','rule1','param1']],
+            ['field: rule param; rule1 param1',['field','rule','param','rule1','param1']],
+
+            //testing string delimiter
+            ['field: rule \'p a r a m\'',['field','rule','p a r a m']],
+            ['field: rule \'p a r a m\' rule1 \'p a r a m\'',['field','rule','p a r a m','rule1','p a r a m']],
         ];
     }
     
