@@ -22,6 +22,17 @@ class Escape
     private $arguments = [];
     
     /**
+     * @var array Permitted ASCII table chars in interger format.
+     */
+    private const PERMITTED = [
+        32,48,49,50,51,52,53,54,55,56,57,65,66,67,68,
+        69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,
+        84,85,86,87,88,89,90,97,98,99,100,101,102,103,
+        104,105,106,107,108,109,110,111,112,113,114,
+        115,116,117,118,119,120,121,122
+    ];
+    
+    /**
      * Sanitize.
      *
      * @param mixed $value
@@ -39,17 +50,17 @@ class Escape
      */
     private function ordutf8(string $char): int
     {
-        $code = ord(substr($char, 0, 1));
+        $code = ord($char[0]);
 
         if ($code > 239) {
             return ((ord(substr($char, 1, 1)) - 128) *
-                    64 + ord(substr($char, 2, 1)) - 128) *
-                    64 + ord(substr($char, 3, 1)) - 128;
+                64 + ord(substr($char, 2, 1)) - 128) *
+                64 + ord(substr($char, 3, 1)) - 128;
         }
 
         if ($code > 223) {
-            return (($code - 224) * 64 + ord(substr($char, 1, 1)) - 128)
-                    * 64 + ord(substr($char, 2, 1)) - 128;
+            return (($code - 224) * 64 + ord(substr($char, 1, 1)) - 128) *
+                64 + ord(substr($char, 2, 1)) - 128;
         }
 
         if ($code > 127) {
@@ -70,23 +81,23 @@ class Escape
         $chars = preg_split('//u', $string, 0, PREG_SPLIT_NO_EMPTY);
         $escaped = '';
 
-        $permitted = [
+        /*$permitted = [
             32,48,49,50,51,52,53,54,55,56,57,65,66,67,68,
             69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,
             84,85,86,87,88,89,90,97,98,99,100,101,102,103,
             104,105,106,107,108,109,110,111,112,113,114,
             115,116,117,118,119,120,121,122
-        ];
+        ];*/
 
         foreach ($chars as $char) {
             $ord = $this->ordutf8($char);
 
-            if (!in_array($ord, $permitted)) {
-                $escaped .= "&#{$ord};";
+            if (in_array($ord, self::PERMITTED)) {
+                $escaped .= $char;
                 continue;
             }
 
-            $escaped .= $char;
+            $escaped .= "&#{$ord};";
         }
 
         return $escaped;
