@@ -46,6 +46,15 @@ class DateMaxTest extends TestCase
      */
     public function testValidate(string $date, bool $result): void
     {
-        $this->assertEquals($result, (new DateMax())->validate($date, 'Y-m-d', '2018-01-04'));
+        $instance = new DateMax();
+
+        $this->assertEquals($result, $instance->validate($date, 'Y-m-d', '2018-01-04'));
+
+        if ($instance->validate($date, 'Y-m-d', '2018-01-04')){
+            return;
+        }
+
+        $instance->sanitize($date);
+        $this->assertInstanceOf(DateTime::class, $date);
     }
 }

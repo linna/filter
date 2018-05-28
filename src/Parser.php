@@ -52,8 +52,8 @@ class Parser
         $field = $words[0];
         $count = count($words);
 
-        $arguments = -1;
-        
+        $arguments = 0;
+
         for ($i = 1; $i < $count; $i++) {
             $word = strtolower($words[$i]);
 

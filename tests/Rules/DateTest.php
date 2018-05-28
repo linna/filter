@@ -85,4 +85,21 @@ class DateTest extends TestCase
 
         $this->assertEquals($result, $validated);
     }
+    
+    public function testDateValue()
+    {
+        $date = '2017-11-01 05:00:30 500';
+        
+        $instance = new Date();
+        $instance->validate($date, 'Y-m-d H:i:s u');
+        $instance->sanitize($date);
+        
+        $this->assertEquals('2017',$date->format('Y'));
+        $this->assertEquals('11',$date->format('m'));
+        $this->assertEquals('01',$date->format('d'));
+        $this->assertEquals('05',$date->format('H'));
+        $this->assertEquals('00',$date->format('i'));
+        $this->assertEquals('30',$date->format('s'));
+        $this->assertEquals('500000',$date->format('u'));
+    }
 }

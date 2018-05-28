@@ -48,7 +48,7 @@ class ParserTest extends TestCase
         $parser = new Parser();
         $lexer = new Lexer();
 
-        $this->assertEquals($test, $parser->parse($lexer->tokenize($rule), RuleBuilder::build()));
+        $this->assertSame($test, $parser->parse($lexer->tokenize($rule), RuleBuilder::build()));
     }
 
     /**

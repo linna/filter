@@ -45,14 +45,6 @@ class DateMax
         $dateMax->setTime(0, 0, 0);
         $dateReceived->setTime(0, 0, 0);
         
-        if ($dateMax->format('His') !== '000000') {
-            return true;
-        }
-        
-        if ($dateReceived->format('His') !== '000000') {
-            return true;
-        }
-        
         if ($dateMax->format('Ymd') >= $dateReceived->format('Ymd')) {
             $this->date = $dateReceived;
             return false;

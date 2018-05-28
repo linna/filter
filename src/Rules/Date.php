@@ -48,7 +48,13 @@ class Date
         settype($month, 'bool');
         settype($day, 'bool');
         
-        if (!($month || $day)) {
+        
+        
+        if (!$month) {
+            return true;
+        }
+        
+        if (!$day) {
             return true;
         }
         
@@ -89,6 +95,6 @@ class Date
         
         $second += $fraction;
         
-        $value = new DateTime($year.'-'.$month.'-'.$day.' '.$hour.':'.$minute.':'.$second);
+        $value = new DateTime("{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}");
     }
 }
