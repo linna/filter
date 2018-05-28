@@ -50,7 +50,7 @@ class DateMaxTest extends TestCase
 
         $this->assertEquals($result, $instance->validate($date, 'Y-m-d', '2018-01-04'));
 
-        if ($instance->validate($date, 'Y-m-d', '2018-01-04')){
+        if ($instance->validate($date, 'Y-m-d', '2018-01-04')) {
             return;
         }
 
