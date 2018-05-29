@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unrelased][v0.1.0](https://github.com/linna/csrf-guard/compare/v0.1.0...master) - 2018-XX-XX
+## [Initial Release][v0.1.0](https://github.com/linna/csrf-guard/compare/v0.1.0...master) - 2018-05-29
 
 ### Added
 * `Linna\Filter\Rules\Between` validate numbers, between two values
