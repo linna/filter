@@ -29,7 +29,7 @@ class DateTest extends TestCase
           ['2017-11-01 05', 'Y-m-d H', false],
           ['2017-11-01 05:00', 'Y-m-d H:i', false],
           ['2017-11-01 05:00:30', 'Y-m-d H:i:s', false],
-          ['2017-11-01 05:00:30 500', 'Y-m-d H:i:s u', false],
+          ['2017-11-01 05:00:30 500000', 'Y-m-d H:i:s u', false],
           ['2017', 'Y-m-d', true],
           ['2017-00', 'Y-m-d', true],
           ['2017-12-00', 'Y-m-d', true],
@@ -61,45 +61,27 @@ class DateTest extends TestCase
      */
     public function testValidate(string $date, string $format, bool $result): void
     {
-        $this->assertEquals($result, (new Date())->validate($date, $format));
-    }
-
-    /**
-     * Test sanitize.
-     *
-     * @dataProvider dateProvider
-     *
-     * @param string $date
-     * @param string $format
-     * @param bool $result
-     */
-    public function testSanitize(string $date, string $format, bool $result): void
-    {
         $instance = new Date();
         $validated = $instance->validate($date, $format);
 
-        if (!$validated) {
-            $instance->sanitize($date);
-            $this->assertInstanceOf(DateTime::class, $date);
+        $this->assertEquals($result, $validated);
+
+        if ($validated) {
+            return;
         }
 
-        $this->assertEquals($result, $validated);
+        $this->assertInstanceOf(DateTime::class, $instance->getDateTimeObject());
+        $this->assertSame($date, $instance->getDateTimeObject()->format($format));
     }
-    
-    public function testDateValue()
+
+    /**
+     * Test date without time.
+     */
+    public function testDateWithoutTime(): void
     {
-        $date = '2017-11-01 05:00:30 500';
-        
         $instance = new Date();
-        $instance->validate($date, 'Y-m-d H:i:s u');
-        $instance->sanitize($date);
+        $instance->validate('2018-01-05', 'Y-m-d');
         
-        $this->assertEquals('2017', $date->format('Y'));
-        $this->assertEquals('11', $date->format('m'));
-        $this->assertEquals('01', $date->format('d'));
-        $this->assertEquals('05', $date->format('H'));
-        $this->assertEquals('00', $date->format('i'));
-        $this->assertEquals('30', $date->format('s'));
-        $this->assertEquals('500000', $date->format('u'));
+        $this->assertSame('20180105000000', $instance->getDateTimeObject()->format('YmdHis'));
     }
 }

@@ -11,8 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * `Linna\Filter\Rules\Between` validate numbers, between two values
 * `Linna\Filter\Rules\Date` validate a date
-* `Linna\Filter\Rules\DateMax` validate dates, lower than
-* `Linna\Filter\Rules\DateMin` validate dates, higher than
+* `Linna\Filter\Rules\DateCompare` validate dates, lower than
 * `Linna\Filter\Rules\Email` validate an email
 * `Linna\Filter\Rules\Escape` escape output
 * `Linna\Filter\Rules\Max` validate numbers, lower than 
