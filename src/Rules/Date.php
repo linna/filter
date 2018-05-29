@@ -62,7 +62,7 @@ class Date extends AbstractDate
     /**
      * Parse date.
      *
-     * @param type $received
+     * @param mixed $received
      * @param string $format
      *
      * @return bool

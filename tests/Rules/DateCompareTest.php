@@ -74,8 +74,13 @@ class DateCompareTest extends TestCase
      *
      * @dataProvider dateProvider
      *
-     * @param string $date
+     * @param string $received
+     * @param string $operator
+     * @param string $format
+     * @param string $compare
      * @param bool $result
+     *
+     * @return void
      */
     public function testValidate(string $received, string $operator, string $format, string $compare, bool $result): void
     {
