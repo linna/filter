@@ -60,7 +60,7 @@ class NumberCompareTest extends TestCase
      *
      * @param mixed $received
      * @param string $operator
-     * @param $compare
+     * @param mixed $compare
      * @param bool $result
      */
     public function testValidate($received, string $operator, $compare, bool $result): void
