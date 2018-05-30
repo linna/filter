@@ -11,7 +11,6 @@ declare(strict_types = 1);
 
 namespace Linna\Filter\Rules;
 
-use Linna\Filter\AbstractDate;
 use DateTime;
 
 /**

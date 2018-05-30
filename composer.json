@@ -25,7 +25,7 @@
     "autoload": {
         "psr-4": {
             "Linna\\Filter\\": "src/",
-            "Linna\\Filter\\Rules\\": "src/Rules"
+            "Linna\\Filter\\Rules\\": ["src/Rules", "src/RulesHelper"]
         }
     },
     "autoload-dev": {

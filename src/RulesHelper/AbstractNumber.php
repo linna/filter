@@ -12,22 +12,22 @@ declare(strict_types = 1);
 namespace Linna\Filter\Rules;
 
 /**
- * Check required.
+ * Abstract Number
  */
-class Number extends AbstractNumber
+class AbstractNumber
 {
     /**
-     * @var array Arguments expected.
-     */
-    private $arguments = [];
-    
-    /**
-     * Validate.
+     * Sanitize.
      *
-     * @return bool
+     * @param mixed $value
      */
-    public function validate($received): bool
+    public function sanitize(&$value): void
     {
-        return !is_numeric($received);
+        if (fmod((float) $value, 1.0) === 0.0) {
+            settype($value, 'integer');
+            return;
+        }
+
+        settype($value, 'float');
     }
 }

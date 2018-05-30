@@ -9,8 +9,11 @@
  */
 declare(strict_types = 1);
 
-namespace Linna\Filter;
+namespace Linna\Filter\Rules;
 
+/**
+ * Abstract Date
+ */
 class AbstractDate
 {
     /**

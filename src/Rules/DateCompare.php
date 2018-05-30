@@ -11,7 +11,6 @@ declare(strict_types = 1);
 
 namespace Linna\Filter\Rules;
 
-use Linna\Filter\AbstractDate;
 use DateTime;
 use UnexpectedValueException;
 
@@ -35,7 +34,7 @@ class DateCompare extends AbstractDate
      * @var DateTime Valid date in DateTime object.
      */
     private $dateTimeObject;
-    
+
     /**
      * Validate.
      *
