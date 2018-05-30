@@ -67,8 +67,6 @@ class NumberCompare extends AbstractNumber
             case '<=': //less than or equal
                 return $numberReceived <= $numberCompare;
             case '=': //equal
-                var_dump($numberReceived);
-                var_dump($numberCompare);
                 return $numberReceived === $numberCompare;
             default:
                 throw new UnexpectedValueException("Unknown comparson operator ({$operator}). Permitted >, <, >=, <=, =");
