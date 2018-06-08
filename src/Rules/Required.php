@@ -20,7 +20,7 @@ class Required
      * @var array Arguments expected.
      */
     private $arguments = [];
-    
+
     /**
      * Validate.
      *

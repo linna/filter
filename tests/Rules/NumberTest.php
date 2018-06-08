@@ -22,7 +22,7 @@ class NumberTest extends TestCase
      *
      * @return array
      */
-    public function numberProvider() : array
+    public function numberProvider(): array
     {
         return [
             [1, false],
@@ -65,11 +65,11 @@ class NumberTest extends TestCase
         if (!$validated) {
             $temp = $number;
             $instance->sanitize($temp);
-            
+
             if ((fmod((float) $number, 1.0) === 0.0)) {
                 $this->assertSame((int)$number, $temp);
             }
-            
+
             if ((fmod((float) $number, 1.0) !== 0.0)) {
                 $this->assertSame((float)$number, $temp);
             }
@@ -83,7 +83,7 @@ class NumberTest extends TestCase
      *
      * @return array
      */
-    public function numberTypeProvider() : array
+    public function numberTypeProvider(): array
     {
         return [
             ['0', 'integer'],

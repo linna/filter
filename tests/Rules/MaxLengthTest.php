@@ -17,13 +17,12 @@ use PHPUnit\Framework\TestCase;
  */
 class MaxLengthTest extends TestCase
 {
-    
     /**
      * String provider.
      *
      * @return array
      */
-    public function stringProvider() : array
+    public function stringProvider(): array
     {
         return [
           ['', false],
@@ -35,7 +34,7 @@ class MaxLengthTest extends TestCase
           ['string', true]
         ];
     }
-    
+
     /**
      * Test validate.
      *

@@ -22,7 +22,7 @@ class LexerTest extends TestCase
      *
      * @return array
      */
-    public function rulesProvider() : array
+    public function rulesProvider(): array
     {
         return [
             //testing delimiters
@@ -36,7 +36,7 @@ class LexerTest extends TestCase
             ['field: rule \'p a r a m\' rule1 \'p a r a m\'',['field','rule','p a r a m','rule1','p a r a m']],
         ];
     }
-    
+
     /**
      * Test Filter.
      *

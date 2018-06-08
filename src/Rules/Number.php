@@ -20,7 +20,7 @@ class Number extends AbstractNumber
      * @var array Arguments expected.
      */
     private $arguments = [];
-    
+
     /**
      * Validate.
      *

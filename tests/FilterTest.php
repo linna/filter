@@ -22,7 +22,7 @@ class FilterTest extends TestCase
      *
      * @return array
      */
-    public function oneRulesDataResultProvider() : array
+    public function oneRulesDataResultProvider(): array
     {
         return [
           ['min 18','19',0],
@@ -52,7 +52,7 @@ class FilterTest extends TestCase
           ['required email','foo@baz.com',0],
         ];
     }
-    
+
     /**
      * Test Filter.
      *
@@ -69,12 +69,12 @@ class FilterTest extends TestCase
 
         $this->assertEquals($error, $filter->getErrors());
     }
-    
+
     /**
      * Skip sanitize data provider
      * @return array
      */
-    public function skipSanitizeProvider() : array
+    public function skipSanitizeProvider(): array
     {
         return [
           ['number',1,0,1],
@@ -82,7 +82,7 @@ class FilterTest extends TestCase
           ['number','1a',1,'1a'],
         ];
     }
-    
+
     /**
      * Test filter when skip sanitize.
      *
@@ -100,13 +100,13 @@ class FilterTest extends TestCase
         $this->assertEquals($error, $filter->getErrors());
         $this->assertSame($expectedData, $filter->getData()['data']);
     }
-    
+
     /**
      * Rules and data provider.
      *
      * @return array
      */
-    public function multiRulesDataResultProvider() : array
+    public function multiRulesDataResultProvider(): array
     {
         return [
           [['age min 18'],['age' => '19'],0],
@@ -137,7 +137,7 @@ class FilterTest extends TestCase
           [['email required email'],['email' => 'foo@baz.com'],0],
         ];
     }
-    
+
     /**
      * Test Filter.
      *
@@ -154,7 +154,7 @@ class FilterTest extends TestCase
 
         $this->assertEquals($error, $filter->getErrors());
     }
-    
+
     /**
      * Test filter with multiple rules.
      */
@@ -173,7 +173,7 @@ class FilterTest extends TestCase
 
         //$this->assertInstanceOf(DateTime::class, $filter->getData()['born']);
     }
-    
+
     /**
      * Test filter with multiple rules with missing field.
      */
@@ -205,7 +205,7 @@ class FilterTest extends TestCase
         $this->assertEquals(1, $filter->getErrors());
         $this->assertEquals('Form field \'age\' missing.', $filter->getMessages()['age']['Min']);
     }
-    
+
     /**
      * Test filter get errors messages.
      */

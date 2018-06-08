@@ -19,7 +19,6 @@ use PHPUnit\Framework\TestCase;
  */
 class ParserTest extends TestCase
 {
-
     /**
      * Rule provider.
      *
@@ -68,7 +67,7 @@ class ParserTest extends TestCase
             ['rule: bbetween 15 30 number', 'bbetween']
         ];
     }
-    
+
     /**
      * Test parser with unknown rules.
      *

@@ -22,7 +22,7 @@ class MaxTest extends TestCase
      *
      * @return array
      */
-    public function numberProvider() : array
+    public function numberProvider(): array
     {
         return [
           [10, false],
@@ -33,7 +33,7 @@ class MaxTest extends TestCase
           [15, true]
         ];
     }
-    
+
     /**
      * Test validate.
      *

@@ -26,33 +26,33 @@ class NumberCompareTest extends TestCase
     {
         return [
             ['A', '=', '2', true],
-            
+
             [1, '>', 2, true],
             [2, '>', 2, true],
             [3, '>', 2, false],
-            
+
             [1, '<', 2, false],
             [2, '<', 2, true],
             [3, '<', 2, true],
-            
+
             [1, '>=', 2, true],
             [2, '>=', 2, false],
             [3, '>=', 2, false],
-            
+
             [1, '<=', 2, false],
             [2, '<=', 2, false],
             [3, '<=', 2, true],
-            
+
             [1, '=', 2, true],
             [2, '=', 2, false],
             [3, '=', 2, true],
-            
+
             [1, '=', '2', true],
             [2, '=', '2', true],
             [3, '=', '2', true]
         ];
     }
-    
+
     /**
      * Test validate.
      *
@@ -70,7 +70,7 @@ class NumberCompareTest extends TestCase
 
         $this->assertEquals($result, $validated);
     }
-    
+
     /**
      * Test unknown comparison operator.
      *

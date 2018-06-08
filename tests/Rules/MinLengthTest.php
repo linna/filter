@@ -17,13 +17,12 @@ use PHPUnit\Framework\TestCase;
  */
 class MinLengthTest extends TestCase
 {
-    
     /**
      * String provider.
      *
      * @return array
      */
-    public function stringProvider() : array
+    public function stringProvider(): array
     {
         return [
           ['', true],
@@ -35,7 +34,7 @@ class MinLengthTest extends TestCase
           ['string', false]
         ];
     }
-    
+
     /**
      * Test validate.
      *

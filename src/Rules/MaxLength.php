@@ -20,7 +20,7 @@ class MaxLength
      * @var array Arguments expected.
      */
     private $arguments = ['string', 'string'];
-    
+
     /**
      * Validate.
      *

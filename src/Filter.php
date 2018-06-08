@@ -166,13 +166,13 @@ class Filter
         if (isset($this->data[$field])) {
             return false;
         }
-        
+
         $this->errors++;
         $this->messages[$field][$filter] = "Form field '{$field}' missing.";
-        
+
         return true;
     }
-    
+
     /**
      * Invoke validate.
      *
@@ -192,7 +192,7 @@ class Filter
         array &$rule,
         string &$filter,
         &$instance
-    ) : bool {
+    ): bool {
         if ($refClass->hasMethod('validate')) {
             if ((new ReflectionMethod($class, 'validate'))->invokeArgs($instance, $this->getArguments($rule[2]['args_count'], $rule[3], $this->data[$field]))) {
                 $this->errors++;
@@ -201,10 +201,10 @@ class Filter
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Invoke Sanitize.
      *
@@ -218,7 +218,7 @@ class Filter
             $instance->sanitize($this->sanitizedData[$field]);
         }
     }
-    
+
     /**
      * Return arguments for validation.
      *

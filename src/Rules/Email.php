@@ -20,7 +20,7 @@ class Email
      * @var array Arguments expected.
      */
     private $arguments = [];
-    
+
     /**
      * Validate.
      *

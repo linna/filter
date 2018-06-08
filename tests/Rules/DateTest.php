@@ -22,7 +22,7 @@ class DateTest extends TestCase
      *
      * @return array
      */
-    public function dateProvider() : array
+    public function dateProvider(): array
     {
         return [
           ['2017-11-01', 'Y-m-d', false],
@@ -81,7 +81,7 @@ class DateTest extends TestCase
     {
         $instance = new Date();
         $instance->validate('2018-01-05', 'Y-m-d');
-        
+
         $this->assertSame('20180105000000', $instance->getDateTimeObject()->format('YmdHis'));
     }
 }

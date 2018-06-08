@@ -27,17 +27,17 @@ class RuleBuilder
     {
         $dir = dir(__DIR__.'/Rules');
         $rules = [];
-            
+
         while (false !== ($entry = $dir->read())) {
             if ($entry !== '.' && $entry !== '..') {
                 $class = str_replace('.php', '', $entry);
                 $lower = strtolower($class);
                 $args = (new ReflectionClass(__NAMESPACE__."\Rules\\{$class}"))->getDefaultProperties()['arguments'];
-                
+
                 $rules[$lower] = ['class' => $class, 'keyword' => $lower, 'args_count' => count($args), 'args_type' => $args];
             }
         }
-        
+
         return $rules;
     }
 }

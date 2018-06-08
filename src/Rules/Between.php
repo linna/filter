@@ -20,7 +20,7 @@ class Between
      * @var array Arguments expected.
      */
     private $arguments = ['number', 'number'];
-    
+
     /**
      * Validate.
      *
@@ -31,7 +31,7 @@ class Between
         if ($received < $min || $received > $max) {
             return true;
         }
-        
+
         return false;
     }
 }

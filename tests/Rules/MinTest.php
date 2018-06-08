@@ -17,13 +17,12 @@ use PHPUnit\Framework\TestCase;
  */
 class MinTest extends TestCase
 {
-    
     /**
      * Number provider.
      *
      * @return array
      */
-    public function numberProvider() : array
+    public function numberProvider(): array
     {
         return [
           [10, true],
@@ -34,7 +33,7 @@ class MinTest extends TestCase
           [15, false]
         ];
     }
-    
+
     /**
      * Test validate.
      *

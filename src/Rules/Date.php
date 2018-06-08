@@ -44,17 +44,17 @@ class Date extends AbstractDate
         if ($this->parseDate($received, $format)) {
             return true;
         }
-        
+
         $this->date = $received;
-        
+
         $dateReceived = DateTime::createFromFormat($format, $received);
-        
+
         if ($this->dateHaveNoTime($format)) {
             $dateReceived->setTime(0, 0, 0);
         }
-        
+
         $this->dateTimeObject = $dateReceived;
-        
+
         return false;
     }
 
@@ -66,18 +66,18 @@ class Date extends AbstractDate
      *
      * @return bool
      */
-    private function parseDate($received, string $format) : bool
+    private function parseDate($received, string $format): bool
     {
         $date = date_parse_from_format($format, $received);
 
         //set to zero the date
         $month = $day = null;
-        
+
         //set to zero errors
         $warning_count = $error_count = null;
-        
+
         extract($date, EXTR_IF_EXISTS);
-        
+
         settype($month, 'bool');
         settype($day, 'bool');
 
@@ -92,7 +92,7 @@ class Date extends AbstractDate
         if ($warning_count + $error_count) {
             return true;
         }
-        
+
         return false;
     }
     

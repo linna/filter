@@ -23,7 +23,7 @@ class Parser
      * @var array Parsing rules.
      */
     private $rules;
-    
+
     /**
      * Parser.
      *
@@ -32,14 +32,14 @@ class Parser
     public function parse(array $array, array $rules): array
     {
         $this->rules = $rules;
-        
+
         $this->extractParams($array);
         $this->applyTypes($array);
         $this->normalizeParam($array);
-        
+
         return $array;
     }
-    
+
     /**
      * Separate keywords from parameters.
      *
@@ -73,7 +73,7 @@ class Parser
 
         $words = $array;
     }
-    
+
     /**
      * Apply types to rules parameters.
      *
@@ -92,7 +92,7 @@ class Parser
             $this->castTypes($words[$field][$keyword], $rule['args_type']);
         }
     }
-    
+
     /**
      * Organize rules' array.
      *
@@ -132,7 +132,7 @@ class Parser
         for ($i = 0; $i < $count; $i++) {
             $type = &$types[$i];
             $param = &$params[$i];
-            
+
             if ($type === 'number') {
                 $number->sanitize($param);
                 continue;

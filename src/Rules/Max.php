@@ -20,7 +20,7 @@ class Max
      * @var array Arguments expected.
      */
     private $arguments = ['number'];
-    
+
     /**
      * Validate.
      *

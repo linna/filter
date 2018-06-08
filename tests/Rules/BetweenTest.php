@@ -22,7 +22,7 @@ class BetweenTest extends TestCase
      *
      * @return array
      */
-    public function numberProvider() : array
+    public function numberProvider(): array
     {
         return [
           [0, true],
@@ -34,7 +34,7 @@ class BetweenTest extends TestCase
           [6, true]
         ];
     }
-    
+
     /**
      * Test validate.
      *

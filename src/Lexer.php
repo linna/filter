@@ -56,7 +56,7 @@ class Lexer
         }
 
         $words[] = implode('', $temp);
-        
+
         return array_values(array_filter($words, 'trim'));
     }
 }

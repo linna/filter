@@ -48,7 +48,7 @@ class DateCompare extends AbstractDate
         if (!($dateReceived && $dateCompare)) {
             return true;
         }
-        
+
         if ($this->dateHaveNoTime($format)) {
             $dateReceived->setTime(0, 0, 0);
             $dateCompare->setTime(0, 0, 0);
@@ -72,7 +72,7 @@ class DateCompare extends AbstractDate
     {
         return $this->dateTimeObject;
     }
-    
+
     /**
      * Perform correct operation from passed operator.
      *

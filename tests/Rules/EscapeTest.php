@@ -22,7 +22,7 @@ class EscapeTest extends TestCase
      *
      * @return array
      */
-    public function stringProvider() : array
+    public function stringProvider(): array
     {
         return [
             [' !"#$%&'."'()*+,-./0", ' &#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#42;&#43;&#44;&#45;&#46;&#47;0'],
@@ -45,7 +45,7 @@ class EscapeTest extends TestCase
             ['0123456789 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ','0123456789 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
         ];
     }
-    
+
     /**
      * Test sanitize.
      *
@@ -54,7 +54,7 @@ class EscapeTest extends TestCase
      * @param string $string
      * @param string $result
      */
-    public function testSanitize(string $string, string $result) : void
+    public function testSanitize(string $string, string $result): void
     {
         (new Escape())->sanitize($string);
         
