@@ -57,7 +57,7 @@ class EscapeTest extends TestCase
     public function testSanitize(string $string, string $result): void
     {
         (new Escape())->sanitize($string);
-        
+
         $this->assertSame($result, $string);
     }
 }

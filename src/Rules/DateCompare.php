@@ -88,7 +88,7 @@ class DateCompare extends AbstractDate
     {
         $received = (int) $dateReceived->format('YmdHis');
         $compare = (int) $dateCompare->format('YmdHis');
-        
+
         switch ($operator) {
             case '>': //greater than
                 return $received > $compare;

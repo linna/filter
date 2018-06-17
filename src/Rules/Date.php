@@ -95,7 +95,7 @@ class Date extends AbstractDate
 
         return false;
     }
-    
+
     /**
      * Return DateTime object.
      *

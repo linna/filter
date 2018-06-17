@@ -190,7 +190,7 @@ class FilterTest extends TestCase
         $this->assertEquals($result, $filter->getData());
         //$this->assertInstanceOf(DateTime::class, $filter->getData()['born']);
     }
-    
+
     /**
      * Test filter get errors messages with void data.
      */

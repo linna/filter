@@ -36,11 +36,11 @@ class NumberCompare extends AbstractNumber
         if (!is_numeric($received)) {
             return true;
         }
-        
+
         if ($this->switchOperator($operator, $received, $compare)) {
             return false;
         }
-        
+
         return true;
     }
 

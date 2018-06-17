@@ -108,7 +108,7 @@ class NumberTest extends TestCase
     {
         $instance = new Number();
         $instance->sanitize($number);
-        
+
         $this->assertEquals($result, gettype($number));
     }
 }

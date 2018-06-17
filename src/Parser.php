@@ -87,7 +87,7 @@ class Parser
         foreach ($words[$field] as $key => $word) {
             $rule = $rules[$key];
             $keyword = $rule['keyword'];
-            
+
             //first param passed as reference
             $this->castTypes($words[$field][$keyword], $rule['args_type']);
         }

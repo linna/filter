@@ -113,7 +113,7 @@ class Filter
     {
         $parser = new Parser();
         $lexer = new Lexer();
-        
+
         foreach ($rules as $rule) {
             $this->ruleToField(
                 $parser->parse(
@@ -148,7 +148,7 @@ class Filter
             if ($this->invokeValidate($refClass, $class, $field, $rule, $filter, $instance)) {
                 continue;
             }
-            
+
             $this->invokeSanitize($refClass, $field, $instance);
         }
     }

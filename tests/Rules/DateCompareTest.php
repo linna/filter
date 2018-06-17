@@ -96,7 +96,7 @@ class DateCompareTest extends TestCase
         $this->assertInstanceOf(DateTime::class, $instance->getDateTimeObject());
         $this->assertSame($received, $instance->getDateTimeObject()->format($format));
     }
-    
+
     /**
      * Test unknown comparison operator.
      *
