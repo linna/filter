@@ -10,10 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 * `Linna\Filter\Rules\NumberCompare` validate and compare numbers with operators <, >, >=, <=, =
+* `Linna\Filter\Rules\StringCompare` validate and compare numbers with operators len<, len>, len>=, len<=, len=, =
 
 ### Removed
 * `Linna\Filter\Rules\Max`
 * `Linna\Filter\Rules\Min`
+* `Linna\Filter\Rules\MinLength`
+* `Linna\Filter\Rules\MaxLength`
 
 ## [Initial Release][v0.1.0](https://github.com/linna/csrf-guard/compare/v0.1.0...master) - 2018-05-29
 
