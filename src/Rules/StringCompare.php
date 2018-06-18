@@ -59,15 +59,15 @@ class StringCompare extends AbstractString
     {
         switch ($operator) {
             case 'len>': //greater than
-                return strlen($strReceived) > strlen($strCompare);
+                return strlen($strReceived) > (int) $strCompare;
             case 'len<': //less than
-                return strlen($strReceived) < strlen($strCompare);
+                return strlen($strReceived) < (int) $strCompare;
             case 'len>=': //greater than or equal
-                return strlen($strReceived) >= strlen($strCompare);
+                return strlen($strReceived) >= (int) $strCompare;
             case 'len<=': //less than or equal
-                return strlen($strReceived) <= strlen($strCompare);
+                return strlen($strReceived) <= (int) $strCompare;
             case 'len=': //equal
-                return strlen($strReceived) === strlen($strCompare);
+                return strlen($strReceived) === (int) $strCompare;
             case '=': //equal
                 return $strReceived === $strCompare;
             default:

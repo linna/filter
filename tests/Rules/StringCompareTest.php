@@ -25,27 +25,27 @@ class StringCompareTest extends TestCase
     public function stringProvider(): array
     {
         return [
-            [2, '=', 'A', true],
+            [2, '=', 2, true],
 
-            ['A', 'len>', 'AA', true],
-            ['AA', 'len>', 'AA', true],
-            ['AAA', 'len>', 'AA', false],
+            ['A', 'len>', 2, true],
+            ['AA', 'len>', 2, true],
+            ['AAA', 'len>', 2, false],
 
-            ['A', 'len<', 'AA', false],
-            ['AA', 'len<', 'AA', true],
-            ['AAA', 'len<', 'AA', true],
+            ['A', 'len<', 2, false],
+            ['AA', 'len<', 2, true],
+            ['AAA', 'len<', 2, true],
 
-            ['A', 'len>=', 'AA', true],
-            ['AA', 'len>=', 'AA', false],
-            ['AAA', 'len>=', 'AA', false],
+            ['A', 'len>=', 2, true],
+            ['AA', 'len>=', 2, false],
+            ['AAA', 'len>=', 2, false],
 
-            ['A', 'len<=', 'AA', false],
-            ['AA', 'len<=', 'AA', false],
-            ['AAA', 'len<=', 'AA', true],
+            ['A', 'len<=', 2, false],
+            ['AA', 'len<=', 2, false],
+            ['AAA', 'len<=', 2, true],
 
-            ['A', 'len=', 'AA', true],
-            ['AA', 'len=', 'AA', false],
-            ['AAA', 'len=', 'AA', true],
+            ['A', 'len=', 2, true],
+            ['AA', 'len=', 2, false],
+            ['AAA', 'len=', 2, true],
 
             ['A', '=', 'AA', true],
             ['AA', '=', 'AA', false],
