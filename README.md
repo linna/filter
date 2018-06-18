@@ -19,12 +19,47 @@ With composer:
 composer require linna/filter
 ```
 
+## Available Filters
+
+### Filters
+| Name          | Description                            | Rule Arguments | Operators                         | Example Data from `$_POST`   | Example Rule                             |
+|---------------|----------------------------------------|----------------|-----------------------------------|------------------------------|------------------------------------------|
+| Between       | Check if value is between an intervall | 2              | none                              | `['age'] = 25`               | `'age: between 18 32'`                   |
+| Date          | Check for a valid date                 | 1              | none                              | `['born'] = '1980-06-01'`    | `'born: date Y-m-d'`                     |
+| DateCompare   | Compare one date with another          | 3              | >, <, >=, <=, =                   | `['born'] = '1980-06-01'`    | `'born: datecompare < Y-m-d 1990-01-01'` |
+| Email         | Check for a valid email                | 0              | none                              | `['email'] = 'foo@mail.com'` | `'email: email'`                         |
+| Escape        | Convert special chars in html entities | 0              | none                              | `['name'] = 'foo<script>'`   | `'name: escape'`                         |
+| Number        | Check for a valid number               | 0              | none                              | `['age'] = 25`               | `'age: number'`                          |
+| NumberCompare | Compare one number with another        | 2              | >, <, >=, <=, =                   | `['age'] = 25`               | `'age: numbercompare > 18'`              |
+| Required      | Check for null values                  | 0              | none                              | `['name'] = 'foo'`           | `'name: required'`                       |
+| StringCompare | Compare one string with another        | 2              | len>, len<, len>=, len<=, len=, = | `['name'] = 'foo'`           | `'name: stringcompare len> 2'`           |
+
+### Operators
+| Filter        | Operator | Description                   | Notes                         |
+|---------------|----------|-------------------------------|-------------------------------|
+| DateCompare   | <        | less than                     |                               |
+| DateCompare   | >        | greater than                  |                               |
+| DateCompare   | <=       | less than or equal            |                               |
+| DateCompare   | >=       | greater than or equal         |                               |
+| DateCompare   | =        | equal                         | PHP === equal                 |
+| NumberCompare | <        | less than                     |                               |
+| NumberCompare | >        | greater than                  |                               |
+| NumberCompare | <=       | less than or equal            |                               |
+| NumberCompare | >=       | greater than or equal         |                               |
+| NumberCompare | =        | equal                         | PHP === equal                 |
+| StringCompare | len<     | length less than              | PHP strlen(string) < number   |
+| StringCompare | len>     | length greater than           | PHP strlen(string) > number   |
+| StringCompare | len<=    | length less than or equal     | PHP strlen(string) <= number  |
+| StringCompare | len>=    | length greather than or equal | PHP strlen(string) >= number  |
+| StringCompare | len=     | length equal                  | PHP strlen(string) === number |
+| StringCompare | =        | equal                         | PHP === equal                 |
+
 ## Usage
 Filters can be used in two different ways.
 
 ### Filter One
-
 Apply one or more rules to one value:
+
 ```php
 use Linna\Filter\Filter;
 
@@ -44,8 +79,8 @@ var_dump($filter->getData());
 ```
 
 ### Filter Multi
-
 Apply one or more rules to many values:
+
 ```php
 use Linna\Filter\Filter;
 
@@ -54,15 +89,15 @@ $_POST = [
     'email' => 'user@email.com',
     'password' => 'p4ssw0rd200!',
     'age' => '25',
-    'born' => '1980-01-01'
+    'born' => '1980-06-01',
 ];
 
 //setting rules
 $rules = [
-    'email: required email escape',
-    'password: required minlength 9',
-    'age: number between 15 25',
-    'born: datemax Y-m-d 2000-01-01'
+    'email: required, email',
+    'password: required, stringcompare len>= 12',
+    'age: number, between 20 30, numbercompare < 30',
+    'born: date Y-m-d, datecompare <= Y-m-d 1990-12-31',
 ];
 
 //create instance
@@ -77,13 +112,9 @@ var_dump($filter->getMessages());
 
 //filtered data
 //array (size=4)
-//  'email' => string 'pippo&#64;gmail&#46;com' (length=23)
+//  'email' => string 'pippo@gmail.com' (length=15)
 //  'password' => string 'p4ssw0rd200!' (length=12)
 //  'age' => int 25
-//  'born' => 
-//    object(DateTime)[43]
-//      public 'date' => string '1980-01-01 00:00:00.000000' (length=26)
-//      public 'timezone_type' => int 3
-//      public 'timezone' => string 'Europe/Berlin' (length=13)
+//  'born' => string '1980-06-01' (length=10)
 var_dump($filter->getData());
 ```
