@@ -21,14 +21,15 @@ class NumberCompare extends AbstractNumber
     /**
      * @var array Arguments expected.
      */
-    private $arguments = ['string', 'string'];
+    private $arguments = ['string', 'number'];
 
     /**
      * Validate.
      *
-     * @param mixed $received
-     * @param string $operator
-     * @param mixed $compare
+     * @param int|float|string $received
+     * @param string           $operator
+     * @param int|float|string $compare
+     *
      * @return bool
      */
     public function validate($received, string $operator, $compare): bool
@@ -47,9 +48,9 @@ class NumberCompare extends AbstractNumber
     /**
      * Perform correct operation from passed operator.
      *
-     * @param string $operator
-     * @param mixed $numberReceived
-     * @param mixed $numberCompare
+     * @param string           $operator
+     * @param int|float|string $numberReceived
+     * @param int|float|string $numberCompare
      *
      * @return bool
      *

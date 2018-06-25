@@ -19,7 +19,7 @@ class AbstractNumber
     /**
      * Sanitize.
      *
-     * @param mixed $value
+     * @param int|float|string $value
      */
     public function sanitize(&$value): void
     {

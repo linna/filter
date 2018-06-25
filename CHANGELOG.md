@@ -9,14 +9,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][v0.2.0](https://github.com/linna/csrf-guard/compare/v0.1.0...v0.2.0) - 2018-XX-XX
 
 ### Added
+* `Linna\Filter\Rules\NumberIntervall` validate is inside or outside a range with operators ><, <>, >=<, <=
 * `Linna\Filter\Rules\NumberCompare` validate and compare numbers with operators <, >, >=, <=, =
 * `Linna\Filter\Rules\StringCompare` validate and compare numbers with operators len<, len>, len>=, len<=, len=, =
 
 ### Removed
+* `Linna\Filter\Rules\Between`
+* `Linna\Filter\Rules\MaxLength`
 * `Linna\Filter\Rules\Max`
 * `Linna\Filter\Rules\Min`
 * `Linna\Filter\Rules\MinLength`
-* `Linna\Filter\Rules\MaxLength`
 
 ## [Initial Release][v0.1.0](https://github.com/linna/csrf-guard/compare/v0.1.0...master) - 2018-05-29
 

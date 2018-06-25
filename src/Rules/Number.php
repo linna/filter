@@ -24,6 +24,8 @@ class Number extends AbstractNumber
     /**
      * Validate.
      *
+     * @param mixed $received
+     *
      * @return bool
      */
     public function validate($received): bool
