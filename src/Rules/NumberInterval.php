@@ -61,13 +61,13 @@ class NumberInterval extends AbstractNumber
     private function switchOperator(string $operator, &$numberReceived, &$min, &$max): bool
     {
         switch ($operator) {
-            case '><': //between exclusive
+            case '><': //inside interval exclusive
                 return $numberReceived > $min && $numberReceived < $max;
-            case '>=<': //between inclusive
+            case '>=<': //inside interval inclusive
                 return $numberReceived >= $min && $numberReceived <= $max;
-            case '<>': //outside intervall exclusive
+            case '<>': //outside interval exclusive
                 return $numberReceived < $min || $numberReceived > $max;
-            case '<=>': //outside intervall inclusive
+            case '<=>': //outside interval inclusive
                 return $numberReceived <= $min || $numberReceived >= $max;;
             default:
                 throw new UnexpectedValueException("Unknown comparson operator ({$operator}). Permitted ><, <>, >=<, <=>");
