@@ -14,9 +14,9 @@ namespace Linna\Filter\Rules;
 use UnexpectedValueException;
 
 /**
- * Check if a number in inside or outside an interval using ><, <>, >=<, <=> operators.
+ * Check if a number is included or not on interval using ><, <>, >=<, <=> operators.
  */
-class NumberIntervall extends AbstractNumber
+class NumberInterval extends AbstractNumber
 {
     /**
      * @var array Arguments expected.

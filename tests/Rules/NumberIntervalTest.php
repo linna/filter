@@ -9,13 +9,13 @@
  */
 declare(strict_types = 1);
 
-use Linna\Filter\Rules\NumberIntervall;
+use Linna\Filter\Rules\NumberInterval;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Number Intervall Test
+ * Number Interval Test
  */
-class NumberIntervallTest extends TestCase
+class NumberIntervalTest extends TestCase
 {
     /**
      * Number provider.
@@ -66,7 +66,7 @@ class NumberIntervallTest extends TestCase
      */
     public function testValidate($received, string $operator, $min, $max, bool $result): void
     {
-        $instance = new NumberIntervall();
+        $instance = new NumberInterval();
         $validated = $instance->validate($received, $operator, $min, $max);
 
         $this->assertEquals($result, $validated);
@@ -79,6 +79,6 @@ class NumberIntervallTest extends TestCase
      */
     public function testUnknownOperator(): void
     {
-        (new NumberIntervall())->validate('1', '!', '2', '4');
+        (new NumberInterval())->validate('1', '!', '2', '4');
     }
 }
