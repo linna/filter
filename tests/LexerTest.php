@@ -34,6 +34,9 @@ class LexerTest extends TestCase
             //testing string delimiter
             ['field: rule \'p a r a m\'',['field','rule','p a r a m']],
             ['field: rule \'p a r a m\' rule1 \'p a r a m\'',['field','rule','p a r a m','rule1','p a r a m']],
+            ['field: rule "p a r a m"',['field','rule','p a r a m']],
+            ['field: rule "p a r a m" rule1 "p a r a m"',['field','rule','p a r a m','rule1','p a r a m']],
+            ['field: rule "p a r a m" rule1 \'p a r a m\'',['field','rule','p a r a m','rule1','p a r a m']],
         ];
     }
 

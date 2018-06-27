@@ -29,7 +29,9 @@ class Lexer
         $string = 0;
 
         foreach ($chars as $char) {
-            if (ord($char) === 39) {
+            $ord = ord($char);
+
+            if (in_array($ord, [34, 39])) {
                 $string++;
                 continue;
             }
@@ -46,7 +48,7 @@ class Lexer
                 continue;
             }
 
-            if (in_array(ord($char), [32, 44, 58, 59])) {
+            if (in_array($ord, [32, 44, 58, 59])) {
                 $words[] = implode('', $temp);
                 $temp = [];
                 continue;
