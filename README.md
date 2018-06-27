@@ -38,24 +38,24 @@ composer require linna/filter
 | Filter         | Operator | Description                   | Notes                             |
 |----------------|----------|-------------------------------|-----------------------------------|
 | DateCompare    | <        | less than                     |                                   |
-| DateCompare    | >        | greater than                  |                                   |
-| DateCompare    | <=       | less than or equal            |                                   |
-| DateCompare    | >=       | greater than or equal         |                                   |
-| DateCompare    | =        | equal                         | PHP === equal                     |
+|                | >        | greater than                  |                                   |
+|                | <=       | less than or equal            |                                   |
+|                | >=       | greater than or equal         |                                   |
+|                | =        | equal                         | PHP === equal                     |
 | NumberCompare  | <        | less than                     |                                   |
-| NumberCompare  | >        | greater than                  |                                   |
-| NumberCompare  | <=       | less than or equal            |                                   |
-| NumberCompare  | >=       | greater than or equal         |                                   |
+|                | >        | greater than                  |                                   |
+|                | <=       | less than or equal            |                                   |
+|                | >=       | greater than or equal         |                                   |
 | NumberInterval | <>       | out interval, exclusive       | 8-10: 7, 11 true - 8, 9, 10 false |
-| NumberInterval | ><       | in interval, exclusive        | 8-10: 9 true - 7, 8, 10, 11 false |
-| NumberInterval | <=>      | out interval, inclusive       | 8-10: 7, 8, 10, 11 true - 9 false |
-| NumberInterval | >=<      | in interval, inclusive        | 8-10: 8, 9, 10 true - 7, 11 false |
+|                | ><       | in interval, exclusive        | 8-10: 9 true - 7, 8, 10, 11 false |
+|                | <=>      | out interval, inclusive       | 8-10: 7, 8, 10, 11 true - 9 false |
+|                | >=<      | in interval, inclusive        | 8-10: 8, 9, 10 true - 7, 11 false |
 | StringCompare  | len<     | length less than              | PHP strlen(string) < number       |
-| StringCompare  | len>     | length greater than           | PHP strlen(string) > number       |
-| StringCompare  | len<=    | length less than or equal     | PHP strlen(string) <= number      |
-| StringCompare  | len>=    | length greather than or equal | PHP strlen(string) >= number      |
-| StringCompare  | len=     | length equal                  | PHP strlen(string) === number     |
-| StringCompare  | =        | equal                         | PHP === equal                     |
+|                | len>     | length greater than           | PHP strlen(string) > number       |
+|                | len<=    | length less than or equal     | PHP strlen(string) <= number      |
+|                | len>=    | length greather than or equal | PHP strlen(string) >= number      |
+|                | len=     | length equal                  | PHP strlen(string) === number     |
+|                | =        | equal                         | PHP === equal                     |
 
 ## Usage
 Filters can be used in two different ways.
@@ -120,4 +120,91 @@ var_dump($filter->getMessages());
 //  'age' => int 25
 //  'born' => string '1980-06-01' (length=10)
 var_dump($filter->getData());
+```
+
+## Rule syntax
+Parser can accept rules formatted in varius way.  
+
+First word must be the name of the input, same present as index in input array.
+```php
+//simulate data from user form
+$_POST = [
+    'email' => 'pippo@gmail.com',
+    'password' => 'p4ssw0rd200!',
+    'age' => '25',
+    'born' => '1980-06-01',
+];
+
+$rules = [
+    'email required email',
+    'password required stringcompare len>= 12',
+    'age number numberinterval >=< 20 30',
+    'born date Y-m-d datecompare <= Y-m-d 1990-12-31',
+];
+```
+
+Can be used for separate the words and params of rules this chars: `:` `;` `,`
+
+Input name separator `:`
+```php
+$rules = [
+    'email: required email',
+    'password: required stringcompare len>= 12',
+    'age: number numberinterval >=< 20 30',
+    'born: date Y-m-d datecompare <= Y-m-d 1990-12-31',
+];
+```
+
+Input name separator `:` 
+Rules separator `,`
+```php
+$rules = [
+    'email: required, email',
+    'password: required, stringcompare len>= 12',
+    'age: number, numberinterval >=< 20 30',
+    'born: date Y-m-d, datecompare <= Y-m-d 1990-12-31',
+];
+```
+
+Input name separator `:`
+Rules separator `;`
+Rule arguments separator `,`
+```php
+$rules = [
+    'email: required; email',
+    'password: required; stringcompare len>=, 12',
+    'age: number; numberinterval >=<, 20, 30',
+    'born: date Y-m-d; datecompare <=, Y-m-d, 1990-12-31',
+];
+```
+
+Must be used for params that contain spaces one of this chars: `"` `'`
+```php
+$rules = [
+    'email: required email',
+    'password: required stringcompare len>= 12',
+    'age: number numberinterval >=< 20 30',
+    'born: date "Y m d" datecompare <= "Y m d" "1990 12 31"',
+];
+
+$rules = [
+    "email: required email",
+    "password: required stringcompare len>= 12",
+    "age: number numberinterval >=< 20 30",
+    "born: date \"Y m d\" datecompare <= \"Y m d\" \"1990 12 31\"",
+];
+
+$rules = [
+    "email: required email",
+    "password: required stringcompare len>= 12",
+    "age: number numberinterval >=< 20 30",
+    "born: date 'Y m d' datecompare <= 'Y m d' '1990 12 31'",
+];
+
+$rules = [
+    'email: required email',
+    'password: required stringcompare len>= 12',
+    'age: number numberinterval >=< 20 30',
+    'born: date \'Y m d\' datecompare <= \'Y m d\' \'1990 12 31\'',
+];
 ```
