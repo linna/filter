@@ -166,6 +166,7 @@ class FilterTest extends TestCase
      */
     public function testFilterMultiResultStyle(array $rule, array $data, int $error): void
     {
+        /** @var mixed */
         $result = (new Filter())->filterMulti($data, $rule);
 
         $this->assertEquals($error, $result->errors());
@@ -197,6 +198,7 @@ class FilterTest extends TestCase
         $data = ['age' => '19', 'born' => '1998-01-01'];
         $result = ['age' => 19, 'born' => '1998-01-01'];
 
+        /** @var mixed */
         $r = (new Filter())->filterMulti($data, $rule);
 
         $this->assertEquals(0, $r->errors());
@@ -258,6 +260,7 @@ class FilterTest extends TestCase
         $rule = ['age min 18'];
         $data = ['age' => '17'];
 
+        /** @var mixed */
         $result = (new Filter())->filterMulti($data, $rule);
 
         $this->assertEquals(1, $result->errors());
