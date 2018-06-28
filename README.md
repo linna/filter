@@ -67,7 +67,7 @@ Apply one or more rules to one value:
 use Linna\Filter\Filter;
 
 $filter = new Filter();
-$filter->filterOne(20, 'number between 15 25');
+$filter->filterOne(20, 'number numberinterval >< 15 25');
 
 //int 0
 var_dump($filter->getErrors());
@@ -120,6 +120,36 @@ var_dump($filter->getMessages());
 //  'age' => int 25
 //  'born' => string '1980-06-01' (length=10)
 var_dump($filter->getData());
+```
+
+## Retriving results
+There are two ways for get results from filter.
+
+Using methods from `Filter` instance.
+```php
+use Linna\Filter\Filter;
+
+$filter = new Filter();
+$filter->filterOne(20, 'number numberinterval >< 15 25');
+
+$errors = $filter->getErrors();
+$messages = $filter->getMessages();
+$data = $filter->getData();
+```
+
+Using result object:
+```php
+use Linna\Filter\Filter;
+
+$filter = new Filter();
+$result = $filter->filterOne(20, 'number numberinterval >< 15 25');
+
+//or with a single expression
+$result = (new Filter())->filterOne(20, 'number numberinterval >< 15 25');
+
+$errors = $result->errors();
+$messages = $result->messages();
+$data = $result->data();
 ```
 
 ## Rule syntax

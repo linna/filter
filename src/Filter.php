@@ -57,11 +57,15 @@ class Filter
      *
      * @param mixed $data
      * @param string $rule
+     *
+     * @return object
      */
-    public function filterOne($data, string $rule): void
+    public function filterOne($data, string $rule)
     {
         $this->sanitizedData = $this->data = ['data' => $data];
         $this->interpreteRules(['data '.$rule]);
+
+        return $this->buildResultObject();
     }
 
     /**
@@ -69,11 +73,51 @@ class Filter
      *
      * @param array $data
      * @param array $rules
+     *
+     * @return object
      */
-    public function filterMulti(array $data, array $rules): void
+    public function filterMulti(array $data, array $rules)
     {
         $this->sanitizedData = $this->data = $data;
         $this->interpreteRules($rules);
+
+        return $this->buildResultObject();
+    }
+
+    /**
+     * Build anonymous class contain results of filtering.
+     *
+     * @return object
+     */
+    private function buildResultObject()
+    {
+        return new class($this->sanitizedData, $this->messages, $this->errors) {
+            private $data;
+            private $message;
+            private $error;
+
+            public function __construct(array $data, array $message, int $error)
+            {
+                $this->data = $data;
+                $this->message = $message;
+                $this->error = $error;
+            }
+
+            public function data()
+            {
+                return $this->data;
+            }
+
+            public function messages()
+            {
+                return $this->message;
+            }
+
+            public function errors()
+            {
+                return $this->error;
+            }
+        };
     }
 
     /**
@@ -230,7 +274,7 @@ class Filter
      */
     private function getArguments(int $args, $expected, $received): array
     {
-        if ($args === 0) {
+        if (!$args) {
             return [$received];
         }
 

@@ -156,6 +156,22 @@ class FilterTest extends TestCase
     }
 
     /**
+     * Test Filter.
+     *
+     * @dataProvider multiRulesDataResultProvider
+     *
+     * @param array $rule
+     * @param array $data
+     * @param int $error
+     */
+    public function testFilterMultiResultStyle(array $rule, array $data, int $error): void
+    {
+        $result = (new Filter())->filterMulti($data, $rule);
+
+        $this->assertEquals($error, $result->errors());
+    }
+
+    /**
      * Test filter with multiple rules.
      */
     public function testFilterMultipleRules(): void
@@ -170,8 +186,22 @@ class FilterTest extends TestCase
         $this->assertEquals(0, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
         $this->assertInternalType('integer', $filter->getData()['age']);
+    }
 
-        //$this->assertInstanceOf(DateTime::class, $filter->getData()['born']);
+    /**
+     * Test filter with multiple rules.
+     */
+    public function testFilterMultipleRulesResultStyle(): void
+    {
+        $rule = ['age number min 18 max 22', 'born date Y-m-d'];
+        $data = ['age' => '19', 'born' => '1998-01-01'];
+        $result = ['age' => 19, 'born' => '1998-01-01'];
+
+        $r = (new Filter())->filterMulti($data, $rule);
+
+        $this->assertEquals(0, $r->errors());
+        $this->assertEquals($result, $r->data());
+        $this->assertInternalType('integer', $r->data()['age']);
     }
 
     /**
@@ -188,7 +218,6 @@ class FilterTest extends TestCase
 
         $this->assertEquals(3, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
-        //$this->assertInstanceOf(DateTime::class, $filter->getData()['born']);
     }
 
     /**
@@ -219,5 +248,19 @@ class FilterTest extends TestCase
 
         $this->assertEquals(1, $filter->getErrors());
         $this->assertEquals(['age' => [ 'Min' => ['expected' => 18, 'received' => "17"]]], $filter->getMessages());
+    }
+
+    /**
+     * Test filter get errors messages.
+     */
+    public function testFilterGetMessagesRulesStyle(): void
+    {
+        $rule = ['age min 18'];
+        $data = ['age' => '17'];
+
+        $result = (new Filter())->filterMulti($data, $rule);
+
+        $this->assertEquals(1, $result->errors());
+        $this->assertEquals(['age' => [ 'Min' => ['expected' => 18, 'received' => "17"]]], $result->messages());
     }
 }
