@@ -25,7 +25,7 @@ class AbstractNumber
     {
         settype($value, 'float');
 
-        if (fmod($value, 1.0) === 0.0) {
+        if (fmod((float)$value, 1.0) === 0.0) {
             settype($value, 'integer');
         }
     }
