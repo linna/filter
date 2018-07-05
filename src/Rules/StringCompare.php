@@ -16,7 +16,7 @@ use UnexpectedValueException;
 /**
  * Compare two strings using >, <, >=, <=, = operators.
  */
-class StringCompare extends AbstractString
+class StringCompare extends AbstractString implements RuleSanitizeInterface
 {
     /**
      * @var array Arguments expected.
@@ -26,12 +26,12 @@ class StringCompare extends AbstractString
     /**
      * Validate.
      *
-     * @param mixed $received
+     * @param string $received
      * @param string $operator
      * @param mixed $compare
      * @return bool
      */
-    public function validate($received, string $operator, $compare): bool
+    public function validate(string $received, string $operator, $compare): bool
     {
         if (!is_string($received)) {
             return true;
@@ -48,14 +48,14 @@ class StringCompare extends AbstractString
      * Perform correct operation from passed operator.
      *
      * @param string $operator
-     * @param mixed $strReceived
-     * @param mixed $strCompare
+     * @param string $strReceived
+     * @param int|float|string $strCompare
      *
      * @return bool
      *
      * @throws UnexpectedValueException if unknown operator is provided.
      */
-    private function switchOperator(string $operator, &$strReceived, &$strCompare): bool
+    private function switchOperator(string $operator, string &$strReceived, &$strCompare): bool
     {
         switch ($operator) {
             case 'len>': //greater than

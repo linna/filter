@@ -16,7 +16,7 @@ use DateTime;
 /**
  * Check if one date is valid.
  */
-class Date extends AbstractDate
+class Date extends AbstractDate implements RuleInterface
 {
     /**
      * @var array Arguments expected.
@@ -29,7 +29,6 @@ class Date extends AbstractDate
     private $date;
 
     /**
-     *
      * @var DateTime Valid date in DateTime object.
      */
     private $dateTimeObject;
@@ -37,23 +36,29 @@ class Date extends AbstractDate
     /**
      * Validate.
      *
+     * @param string $received
+     * @param string $format
+     *
      * @return bool
      */
-    public function validate($received, string $format): bool
+    public function validate(string $received, string $format): bool
     {
         if ($this->parseDate($received, $format)) {
             return true;
         }
 
-        $this->date = $received;
+        $dateTimeObject = DateTime::createFromFormat($format, $received);
 
-        $dateReceived = DateTime::createFromFormat($format, $received);
-
-        if ($this->dateHaveNoTime($format)) {
-            $dateReceived->setTime(0, 0, 0);
+        if ($dateTimeObject === false) {
+            return true;
         }
 
-        $this->dateTimeObject = $dateReceived;
+        if ($this->dateHaveNoTime($format)) {
+            $dateTimeObject->setTime(0, 0, 0);
+        }
+
+        $this->date = $received;
+        $this->dateTimeObject = $dateTimeObject;
 
         return false;
     }
@@ -61,35 +66,29 @@ class Date extends AbstractDate
     /**
      * Parse date.
      *
-     * @param mixed $received
+     * @param string $received
      * @param string $format
      *
      * @return bool
      */
-    private function parseDate($received, string $format): bool
+    private function parseDate(string $received, string $format): bool
     {
         $date = date_parse_from_format($format, $received);
 
-        //set to zero the date
-        $month = $day = null;
-
-        //set to zero errors
-        $warning_count = $error_count = null;
+        //set to zero the date and the errors
+        $month = $day = $warning_count = $error_count = 0;
 
         extract($date, EXTR_IF_EXISTS);
 
-        settype($month, 'bool');
-        settype($day, 'bool');
-
-        if (!$month) {
+        if ($day === 0) {
             return true;
         }
 
-        if (!$day) {
+        if ($month === 0) {
             return true;
         }
 
-        if ($warning_count + $error_count) {
+        if ($warning_count + $error_count > 0) {
             return true;
         }
 

@@ -14,7 +14,7 @@ namespace Linna\Filter\Rules;
 /**
  * Check required.
  */
-class Number extends AbstractNumber
+class Number extends AbstractNumber implements RuleSanitizeInterface
 {
     /**
      * @var array Arguments expected.
@@ -24,7 +24,7 @@ class Number extends AbstractNumber
     /**
      * Validate.
      *
-     * @param mixed $received
+     * @param int|float $received
      *
      * @return bool
      */

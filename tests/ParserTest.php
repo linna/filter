@@ -27,10 +27,10 @@ class ParserTest extends TestCase
     public function ruleProvider(): array
     {
         return [
-            [[0 => [0 => 'rule', 1 => 'number', 2 => ['class' => 'Number', 'keyword' => 'number', 'args_count' => 0, 'args_type' => [ ],], 3 => true, ], ], 'rule: number'],
-            [[0 => [0 => 'rule', 1 => 'number', 2 => ['class' => 'Number', 'keyword' => 'number', 'args_count' => 0, 'args_type' => [ ],], 3 => true, ], 1 => [ 0 => 'rule', 1 => 'max', 2 => [ 'class' => 'Max', 'keyword' => 'max', 'args_count' => 1, 'args_type' => [ 0 => 'number', ], ], 3 => 30, ], ], 'rule: number max 30'],
-            [[0 => [0 => 'rule', 1 => 'number', 2 => ['class' => 'Number', 'keyword' => 'number', 'args_count' => 0, 'args_type' => [ ],], 3 => true, ], 1 => [ 0 => 'rule', 1 => 'min', 2 => [ 'class' => 'Min', 'keyword' => 'min', 'args_count' => 1, 'args_type' => [ 0 => 'number', ], ], 3 => 15, ], 2 => [ 0 => 'rule', 1 => 'max', 2 => [ 'class' => 'Max', 'keyword' => 'max', 'args_count' => 1, 'args_type' => [ 0 => 'number', ], ], 3 => 30, ], ], 'rule: number min 15 max 30'],
-            [[0 => [0 => 'rule', 1 => 'number', 2 => ['class' => 'Number', 'keyword' => 'number', 'args_count' => 0, 'args_type' => [ ],], 3 => true, ], 1 => [ 0 => 'rule', 1 => 'between', 2 => [ 'class' => 'Between', 'keyword' => 'between', 'args_count' => 2, 'args_type' => [ 0 => 'number', 1 => 'number', ], ], 3 => [ 0 => 15, 1 => 30, ], ], ],'rule: number between 15 30']
+            [array( 0 => array( 0 => 'rule', 1 => 'number', 2 => array(), ), ), 'rule: number'],
+            [array( 0 => array( 0 => 'rule', 1 => 'number', 2 => array(), ), 1 => array( 0 => 'rule', 1 => 'numbercompare', 2 => array( 0 => '<', 1 => 25, ), ), ), 'rule: number numbercompare < 25'],
+            //[[0 => [0 => 'rule', 1 => 'number', 2 => [], ], 1 => [ 0 => 'rule', 1 => 'min', 2 => [15], ], 2 => [ 0 => 'rule', 1 => 'max', 2 => [30], ], ], 'rule: number min 15 max 30'],
+            //[[0 => [0 => 'rule', 1 => 'number', 2 => [], ], 1 => [ 0 => 'rule', 1 => 'between', 2 => [15, 30, ], ], ],'rule: number between 15 30']
         ];
     }
 

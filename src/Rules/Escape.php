@@ -14,7 +14,7 @@ namespace Linna\Filter\Rules;
 /**
  * Return html entities.
  */
-class Escape
+class Escape implements RuleSanitizeInterface
 {
     /**
      * @var array Arguments expected.
@@ -46,6 +46,7 @@ class Escape
      * Return numerical part of the HTML encoding of the Unicode character.
      *
      * @param string $char
+     *
      * @return int
      */
     private function ordutf8(string $char): int
@@ -74,12 +75,17 @@ class Escape
      * Convert char to html entities.
      *
      * @param string $string
+     *
      * @return string
      */
     private function htmlEscape(string $string): string
     {
         $chars = preg_split('//u', $string, 0, PREG_SPLIT_NO_EMPTY);
         $escaped = '';
+
+        if ($chars === false) {
+            return $escaped;
+        }
 
         foreach ($chars as $char) {
             $ord = $this->ordutf8($char);

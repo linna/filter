@@ -23,11 +23,10 @@ class AbstractNumber
      */
     public function sanitize(&$value): void
     {
-        if (fmod((float) $value, 1.0) === 0.0) {
-            settype($value, 'integer');
-            return;
-        }
-
         settype($value, 'float');
+
+        if (fmod($value, 1.0) === 0.0) {
+            settype($value, 'integer');
+        }
     }
 }

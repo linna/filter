@@ -12,22 +12,14 @@ declare(strict_types = 1);
 namespace Linna\Filter\Rules;
 
 /**
- * Check if value is above a maximum.
+ * Rule Interface
  */
-class Max
+interface RuleSanitizeInterface extends RuleInterface
 {
     /**
-     * @var array Arguments expected.
-     */
-    private $arguments = ['number'];
-
-    /**
-     * Validate.
+     * Sanitize and input.
      *
-     * @return bool
+     * @param mixed $value
      */
-    public function validate($received, $max): bool
-    {
-        return $received > $max;
-    }
+    public function sanitize(&$value): void;
 }

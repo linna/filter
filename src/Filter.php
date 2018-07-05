@@ -11,6 +11,8 @@ declare(strict_types = 1);
 
 namespace Linna\Filter;
 
+use Linna\Filter\Rules\RuleInterface;
+use Linna\Filter\Rules\RuleSanitizeInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -177,23 +179,26 @@ class Filter
     {
         foreach ($rules as $rule) {
             $field = $rule[0];
-            $filter = $rule[2]['class'];
+            $ruleProps = $this->rules[$rule[1]];
+            $ruleParams = $rule[2];
 
-            $class = 'Linna\Filter\Rules\\' . $filter;
-            $refClass = new ReflectionClass($class);
-
-            $instance = $refClass->newInstance();
+            $instance = (new ReflectionClass($ruleProps['full_class']))->newInstance();
 
             //check if value is isset in data
-            if ($this->checkValue($field, $filter)) {
+            if ($this->checkValue($field, $ruleProps['class'])) {
                 continue;
             }
 
-            if ($this->invokeValidate($refClass, $class, $field, $rule, $filter, $instance)) {
+            //invoke sanitize section of the filter
+            //if filter fail go to next rule
+            if ($this->invokeValidate($instance, $field, $ruleProps, $ruleParams)) {
                 continue;
             }
 
-            $this->invokeSanitize($refClass, $field, $instance);
+            //invoke sanitize section of the filter
+            if ($instance instanceof RuleSanitizeInterface) {
+                $instance->sanitize($this->sanitizedData[$field]);
+            }
         }
     }
 
@@ -220,69 +225,30 @@ class Filter
     /**
      * Invoke validate.
      *
-     * @param ReflectionClass $refClass
-     * @param string $class
-     * @param string $field
-     * @param array $rule
-     * @param string $filter
-     * @param mixed $instance
+     * @param RuleInterface $instance
+     * @param string        $field
+     * @param array         $ruleProps
+     * @param array         $ruleParams
      *
      * @return bool
      */
     private function invokeValidate(
-        ReflectionClass &$refClass,
-        string &$class,
-        string &$field,
-        array &$rule,
-        string &$filter,
-        &$instance
+        RuleInterface &$instance,
+        string $field,
+        array $ruleProps,
+        array $ruleParams
     ): bool {
-        if ($refClass->hasMethod('validate')) {
-            if ((new ReflectionMethod($class, 'validate'))->invokeArgs($instance, $this->getArguments($rule[2]['args_count'], $rule[3], $this->data[$field]))) {
+        if ($ruleProps['has_validate']) {
+            array_unshift($ruleParams, $this->data[$field]);
+
+            if ((new ReflectionMethod($ruleProps['full_class'], 'validate'))->invokeArgs($instance, $ruleParams)) {
                 $this->errors++;
-                $this->messages[$field][$filter] = ['expected' => $rule[3], 'received' => $this->data[$field]];
+                $this->messages[$field][$ruleProps['class']] = ['expected' => $ruleParams, 'received' => $this->data[$field]];
 
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * Invoke Sanitize.
-     *
-     * @param ReflectionClass $refClass
-     * @param string $field
-     * @param mixed $instance
-     */
-    private function invokeSanitize(ReflectionClass &$refClass, string &$field, &$instance): void
-    {
-        if ($refClass->hasMethod('sanitize')) {
-            $instance->sanitize($this->sanitizedData[$field]);
-        }
-    }
-
-    /**
-     * Return arguments for validation.
-     *
-     * @param int $args
-     * @param mixed $expected
-     * @param mixed $received
-     *
-     * @return array
-     */
-    private function getArguments(int $args, $expected, $received): array
-    {
-        if (!$args) {
-            return [$received];
-        }
-
-        if (is_array($expected)) {
-            array_unshift($expected, $received);
-            return $expected;
-        }
-
-        return [$received, $expected];
     }
 }

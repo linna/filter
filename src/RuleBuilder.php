@@ -25,17 +25,27 @@ class RuleBuilder
      */
     public static function build(): array
     {
-        $dir = dir(__DIR__.'/Rules');
         $rules = [];
+        $files = glob(__DIR__.'/Rules/*.php', GLOB_ERR);
 
-        while (false !== ($entry = $dir->read())) {
-            if ($entry !== '.' && $entry !== '..') {
-                $class = str_replace('.php', '', $entry);
-                $lower = strtolower($class);
-                $args = (new ReflectionClass(__NAMESPACE__."\Rules\\{$class}"))->getDefaultProperties()['arguments'];
+        foreach ($files as $entry) {
+            $class = basename(str_replace('.php', '', $entry));
+            $ruleKeyword = strtolower($class);
 
-                $rules[$lower] = ['class' => $class, 'keyword' => $lower, 'args_count' => count($args), 'args_type' => $args];
-            }
+            $reflection = new ReflectionClass(__NAMESPACE__."\Rules\\{$class}");
+            $args = $reflection->getDefaultProperties()['arguments'];
+            $hasValidate = $reflection->hasMethod('validate');
+            $hasSanitize = $reflection->hasMethod('sanitize');
+
+            $rules[$ruleKeyword] = [
+                'class' => $class,
+                'full_class' => 'Linna\Filter\Rules\\'.$class,
+                'keyword' => $ruleKeyword,
+                'args_count' => count($args),
+                'args_type' => $args,
+                'has_validate' => $hasValidate,
+                'has_sanitize' => $hasSanitize
+            ];
         }
 
         return $rules;

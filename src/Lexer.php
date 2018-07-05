@@ -28,6 +28,10 @@ class Lexer
         $words = $temp = [];
         $string = 0;
 
+        if ($chars === false) {
+            return [];
+        }
+
         foreach ($chars as $char) {
             $ord = ord($char);
 

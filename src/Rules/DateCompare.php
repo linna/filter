@@ -17,7 +17,7 @@ use UnexpectedValueException;
 /**
  * Compare two dates using >, <, >=, <=, = operators.
  */
-class DateCompare extends AbstractDate
+class DateCompare extends AbstractDate implements RuleInterface
 {
     /**
      * @var array Arguments expected.
@@ -30,7 +30,6 @@ class DateCompare extends AbstractDate
     private $date;
 
     /**
-     *
      * @var DateTime Valid date in DateTime object.
      */
     private $dateTimeObject;
@@ -38,9 +37,14 @@ class DateCompare extends AbstractDate
     /**
      * Validate.
      *
+     * @param string $received
+     * @param string $operator
+     * @param string $format
+     * @param string $compare
+     *
      * @return bool
      */
-    public function validate($received, string $operator, string $format, string $compare): bool
+    public function validate(string $received, string $operator, string $format, string $compare): bool
     {
         $dateReceived = DateTime::createFromFormat($format, $received);
         $dateCompare = DateTime::createFromFormat($format, $compare);

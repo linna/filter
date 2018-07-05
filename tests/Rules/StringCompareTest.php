@@ -25,7 +25,7 @@ class StringCompareTest extends TestCase
     public function stringProvider(): array
     {
         return [
-            [2, '=', 2, true],
+            //[2, '=', 2, true],
 
             ['A', 'len>', 2, true],
             ['AA', 'len>', 2, true],
@@ -58,12 +58,12 @@ class StringCompareTest extends TestCase
      *
      * @dataProvider stringProvider
      *
-     * @param mixed $received
+     * @param string $received
      * @param string $operator
      * @param mixed $compare
      * @param bool $result
      */
-    public function testValidate($received, string $operator, $compare, bool $result): void
+    public function testValidate(string $received, string $operator, $compare, bool $result): void
     {
         $instance = new StringCompare();
         $validated = $instance->validate($received, $operator, $compare);

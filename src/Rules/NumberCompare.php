@@ -16,7 +16,7 @@ use UnexpectedValueException;
 /**
  * Compare two numbers using >, <, >=, <=, = operators.
  */
-class NumberCompare extends AbstractNumber
+class NumberCompare extends AbstractNumber implements RuleSanitizeInterface
 {
     /**
      * @var array Arguments expected.
@@ -26,9 +26,9 @@ class NumberCompare extends AbstractNumber
     /**
      * Validate.
      *
-     * @param int|float|string $received
-     * @param string           $operator
-     * @param int|float|string $compare
+     * @param int|float $received
+     * @param string    $operator
+     * @param int|float $compare
      *
      * @return bool
      */
@@ -36,6 +36,18 @@ class NumberCompare extends AbstractNumber
     {
         if (!is_numeric($received)) {
             return true;
+        }
+
+        if (!is_numeric($compare)) {
+            return true;
+        }
+
+        settype($received, 'float');
+        settype($compare, 'float');
+
+        if (fmod($received, 1.0) === 0.0) {
+            settype($received, 'integer');
+            settype($compare, 'integer');
         }
 
         if ($this->switchOperator($operator, $received, $compare)) {
@@ -49,8 +61,8 @@ class NumberCompare extends AbstractNumber
      * Perform correct operation from passed operator.
      *
      * @param string           $operator
-     * @param int|float|string $numberReceived
-     * @param int|float|string $numberCompare
+     * @param int|float $numberReceived
+     * @param int|float $numberCompare
      *
      * @return bool
      *

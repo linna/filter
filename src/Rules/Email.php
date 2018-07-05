@@ -14,7 +14,7 @@ namespace Linna\Filter\Rules;
 /**
  * Check if provided is valid.
  */
-class Email
+class Email implements RuleInterface
 {
     /**
      * @var array Arguments expected.
@@ -23,6 +23,8 @@ class Email
 
     /**
      * Validate.
+     *
+     * @param string $received
      *
      * @return bool
      */

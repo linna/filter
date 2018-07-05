@@ -79,6 +79,6 @@ class NumberIntervalTest extends TestCase
      */
     public function testUnknownOperator(): void
     {
-        (new NumberInterval())->validate('1', '!', '2', '4');
+        (new NumberInterval())->validate(1, '!', 2, 4);
     }
 }

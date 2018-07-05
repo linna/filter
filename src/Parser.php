@@ -48,19 +48,18 @@ class Parser
     private function extractParams(array &$words): void
     {
         $array = [];
-        $actualWord = '';
         $field = $words[0];
         $count = count($words);
 
         $arguments = 0;
 
-        for ($i = 1; $i < $count; $i++) {
+        for ($i = 1, $c = -1; $i < $count; $i++) {
             $word = strtolower($words[$i]);
 
             if (isset($this->rules[$word])) {
                 $arguments = $this->rules[$word]['args_count'];
-                $actualWord = $word;
-                $array[$field][$word] = [];
+                $array[$field][++$c] = [$word];
+
                 continue;
             }
 
@@ -68,7 +67,7 @@ class Parser
                 throw new OutOfBoundsException("Unknown filter provided ({$word})");
             }
 
-            $array[$field][$actualWord][] = $words[$i];
+            $array[$field][$c][] = $words[$i];
         }
 
         $words = $array;
@@ -85,11 +84,34 @@ class Parser
         $field = key($words);
 
         foreach ($words[$field] as $key => $word) {
-            $rule = $rules[$key];
-            $keyword = $rule['keyword'];
+            $rule = $words[$field][$key][0];
 
             //first param passed as reference
-            $this->castTypes($words[$field][$keyword], $rule['args_type']);
+            $this->castTypes($words[$field][$key], $rules[$rule]['args_type']);
+        }
+    }
+
+    /**
+     * Apply types when there is one parameter.
+     *
+     * @param array $params
+     * @param array $types
+     */
+    private function castTypes(array &$params, array $types): void
+    {
+        $number = new Number();
+        $count = count($params);
+
+        for ($i = 1,$k = 0; $i < $count; $i++) {
+            $type = &$types[$k++];
+            $param = &$params[$i];
+
+            if ($type === 'number') {
+                $number->sanitize($param);
+                continue;
+            }
+
+            settype($param, $type);
         }
     }
 
@@ -104,41 +126,13 @@ class Parser
         $temp = [];
 
         foreach ($words[$field] as $key => $word) {
-            if (count($word) === 0) {
-                $words[$field][$key] = true;
-            }
+            $rule = $word[0];
 
-            if (count($word) === 1) {
-                $words[$field][$key] = $word[0];
-            }
+            array_shift($word);
 
-            $temp[] = [$field, $key, $this->rules[$key], $words[$field][$key]];
+            $temp[] = [$field, $rule, $word];
         }
 
         $words = $temp;
-    }
-
-    /**
-     * Apply types when there is one parameter.
-     *
-     * @param array $params
-     * @param array $types
-     */
-    private function castTypes(array &$params, array $types): void
-    {
-        $number = new Number();
-        $count = count($params);
-
-        for ($i = 0; $i < $count; $i++) {
-            $type = &$types[$i];
-            $param = &$params[$i];
-
-            if ($type === 'number') {
-                $number->sanitize($param);
-                continue;
-            }
-
-            settype($param, $type);
-        }
     }
 }

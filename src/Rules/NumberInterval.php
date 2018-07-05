@@ -16,7 +16,7 @@ use UnexpectedValueException;
 /**
  * Check if a number is included or not on interval using ><, <>, >=<, <=> operators.
  */
-class NumberInterval extends AbstractNumber
+class NumberInterval extends AbstractNumber implements RuleSanitizeInterface
 {
     /**
      * @var array Arguments expected.
@@ -26,10 +26,10 @@ class NumberInterval extends AbstractNumber
     /**
      * Validate.
      *
-     * @param int|float|string $received
-     * @param string           $operator
-     * @param int|float|string $min
-     * @param int|float|string $max
+     * @param int|float $received
+     * @param string    $operator
+     * @param int|float $min
+     * @param int|float $max
      *
      * @return bool
      */
@@ -37,6 +37,24 @@ class NumberInterval extends AbstractNumber
     {
         if (!is_numeric($received)) {
             return true;
+        }
+
+        if (!is_numeric($min)) {
+            return true;
+        }
+
+        if (!is_numeric($max)) {
+            return true;
+        }
+
+        settype($received, 'float');
+        settype($min, 'float');
+        settype($max, 'float');
+
+        if ((fmod($received, 1.0) === 0.0)) {
+            settype($received, 'integer');
+            settype($min, 'integer');
+            settype($max, 'integer');
         }
 
         if ($this->switchOperator($operator, $received, $min, $max)) {
@@ -49,10 +67,10 @@ class NumberInterval extends AbstractNumber
     /**
      * Perform correct operation from passed operator.
      *
-     * @param string           $operator
-     * @param int|float|string $numberReceived
-     * @param int|float|string $min
-     * @param int|float|string $max
+     * @param string    $operator
+     * @param int|float $numberReceived
+     * @param int|float $min
+     * @param int|float $max
      *
      * @return bool
      *

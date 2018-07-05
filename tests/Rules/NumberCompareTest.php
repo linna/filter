@@ -48,7 +48,7 @@ class NumberCompareTest extends TestCase
             [3, '=', 2, true],
 
             [1, '=', '2', true],
-            [2, '=', '2', true],
+            [2, '=', '2', false],
             [3, '=', '2', true]
         ];
     }
@@ -78,6 +78,6 @@ class NumberCompareTest extends TestCase
      */
     public function testUnknownOperator(): void
     {
-        (new NumberCompare())->validate('1', '!', '1');
+        (new NumberCompare())->validate(1, '!', 1);
     }
 }

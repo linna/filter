@@ -14,7 +14,7 @@ namespace Linna\Filter\Rules;
 /**
  * Check required.
  */
-class Required
+class Required implements RuleInterface
 {
     /**
      * @var array Arguments expected.
@@ -23,6 +23,8 @@ class Required
 
     /**
      * Validate.
+     *
+     * @param mixed $received
      *
      * @return bool
      */
