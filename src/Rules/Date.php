@@ -34,6 +34,11 @@ class Date extends AbstractDate implements RuleInterface
     private $dateTimeObject;
 
     /**
+     * @var string Error message
+     */
+    private $message = '';
+
+    /**
      * Validate.
      *
      * @param string $received
@@ -49,12 +54,8 @@ class Date extends AbstractDate implements RuleInterface
 
         $dateTimeObject = DateTime::createFromFormat($format, $received);
 
-        if ($dateTimeObject === false) {
+        if (!($dateTimeObject instanceof DateTime)) {
             return true;
-        }
-
-        if ($this->dateHaveNoTime($format)) {
-            $dateTimeObject->setTime(0, 0, 0);
         }
 
         $this->date = $received;
@@ -75,20 +76,15 @@ class Date extends AbstractDate implements RuleInterface
     {
         $date = date_parse_from_format($format, $received);
 
-        //set to zero the date and the errors
-        $month = $day = $warning_count = $error_count = 0;
+        $message = "Received date is not in expected format {$format}";
 
-        extract($date, EXTR_IF_EXISTS);
-
-        if ($day === 0) {
+        if ($date['warning_count']) {
+            $this->message = $message;
             return true;
         }
 
-        if ($month === 0) {
-            return true;
-        }
-
-        if ($warning_count + $error_count > 0) {
+        if ($date['error_count']) {
+            $this->message = $message;
             return true;
         }
 
@@ -103,5 +99,15 @@ class Date extends AbstractDate implements RuleInterface
     public function getDateTimeObject(): DateTime
     {
         return $this->dateTimeObject;
+    }
+
+    /**
+     * Return error message.
+     *
+     * @return string Error message
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 }

@@ -22,15 +22,19 @@ class Escape implements RuleSanitizeInterface
     private $arguments = [];
 
     /**
-     * @var array Permitted ASCII table chars in interger format.
+     * @var array Forbidden special chars in interger format.
      */
-    private const PERMITTED = [
-        32,48,49,50,51,52,53,54,55,56,57,65,66,67,68,
-        69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,
-        84,85,86,87,88,89,90,97,98,99,100,101,102,103,
-        104,105,106,107,108,109,110,111,112,113,114,
-        115,116,117,118,119,120,121,122
+    private $special = [
+        33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+        58, 59, 60, 61, 62, 63, 64,
+        91, 92, 93, 94, 95, 96,
+        123, 124, 125, 126
     ];
+
+    /**
+     * @var string Error message
+     */
+    private $message = '';
 
     /**
      * Sanitize.
@@ -43,35 +47,6 @@ class Escape implements RuleSanitizeInterface
     }
 
     /**
-     * Return numerical part of the HTML encoding of the Unicode character.
-     *
-     * @param string $char
-     *
-     * @return int
-     */
-    private function ordutf8(string $char): int
-    {
-        $code = ord($char[0]);
-
-        if ($code > 239) {
-            return ((ord(substr($char, 1, 1)) - 128) *
-                64 + ord(substr($char, 2, 1)) - 128) *
-                64 + ord(substr($char, 3, 1)) - 128;
-        }
-
-        if ($code > 223) {
-            return (($code - 224) * 64 + ord(substr($char, 1, 1)) - 128) *
-                64 + ord(substr($char, 2, 1)) - 128;
-        }
-
-        if ($code > 127) {
-            return ($code - 192) * 64 + ord(substr($char, 1, 1)) - 128;
-        }
-
-        return $code;
-    }
-
-    /**
      * Convert char to html entities.
      *
      * @param string $string
@@ -80,7 +55,7 @@ class Escape implements RuleSanitizeInterface
      */
     private function htmlEscape(string $string): string
     {
-        $chars = preg_split('//u', $string, 0, PREG_SPLIT_NO_EMPTY);
+        $chars = preg_split('//u', $string, strlen($string), PREG_SPLIT_NO_EMPTY);
         $escaped = '';
 
         if ($chars === false) {
@@ -88,16 +63,26 @@ class Escape implements RuleSanitizeInterface
         }
 
         foreach ($chars as $char) {
-            $ord = $this->ordutf8($char);
+            $ord = ord($char);
 
-            if (in_array($ord, self::PERMITTED)) {
-                $escaped .= $char;
+            if (in_array($ord, $this->special)) {
+                $escaped .= "&#{$ord};";
                 continue;
             }
 
-            $escaped .= "&#{$ord};";
+            $escaped .= $char;
         }
 
         return $escaped;
+    }
+
+    /**
+     * Return error message.
+     *
+     * @return string Error message
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 }

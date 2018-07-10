@@ -14,14 +14,14 @@ namespace Linna\Filter\Rules;
 use UnexpectedValueException;
 
 /**
- * Compare two strings using >, <, >=, <=, =, != operators.
+ * Compare the length of provided string using >, <, >=, <=, = operators.
  */
-class StringCompare extends AbstractString implements RuleSanitizeInterface
+class StringLenCompare extends AbstractString implements RuleSanitizeInterface
 {
     /**
      * @var array Arguments expected.
      */
-    private $arguments = ['string', 'string'];
+    private $arguments = ['string', 'number'];
 
     /**
      * @var string Error message
@@ -33,15 +33,16 @@ class StringCompare extends AbstractString implements RuleSanitizeInterface
      *
      * @param string $received
      * @param string $operator
-     * @param string $compare
-     *
+     * @param int    $compare
      * @return bool
      */
-    public function validate(string $received, string $operator, string $compare): bool
+    public function validate(string $received, string $operator, int $compare): bool
     {
         if ($this->switchOperator($operator, $received, $compare)) {
             return false;
         }
+
+        $this->message = "Received string length is not {$operator} of {$compare}";
 
         return true;
     }
@@ -51,27 +52,27 @@ class StringCompare extends AbstractString implements RuleSanitizeInterface
      *
      * @param string $operator
      * @param string $strReceived
-     * @param string $strCompare
+     * @param int    $strCompare
      *
      * @return bool
      *
      * @throws UnexpectedValueException if unknown operator is provided.
      */
-    private function switchOperator(string $operator, string &$strReceived, string &$strCompare): bool
+    private function switchOperator(string $operator, string &$strReceived, int &$strCompare): bool
     {
         switch ($operator) {
             case '>': //greater than
-                return $strReceived > $strCompare;
+                return strlen($strReceived) > $strCompare;
             case '<': //less than
-                return $strReceived < $strCompare;
+                return strlen($strReceived) < $strCompare;
             case '>=': //greater than or equal
-                return $strReceived >= $strCompare;
+                return strlen($strReceived) >= $strCompare;
             case '<=': //less than or equal
-                return $strReceived <= $strCompare;
+                return strlen($strReceived) <= $strCompare;
             case '=': //equal
-                return $strReceived === $strCompare;
-            case '!=': //not equal
-                return $strReceived !== $strCompare;
+                return strlen($strReceived) === $strCompare;
+            case '!=': //equal
+                return strlen($strReceived) !== $strCompare;
             default:
                 throw new UnexpectedValueException("Unknown comparson operator ({$operator}). Permitted >, <, >=, <=, =, !=");
         }

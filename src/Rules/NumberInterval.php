@@ -24,6 +24,11 @@ class NumberInterval extends AbstractNumber implements RuleSanitizeInterface
     private $arguments = ['string', 'number', 'number'];
 
     /**
+     * @var string Error message
+     */
+    private $message = '';
+
+    /**
      * Validate.
      *
      * @param int|float $received
@@ -51,15 +56,11 @@ class NumberInterval extends AbstractNumber implements RuleSanitizeInterface
         settype($min, 'float');
         settype($max, 'float');
 
-        if ((fmod($received, 1.0) === 0.0)) {
-            settype($received, 'integer');
-            settype($min, 'integer');
-            settype($max, 'integer');
-        }
-
         if ($this->switchOperator($operator, $received, $min, $max)) {
             return false;
         }
+
+        $this->message = "Received number is not {$min} {$operator} {$max}";
 
         return true;
     }
@@ -90,5 +91,15 @@ class NumberInterval extends AbstractNumber implements RuleSanitizeInterface
             default:
                 throw new UnexpectedValueException("Unknown comparson operator ({$operator}). Permitted ><, <>, >=<, <=>");
         }
+    }
+
+    /**
+     * Return error message.
+     *
+     * @return string Error message
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 }

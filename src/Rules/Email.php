@@ -12,7 +12,7 @@ declare(strict_types = 1);
 namespace Linna\Filter\Rules;
 
 /**
- * Check if provided is valid.
+ * Check if provided email is valid.
  */
 class Email implements RuleInterface
 {
@@ -20,6 +20,11 @@ class Email implements RuleInterface
      * @var array Arguments expected.
      */
     private $arguments = [];
+
+    /**
+     * @var string Error message
+     */
+    private $message = '';
 
     /**
      * Validate.
@@ -30,6 +35,21 @@ class Email implements RuleInterface
      */
     public function validate(string $received): bool
     {
-        return !filter_var($received, FILTER_VALIDATE_EMAIL);
+        if (!filter_var($received, FILTER_VALIDATE_EMAIL)) {
+            $this->message = "Received string is an invalid e-mail address";
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Return error message.
+     *
+     * @return string Error message
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 }

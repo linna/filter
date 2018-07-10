@@ -184,6 +184,9 @@ class Filter
 
             $instance = (new ReflectionClass($ruleProps['full_class']))->newInstance();
 
+            //initialize message array
+            $this->messages[$field] = $this->messages[$field] ?? [];
+
             //check if value is isset in data
             if ($this->checkValue($field, $ruleProps['class'])) {
                 continue;
@@ -217,7 +220,7 @@ class Filter
         }
 
         $this->errors++;
-        $this->messages[$field][$filter] = "Form field '{$field}' missing.";
+        $this->messages[$field][] = "Form field '{$field}' missing.";
 
         return true;
     }
@@ -238,15 +241,22 @@ class Filter
         array $ruleProps,
         array $ruleParams
     ): bool {
-        if ($ruleProps['has_validate']) {
-            array_unshift($ruleParams, $this->data[$field]);
+        if (!$ruleProps['has_validate']) {
+            return true;
+        }
 
-            if ((new ReflectionMethod($ruleProps['full_class'], 'validate'))->invokeArgs($instance, $ruleParams)) {
-                $this->errors++;
-                $this->messages[$field][$ruleProps['class']] = ['expected' => $ruleParams, 'received' => $this->data[$field]];
+        array_unshift($ruleParams, $this->data[$field]);
 
-                return true;
+        if ((new ReflectionMethod($ruleProps['full_class'], 'validate'))->invokeArgs($instance, $ruleParams)) {
+            $this->errors++;
+
+            $message = $instance->getMessage();
+
+            if (strlen($message) > 0) {
+                $this->messages[$field][] = $message;
             }
+
+            return true;
         }
 
         return false;

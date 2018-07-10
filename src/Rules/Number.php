@@ -12,7 +12,7 @@ declare(strict_types = 1);
 namespace Linna\Filter\Rules;
 
 /**
- * Check required.
+ * Check if provided value is a number.
  */
 class Number extends AbstractNumber implements RuleSanitizeInterface
 {
@@ -20,6 +20,11 @@ class Number extends AbstractNumber implements RuleSanitizeInterface
      * @var array Arguments expected.
      */
     private $arguments = [];
+
+    /**
+     * @var string Error message
+     */
+    private $message = '';
 
     /**
      * Validate.
@@ -30,6 +35,21 @@ class Number extends AbstractNumber implements RuleSanitizeInterface
      */
     public function validate($received): bool
     {
-        return !is_numeric($received);
+        if (!is_numeric($received)) {
+            $this->message = "Received value is not a number";
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Return error message.
+     *
+     * @return string Error message
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 }

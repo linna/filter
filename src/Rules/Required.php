@@ -22,6 +22,11 @@ class Required implements RuleInterface
     private $arguments = [];
 
     /**
+     * @var string Error message
+     */
+    private $message = '';
+
+    /**
      * Validate.
      *
      * @param mixed $received
@@ -30,10 +35,26 @@ class Required implements RuleInterface
      */
     public function validate($received): bool
     {
-        if (strlen($received) === 0 || $received === null) {
+        if ($received === null) {
+            $this->message = "Received value is null";
+            return true;
+        }
+
+        if (!strlen((string)$received)) {
+            $this->message = "Received value is a void string";
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Return error message.
+     *
+     * @return string Error message
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 }

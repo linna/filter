@@ -16,4 +16,10 @@ namespace Linna\Filter\Rules;
  */
 interface RuleInterface
 {
+    /**
+     * Return error message.
+     *
+     * @return string Error message
+     */
+    public function getMessage(): string;
 }

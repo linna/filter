@@ -35,6 +35,11 @@ class DateCompare extends AbstractDate implements RuleInterface
     private $dateTimeObject;
 
     /**
+     * @var string Error message
+     */
+    private $message = '';
+
+    /**
      * Validate.
      *
      * @param string $received
@@ -50,6 +55,7 @@ class DateCompare extends AbstractDate implements RuleInterface
         $dateCompare = DateTime::createFromFormat($format, $compare);
 
         if (!($dateReceived && $dateCompare)) {
+            $this->message = "Received date is not in expected format {$format}";
             return true;
         }
 
@@ -63,6 +69,8 @@ class DateCompare extends AbstractDate implements RuleInterface
             $this->dateTimeObject = $dateReceived;
             return false;
         }
+
+        $this->message = "Received date is not {$operator} {$compare}";
 
         return true;
     }
@@ -80,7 +88,7 @@ class DateCompare extends AbstractDate implements RuleInterface
     /**
      * Perform correct operation from passed operator.
      *
-     * @param string $operator
+     * @param string   $operator
      * @param DateTime $dateReceived
      * @param DateTime $dateCompare
      *
@@ -90,8 +98,8 @@ class DateCompare extends AbstractDate implements RuleInterface
      */
     private function switchOperator(string $operator, DateTime &$dateReceived, DateTime &$dateCompare): bool
     {
-        $received = (int) $dateReceived->format('YmdHis');
-        $compare = (int) $dateCompare->format('YmdHis');
+        $received = $dateReceived->format(DateTime::ATOM);
+        $compare = $dateCompare->format(DateTime::ATOM);
 
         switch ($operator) {
             case '>': //greater than
@@ -107,5 +115,15 @@ class DateCompare extends AbstractDate implements RuleInterface
             default:
                 throw new UnexpectedValueException("Unknown comparson operator ({$operator}). Permitted >, <, >=, <=, =");
         }
+    }
+
+    /**
+     * Return error message.
+     *
+     * @return string Error message
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 }

@@ -24,6 +24,11 @@ class NumberCompare extends AbstractNumber implements RuleSanitizeInterface
     private $arguments = ['string', 'number'];
 
     /**
+     * @var string Error message
+     */
+    private $message = '';
+
+    /**
      * Validate.
      *
      * @param int|float $received
@@ -45,14 +50,11 @@ class NumberCompare extends AbstractNumber implements RuleSanitizeInterface
         settype($received, 'float');
         settype($compare, 'float');
 
-        if (fmod($received, 1.0) === 0.0) {
-            settype($received, 'integer');
-            settype($compare, 'integer');
-        }
-
         if ($this->switchOperator($operator, $received, $compare)) {
             return false;
         }
+
+        $this->message = "Received number is not {$operator} {$compare}";
 
         return true;
     }
@@ -60,7 +62,7 @@ class NumberCompare extends AbstractNumber implements RuleSanitizeInterface
     /**
      * Perform correct operation from passed operator.
      *
-     * @param string           $operator
+     * @param string    $operator
      * @param int|float $numberReceived
      * @param int|float $numberCompare
      *
@@ -80,9 +82,19 @@ class NumberCompare extends AbstractNumber implements RuleSanitizeInterface
             case '<=': //less than or equal
                 return $numberReceived <= $numberCompare;
             case '=': //equal
-                return $numberReceived === $numberCompare;
+                return !($numberReceived - $numberCompare);
             default:
                 throw new UnexpectedValueException("Unknown comparson operator ({$operator}). Permitted >, <, >=, <=, =");
         }
+    }
+
+    /**
+     * Return error message.
+     *
+     * @return string Error message
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 }
