@@ -25,19 +25,33 @@ class NumberCompareTest extends TestCase
     public function numberProvider(): array
     {
         return [
-            ['A', '=', '2', true],
-
             [1, '>', 2, true],
             [2, '>', 2, true],
             [3, '>', 2, false],
+
+            [1.0, '>', 2, true],
+            [2.0, '>', 2, true],
+            [3.0, '>', 2, false],
+
+            [1.1, '>', 2.1, true],
+            [2.1, '>', 2.1, true],
+            [3.1, '>', 2.1, false],
 
             [1, '<', 2, false],
             [2, '<', 2, true],
             [3, '<', 2, true],
 
+            [1.1, '<', 2.1, false],
+            [2.1, '<', 2.1, true],
+            [3.1, '<', 2.1, true],
+
             [1, '>=', 2, true],
             [2, '>=', 2, false],
             [3, '>=', 2, false],
+
+            [1.1, '>=', 2.1, true],
+            [2.1, '>=', 2.1, false],
+            [3.1, '>=', 2.1, false],
 
             [1, '<=', 2, false],
             [2, '<=', 2, false],
@@ -47,9 +61,24 @@ class NumberCompareTest extends TestCase
             [2, '=', 2, false],
             [3, '=', 2, true],
 
+            [1.1, '=', 2.1, true],
+            [2.1, '=', 2.1, false],
+            [3.1, '=', 2.1, true],
+
             [1, '=', '2', true],
             [2, '=', '2', false],
-            [3, '=', '2', true]
+            [3, '=', '2', true],
+
+            ['1', '=', '2', true],
+            ['2', '=', '2', false],
+            ['3', '=', '2', true],
+
+            ['1', '=', 2, true],
+            ['2', '=', 2, false],
+            ['3', '=', 2, true],
+
+            ['A', '=', 2, true],
+            [1, '=', 'A', true],
         ];
     }
 
@@ -58,17 +87,14 @@ class NumberCompareTest extends TestCase
      *
      * @dataProvider numberProvider
      *
-     * @param mixed $received
-     * @param string $operator
-     * @param mixed $compare
-     * @param bool $result
+     * @param int|float $received
+     * @param string    $operator
+     * @param int|float $compare
+     * @param bool      $result
      */
     public function testValidate($received, string $operator, $compare, bool $result): void
     {
-        $instance = new NumberCompare();
-        $validated = $instance->validate($received, $operator, $compare);
-
-        $this->assertEquals($result, $validated);
+        $this->assertSame($result, (new NumberCompare())->validate($received, $operator, $compare));
     }
 
     /**

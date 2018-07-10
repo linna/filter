@@ -36,12 +36,12 @@ class FilterTest extends TestCase
           ['numberinterval >< 18 20','19',0],
           ['numberinterval >< 18 20','20',1],
           ['numberinterval >< 18 20','21',1],
-          ['stringcompare len> 4','pas',1],
-          ['stringcompare len> 4','pass',1],
-          ['stringcompare len> 4','passw',0],
-          ['stringcompare len<  4','pas',0],
-          ['stringcompare len<  4','pass',1],
-          ['stringcompare len<  4','passw',1],
+          ['stringlencompare > 4','pas',1],
+          ['stringlencompare > 4','pass',1],
+          ['stringlencompare > 4','passw',0],
+          ['stringlencompare < 4','pas',0],
+          ['stringlencompare < 4','pass',1],
+          ['stringlencompare < 4','passw',1],
           ['email','foo@baz.com',0],
           ['email','foobaz.com',1],
           ['email','foo@bazcom',1],
@@ -109,24 +109,24 @@ class FilterTest extends TestCase
     public function multiRulesDataResultProvider(): array
     {
         return [
-          [['age min 18'],['age' => '19'],0],
-          [['age min 18'],['age' => '18'],0],
-          [['age min 18'],['agge' => '18'],1], //testing missing field
-          [['age min 18'],['age' => '17'],1],
-          [['age max 18'],['age' => '19'],1],
-          [['age max 18'],['age' => '18'],0],
-          [['age max 18'],['age' => '17'],0],
-          [['age between 18 20'],['age' => '17'],1],
-          [['age between 18 20'],['age' => '18'],0],
-          [['age between 18 20'],['age' => '19'],0],
-          [['age between 18 20'],['age' => '20'],0],
-          [['age between 18 20'],['age' => '21'],1],
-          [['password minlength 4'],['password' => 'pas'],1],
-          [['password minlength 4'],['password' => 'pass'],0],
-          [['password minlength 4'],['password' => 'passw'],0],
-          [['password maxlength 4'],['password' => 'pas'],0],
-          [['password maxlength 4'],['password' => 'pass'],0],
-          [['password maxlength 4'],['password' => 'passw'],1],
+          [['age numbercompare > 18'],['age' => '19'],0],
+          [['age numbercompare > 18'],['age' => '18'],1],
+          //[['age minnumbercompare > 18'],['agge' => '18'],1], //testing missing field
+          [['age numbercompare > 18'],['age' => '17'],1],
+          [['age numbercompare < 18'],['age' => '19'],1],
+          [['age numbercompare < 18'],['age' => '18'],1],
+          [['age numbercompare < 18'],['age' => '17'],0],
+          [['age numberinterval >=< 18 20'],['age' => '17'],1],
+          [['age numberinterval >=< 18 20'],['age' => '18'],0],
+          [['age numberinterval >=< 18 20'],['age' => '19'],0],
+          [['age numberinterval >=< 18 20'],['age' => '20'],0],
+          [['age numberinterval >=< 18 20'],['age' => '21'],1],
+          [['password stringlencompare >= 4'],['password' => 'pas'],1],
+          [['password stringlencompare >= 4'],['password' => 'pass'],0],
+          [['password stringlencompare >= 4'],['password' => 'passw'],0],
+          [['password stringlencompare <= 4'],['password' => 'pas'],0],
+          [['password stringlencompare <= 4'],['password' => 'pass'],0],
+          [['password stringlencompare <= 4'],['password' => 'passw'],1],
           [['email email'],['email' => 'foo@baz.com'],0],
           [['email email'],['email' => 'foobaz.com'],1],
           [['email email'],['email' => 'foo@bazcom'],1],
@@ -147,13 +147,13 @@ class FilterTest extends TestCase
      * @param array $data
      * @param int $error
      */
-    /*public function testFilterMulti(array $rule, array $data, int $error): void
+    public function testFilterMulti(array $rule, array $data, int $error): void
     {
         $filter = new Filter();
         $filter->filterMulti($data, $rule);
 
         $this->assertEquals($error, $filter->getErrors());
-    }*/
+    }
 
     /**
      * Test Filter.
@@ -164,20 +164,20 @@ class FilterTest extends TestCase
      * @param array $data
      * @param int $error
      */
-    /*public function testFilterMultiResultStyle(array $rule, array $data, int $error): void
+    public function testFilterMultiResultStyle(array $rule, array $data, int $error): void
     {
         /** @var mixed */
-        /*$result = (new Filter())->filterMulti($data, $rule);
+        $result = (new Filter())->filterMulti($data, $rule);
 
         $this->assertEquals($error, $result->errors());
-    }*/
+    }
 
     /**
      * Test filter with multiple rules.
      */
-    /*public function testFilterMultipleRules(): void
+    public function testFilterMultipleRules(): void
     {
-        $rule = ['age number min 18 max 22', 'born date Y-m-d'];
+        $rule = ['age numbercompare > 18 numbercompare < 22', 'born date Y-m-d'];
         $data = ['age' => '19', 'born' => '1998-01-01'];
         $result = ['age' => 19, 'born' => '1998-01-01'];
 
@@ -187,83 +187,38 @@ class FilterTest extends TestCase
         $this->assertEquals(0, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
         $this->assertInternalType('integer', $filter->getData()['age']);
-    }*/
+    }
 
     /**
      * Test filter with multiple rules.
      */
-    /*public function testFilterMultipleRulesResultStyle(): void
+    public function testFilterMultipleRulesResultStyle(): void
     {
-        $rule = ['age number min 18 max 22', 'born date Y-m-d'];
+        $rule = ['age numbercompare > 18 numbercompare < 22', 'born date Y-m-d'];
         $data = ['age' => '19', 'born' => '1998-01-01'];
         $result = ['age' => 19, 'born' => '1998-01-01'];
 
         /** @var mixed */
-        /*$r = (new Filter())->filterMulti($data, $rule);
+        $r = (new Filter())->filterMulti($data, $rule);
 
         $this->assertEquals(0, $r->errors());
         $this->assertEquals($result, $r->data());
         $this->assertInternalType('integer', $r->data()['age']);
-    }*/
+    }
 
     /**
      * Test filter with multiple rules with missing field.
      */
-    /*public function testFilterMultipleRulesWithMissingField(): void
+    public function testFilterMultipleRulesWithMissingField(): void
     {
-        $rule = ['age number min 18 max 22', 'born date Y-m-d'];
+        $rule = ['age numbercompare > 18 numbercompare < 22', 'born date Y-m-d'];
         $data = ['born' => '1998-01-01'];
         $result = ['born' => '1998-01-01'];
 
         $filter = new Filter();
         $filter->filterMulti($data, $rule);
 
-        $this->assertEquals(3, $filter->getErrors());
+        $this->assertEquals(2, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
-    }*/
-
-    /**
-     * Test filter get errors messages with void data.
-     */
-    /*public function testFilterGetMessagesMissingData(): void
-    {
-        $rule = ['age min 18'];
-        $data = [];
-
-        $filter = new Filter();
-        $filter->filterMulti($data, $rule);
-
-        $this->assertEquals(1, $filter->getErrors());
-        $this->assertEquals('Form field \'age\' missing.', $filter->getMessages()['age']['Min']);
-    }*/
-
-    /**
-     * Test filter get errors messages.
-     */
-    /*public function testFilterGetMessages(): void
-    {
-        $rule = ['age min 18'];
-        $data = ['age' => '17'];
-
-        $filter = new Filter();
-        $filter->filterMulti($data, $rule);
-
-        $this->assertEquals(1, $filter->getErrors());
-        $this->assertEquals(['age' => [ 'Min' => ['expected' => 18, 'received' => "17"]]], $filter->getMessages());
-    }*/
-
-    /**
-     * Test filter get errors messages.
-     */
-    /*public function testFilterGetMessagesRulesStyle(): void
-    {
-        $rule = ['age min 18'];
-        $data = ['age' => '17'];
-
-        /** @var mixed */
-        /*$result = (new Filter())->filterMulti($data, $rule);
-
-        $this->assertEquals(1, $result->errors());
-        $this->assertEquals(['age' => [ 'Min' => ['expected' => 18, 'received' => "17"]]], $result->messages());
-    }*/
+    }
 }

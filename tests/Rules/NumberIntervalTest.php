@@ -25,8 +25,6 @@ class NumberIntervalTest extends TestCase
     public function numberProvider(): array
     {
         return [
-            ['A', '<>', 2, 4, true],
-
             [1, '<>', 2, 4, false],
             [2, '<>', 2, 4, true],
             [3, '<>', 2, 4, true],
@@ -49,7 +47,12 @@ class NumberIntervalTest extends TestCase
             [2, '>=<', 2, 4, false],
             [3, '>=<', 2, 4, false],
             [4, '>=<', 2, 4, false],
-            [5, '>=<', 2, 4, true]
+            [5, '>=<', 2, 4, true],
+
+
+            ['A', '>=<', 2, 4, true],
+            [3, '>=<', 'A', 4, true],
+            [3, '>=<', 2, 'A', true],
         ];
     }
 
@@ -66,10 +69,7 @@ class NumberIntervalTest extends TestCase
      */
     public function testValidate($received, string $operator, $min, $max, bool $result): void
     {
-        $instance = new NumberInterval();
-        $validated = $instance->validate($received, $operator, $min, $max);
-
-        $this->assertEquals($result, $validated);
+        $this->assertSame($result, (new NumberInterval())->validate($received, $operator, $min, $max));
     }
 
     /**

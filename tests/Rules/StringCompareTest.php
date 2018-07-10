@@ -25,31 +25,30 @@ class StringCompareTest extends TestCase
     public function stringProvider(): array
     {
         return [
-            //[2, '=', 2, true],
+            ['A', '>', 'B', true],
+            ['B', '>', 'B', true],
+            ['C', '>', 'B', false],
 
-            ['A', 'len>', 2, true],
-            ['AA', 'len>', 2, true],
-            ['AAA', 'len>', 2, false],
+            ['A', '<', 'B', false],
+            ['B', '<', 'B', true],
+            ['C', '<', 'B', true],
 
-            ['A', 'len<', 2, false],
-            ['AA', 'len<', 2, true],
-            ['AAA', 'len<', 2, true],
+            ['A', '>=', 'B', true],
+            ['B', '>=', 'B', false],
+            ['C', '>=', 'B', false],
 
-            ['A', 'len>=', 2, true],
-            ['AA', 'len>=', 2, false],
-            ['AAA', 'len>=', 2, false],
+            ['A', '<=', 'B', false],
+            ['B', '<=', 'B', false],
+            ['C', '<=', 'B', true],
 
-            ['A', 'len<=', 2, false],
-            ['AA', 'len<=', 2, false],
-            ['AAA', 'len<=', 2, true],
+            ['A', '=', 'B', true],
+            ['B', '=', 'B', false],
+            ['C', '=', 'B', true],
 
-            ['A', 'len=', 2, true],
-            ['AA', 'len=', 2, false],
-            ['AAA', 'len=', 2, true],
+            ['A', '!=', 'B', false],
+            ['B', '!=', 'B', true],
+            ['C', '!=', 'B', false],
 
-            ['A', '=', 'AA', true],
-            ['AA', '=', 'AA', false],
-            ['AAA', '=', 'AA', true]
         ];
     }
 
@@ -60,15 +59,12 @@ class StringCompareTest extends TestCase
      *
      * @param string $received
      * @param string $operator
-     * @param mixed $compare
+     * @param string $compare
      * @param bool $result
      */
-    public function testValidate(string $received, string $operator, $compare, bool $result): void
+    public function testValidate(string $received, string $operator, string $compare, bool $result): void
     {
-        $instance = new StringCompare();
-        $validated = $instance->validate($received, $operator, $compare);
-
-        $this->assertEquals($result, $validated);
+        $this->assertSame($result, (new StringCompare())->validate($received, $operator, $compare));
     }
 
     /**
