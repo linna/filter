@@ -22,40 +22,40 @@ composer require linna/filter
 ## Available Filters
 
 ### Filters
-| Name           | Description                                      | Rule Arguments | Operators                         | Example Data from `$_POST`   | Example Rule                             |
-|----------------|--------------------------------------------------|----------------|-----------------------------------|------------------------------|------------------------------------------|
-| Date           | Check for a valid date                           | 1              | none                              | `['born'] = '1980-06-01'`    | `'born: date Y-m-d'`                     |
-| DateCompare    | Compare one date with another                    | 3              | >, <, >=, <=, =                   | `['born'] = '1980-06-01'`    | `'born: datecompare < Y-m-d 1990-01-01'` |
-| Email          | Check for a valid email                          | 0              | none                              | `['email'] = 'foo@mail.com'` | `'email: email'`                         |
-| Escape         | Convert special chars in html entities           | 0              | none                              | `['name'] = 'foo<script>'`   | `'name: escape'`                         |
-| Number         | Check for a valid number                         | 0              | none                              | `['age'] = 25`               | `'age: number'`                          |
-| NumberCompare  | Compare one number with another                  | 2              | >, <, >=, <=, =                   | `['age'] = 25`               | `'age: numbercompare > 18'`              |
-| NumberInterval | Check if a number is included or not on interval | 3              | <>, ><, <=>, >=<                  | `['age'] = 25`               | `'age: numberinterval >< 18 80'`         |
-| Required       | Check for null values                            | 0              | none                              | `['name'] = 'foo'`           | `'name: required'`                       |
-| StringCompare  | Compare one string with another                  | 2              | len>, len<, len>=, len<=, len=, = | `['name'] = 'foo'`           | `'name: stringcompare len> 2'`           |
+| Name             | Description                                      | Rule Arguments | Operators           | Example Data from `$_POST`   | Example Rule                             |
+|------------------|--------------------------------------------------|----------------|---------------------|------------------------------|------------------------------------------|
+| Date             | Check for a valid date                           | 1              | none                | `['born'] = '1980-06-01'`    | `'born: date Y-m-d'`                     |
+| DateCompare      | Compare one date with another                    | 3              | >, <, >=, <=, =     | `['born'] = '1980-06-01'`    | `'born: datecompare < Y-m-d 1990-01-01'` |
+| Email            | Check for a valid email                          | 0              | none                | `['email'] = 'foo@mail.com'` | `'email: email'`                         |
+| Escape           | Convert special chars in html entities           | 0              | none                | `['name'] = 'foo<script>'`   | `'name: escape'`                         |
+| Number           | Check for a valid number                         | 0              | none                | `['age'] = 25`               | `'age: number'`                          |
+| NumberCompare    | Compare one number with another                  | 2              | >, <, >=, <=, =     | `['age'] = 25`               | `'age: numbercompare > 18'`              |
+| NumberInterval   | Check if a number is included or not on interval | 3              | <>, ><, <=>, >=<    | `['age'] = 25`               | `'age: numberinterval >< 18 80'`         |
+| Required         | Check for null values                            | 0              | none                | `['name'] = 'foo'`           | `'name: required'`                       |
+| StringLenCompare | Check the length of a string                     | 2              | >, <, >=, <=, =, != | `['name'] = 'foo'`           | `'name: stringlencompare > 2'`           |
 
 ### Operators
-| Filter         | Operator | Description                   | Notes                             |
-|----------------|----------|-------------------------------|-----------------------------------|
-| DateCompare    | <        | less than                     |                                   |
-|                | >        | greater than                  |                                   |
-|                | <=       | less than or equal            |                                   |
-|                | >=       | greater than or equal         |                                   |
-|                | =        | equal                         | PHP === equal                     |
-| NumberCompare  | <        | less than                     |                                   |
-|                | >        | greater than                  |                                   |
-|                | <=       | less than or equal            |                                   |
-|                | >=       | greater than or equal         |                                   |
-| NumberInterval | <>       | out interval, exclusive       | 8-10: 7, 11 true - 8, 9, 10 false |
-|                | ><       | in interval, exclusive        | 8-10: 9 true - 7, 8, 10, 11 false |
-|                | <=>      | out interval, inclusive       | 8-10: 7, 8, 10, 11 true - 9 false |
-|                | >=<      | in interval, inclusive        | 8-10: 8, 9, 10 true - 7, 11 false |
-| StringCompare  | len<     | length less than              | PHP strlen(string) < number       |
-|                | len>     | length greater than           | PHP strlen(string) > number       |
-|                | len<=    | length less than or equal     | PHP strlen(string) <= number      |
-|                | len>=    | length greather than or equal | PHP strlen(string) >= number      |
-|                | len=     | length equal                  | PHP strlen(string) === number     |
-|                | =        | equal                         | PHP === equal                     |
+| Filter           | Operator | Description                   | Notes                             |
+|------------------|----------|-------------------------------|-----------------------------------|
+| DateCompare      | <        | less than                     |                                   |
+|                  | >        | greater than                  |                                   |
+|                  | <=       | less than or equal            |                                   |
+|                  | >=       | greater than or equal         |                                   |
+|                  | =        | equal                         | PHP === equal                     |
+| NumberCompare    | <        | less than                     |                                   |
+|                  | >        | greater than                  |                                   |
+|                  | <=       | less than or equal            |                                   |
+|                  | >=       | greater than or equal         |                                   |
+| NumberInterval   | <>       | out interval, exclusive       | 8-10: 7, 11 true - 8, 9, 10 false |
+|                  | ><       | in interval, exclusive        | 8-10: 9 true - 7, 8, 10, 11 false |
+|                  | <=>      | out interval, inclusive       | 8-10: 7, 8, 10, 11 true - 9 false |
+|                  | >=<      | in interval, inclusive        | 8-10: 8, 9, 10 true - 7, 11 false |
+| StringLenCompare | <        | length less than              | PHP strlen(string) < number       |
+|                  | >        | length greater than           | PHP strlen(string) > number       |
+|                  | <=       | length less than or equal     | PHP strlen(string) <= number      |
+|                  | >=       | length greather than or equal | PHP strlen(string) >= number      |
+|                  | =        | length equal                  | PHP strlen(string) === number     |
+|                  | !=       | length not equal              | PHP strlen(string) !== number     |
 
 ## Usage
 Filters can be used in two different ways.
@@ -95,17 +95,14 @@ $_POST = [
     'born' => '1980-06-01',
 ];
 
-//setting rules
-$rules = [
-    'email: required, email',
-    'password: required, stringcompare len>= 12',
-    'age: number, numbercompare < 30',
-    'born: date Y-m-d, datecompare <= Y-m-d 1990-12-31',
-];
-
 //create instance
 $filter = new Filter();
-$filter->filterMulti($_POST, $rules);
+$filter->filterMulti($_POST, [
+    'email: required, email',
+    'password: required, stringlencompare >= 12',
+    'age: number, numbercompare < 30',
+    'born: date Y-m-d, datecompare <= Y-m-d 1990-12-31',
+]);
 
 //int 0
 var_dump($filter->getErrors());
@@ -167,7 +164,7 @@ $_POST = [
 
 $rules = [
     'email required email',
-    'password required stringcompare len>= 12',
+    'password required stringlencompare >= 12',
     'age number numberinterval >=< 20 30',
     'born date Y-m-d datecompare <= Y-m-d 1990-12-31',
 ];
@@ -179,7 +176,7 @@ Input name separator `:`
 ```php
 $rules = [
     'email: required email',
-    'password: required stringcompare len>= 12',
+    'password: required stringlencompare >= 12',
     'age: number numberinterval >=< 20 30',
     'born: date Y-m-d datecompare <= Y-m-d 1990-12-31',
 ];
@@ -190,7 +187,7 @@ Rules separator `,`
 ```php
 $rules = [
     'email: required, email',
-    'password: required, stringcompare len>= 12',
+    'password: required, stringlencompare >= 12',
     'age: number, numberinterval >=< 20 30',
     'born: date Y-m-d, datecompare <= Y-m-d 1990-12-31',
 ];
@@ -202,7 +199,7 @@ Rule arguments separator `,`
 ```php
 $rules = [
     'email: required; email',
-    'password: required; stringcompare len>=, 12',
+    'password: required; stringlencompare >=, 12',
     'age: number; numberinterval >=<, 20, 30',
     'born: date Y-m-d; datecompare <=, Y-m-d, 1990-12-31',
 ];
@@ -212,28 +209,28 @@ Must be used for params that contain spaces one of this chars: `"` `'`
 ```php
 $rules = [
     'email: required email',
-    'password: required stringcompare len>= 12',
+    'password: required stringlencompare >= 12',
     'age: number numberinterval >=< 20 30',
     'born: date "Y m d" datecompare <= "Y m d" "1990 12 31"',
 ];
 
 $rules = [
     "email: required email",
-    "password: required stringcompare len>= 12",
+    "password: required stringlencompare >= 12",
     "age: number numberinterval >=< 20 30",
     "born: date \"Y m d\" datecompare <= \"Y m d\" \"1990 12 31\"",
 ];
 
 $rules = [
     "email: required email",
-    "password: required stringcompare len>= 12",
+    "password: required stringlencompare >= 12",
     "age: number numberinterval >=< 20 30",
     "born: date 'Y m d' datecompare <= 'Y m d' '1990 12 31'",
 ];
 
 $rules = [
     'email: required email',
-    'password: required stringcompare len>= 12',
+    'password: required stringlencompare >= 12',
     'age: number numberinterval >=< 20 30',
     'born: date \'Y m d\' datecompare <= \'Y m d\' \'1990 12 31\'',
 ];
