@@ -18,10 +18,15 @@ use DateTime;
  */
 class Date extends AbstractDate implements RuleInterface
 {
-    /**
-     * @var array Arguments expected.
-     */
-    private $arguments = ['string'];
+    public static $config = [
+        'class' => 'Date',
+        'full_class' => __CLASS__,
+        'alias' => ['date', 'dat', 'd'],
+        'args_count' => 1,
+        'args_type' => ['string'],
+        'has_validate' => true,
+        'has_sanitize' => true
+    ];
 
     /**
      * @var string Valid date.
@@ -52,14 +57,17 @@ class Date extends AbstractDate implements RuleInterface
             return true;
         }
 
+        //da spostare nella funzione apposita
         $dateTimeObject = DateTime::createFromFormat($format, $received);
 
         if (!($dateTimeObject instanceof DateTime)) {
             return true;
         }
+        $this->dateTimeObject = $dateTimeObject;
+        //spostare fino a qui
 
         $this->date = $received;
-        $this->dateTimeObject = $dateTimeObject;
+
 
         return false;
     }

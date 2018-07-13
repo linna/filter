@@ -47,7 +47,9 @@ class ParserTest extends TestCase
         $parser = new Parser();
         $lexer = new Lexer();
 
-        $this->assertSame($test, $parser->parse($lexer->tokenize($rule), RuleBuilder::build()));
+        [$rules, $alias] = RuleBuilder::build();
+
+        $this->assertSame($test, $parser->parse($lexer->tokenize($rule), $rules, $alias));
     }
 
     /**
@@ -83,6 +85,9 @@ class ParserTest extends TestCase
         $parser = new Parser();
         $lexer = new Lexer();
 
-        $parser->parse($lexer->tokenize($rule), RuleBuilder::build());
+        //thanks php 7.1 for array destructuring!
+        [$rules, $alias] = RuleBuilder::build();
+
+        $parser->parse($lexer->tokenize($rule), $rules, $alias);
     }
 }

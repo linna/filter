@@ -17,9 +17,17 @@ namespace Linna\Filter\Rules;
 class Escape implements RuleSanitizeInterface
 {
     /**
-     * @var array Arguments expected.
+     * @var array Rule properties
      */
-    private $arguments = [];
+    public static $config = [
+        'class' => 'Escape',
+        'full_class' => __CLASS__,
+        'alias' => ['escape', 'escp', 'es'],
+        'args_count' => 0,
+        'args_type' => [],
+        'has_validate' => false,
+        'has_sanitize' => true
+    ];
 
     /**
      * @var array Forbidden special chars in interger format.

@@ -20,9 +20,17 @@ use UnexpectedValueException;
 class DateCompare extends AbstractDate implements RuleInterface
 {
     /**
-     * @var array Arguments expected.
+     * @var array Rule properties
      */
-    private $arguments = ['string', 'string', 'string'];
+    public static $config = [
+        'class' => 'DateCompare',
+        'full_class' => __CLASS__,
+        'alias' => ['datecompare', 'datcmp', 'dc'],
+        'args_count' => 3,
+        'args_type' => ['string', 'string', 'string'],
+        'has_validate' => true,
+        'has_sanitize' => true
+    ];
 
     /**
      * @var string Valid date.

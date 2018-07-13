@@ -22,17 +22,28 @@ composer require linna/filter
 ## Available Filters
 
 ### Filters
-| Name             | Description                                      | Rule Arguments | Operators           | Example Data from `$_POST`   | Example Rule                             |
-|------------------|--------------------------------------------------|----------------|---------------------|------------------------------|------------------------------------------|
-| Date             | Check for a valid date                           | 1              | none                | `['born'] = '1980-06-01'`    | `'born: date Y-m-d'`                     |
-| DateCompare      | Compare one date with another                    | 3              | >, <, >=, <=, =     | `['born'] = '1980-06-01'`    | `'born: datecompare < Y-m-d 1990-01-01'` |
-| Email            | Check for a valid email                          | 0              | none                | `['email'] = 'foo@mail.com'` | `'email: email'`                         |
-| Escape           | Convert special chars in html entities           | 0              | none                | `['name'] = 'foo<script>'`   | `'name: escape'`                         |
-| Number           | Check for a valid number                         | 0              | none                | `['age'] = 25`               | `'age: number'`                          |
-| NumberCompare    | Compare one number with another                  | 2              | >, <, >=, <=, =     | `['age'] = 25`               | `'age: numbercompare > 18'`              |
-| NumberInterval   | Check if a number is included or not on interval | 3              | <>, ><, <=>, >=<    | `['age'] = 25`               | `'age: numberinterval >< 18 80'`         |
-| Required         | Check for null values                            | 0              | none                | `['name'] = 'foo'`           | `'name: required'`                       |
-| StringLenCompare | Check the length of a string                     | 2              | >, <, >=, <=, =, != | `['name'] = 'foo'`           | `'name: stringlencompare > 2'`           |
+| Rule Name        | Aliases        | Description                                      | Rule Arguments | Operators           | Example Data from `$_POST`   | Example Rule                             |
+|------------------|----------------|--------------------------------------------------|----------------|---------------------|------------------------------|------------------------------------------|
+| date             | dat, d         | Check for a valid date                           | 1              | none                | `['born'] = '1980-06-01'`    | `'born: date Y-m-d'`                     |
+| datecompare      | datcmp, dc     | Compare one date with another                    | 3              | >, <, >=, <=, =     | `['born'] = '1980-06-01'`    | `'born: datecompare < Y-m-d 1990-01-01'` |
+| email            | mail, e@       | Check for a valid email                          | 0              | none                | `['email'] = 'foo@mail.com'` | `'email: email'`                         |
+| escape           | escp, es       | Convert special chars in html entities           | 0              | none                | `['name'] = 'foo<script>'`   | `'name: escape'`                         |
+| number           | num, n         | Check for a valid number and cast to number      | 0              | none                | `['age'] = 25`               | `'age: number'`                          |
+| numbercompare    | numcmp, nc     | Compare one number with another                  | 2              | >, <, >=, <=, =     | `['age'] = 25`               | `'age: numbercompare > 18'`              |
+| numberinterval   | numint, ni     | Check if a number is included or not on interval | 3              | <>, ><, <=>, >=<    | `['age'] = 25`               | `'age: numberinterval >< 18 80'`         |
+| required         | req, rq        | Check for null values                            | 0              | none                | `['name'] = 'foo'`           | `'name: required'`                       |
+| str              | string, s      | Cast to string                                   | 0              | none                | `['name'] = 'foo'`           | `'name: str'`                            |
+| stringlencompare | strlencmp, slc | Check the length of a string                     | 2              | >, <, >=, <=, =, != | `['name'] = 'foo'`           | `'name: stringlencompare > 2'`           |
+
+A rule could be called with the name or with the alias. An alias help to write rules more quickly.
+
+```php
+//using rule name
+$rule = 'age: number, numbercompare < 30';
+
+//using alias
+$rule = 'age: n, nc < 30';
+```
 
 ### Operators
 | Filter           | Operator | Description                   | Notes                             |

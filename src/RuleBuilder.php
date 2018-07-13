@@ -11,8 +11,6 @@ declare(strict_types = 1);
 
 namespace Linna\Filter;
 
-use ReflectionClass;
-
 /**
  * Build filter rules from files in rule directory.
  */
@@ -25,29 +23,32 @@ class RuleBuilder
      */
     public static function build(): array
     {
+        $alias = [];
         $rules = [];
         $files = glob(__DIR__.'/Rules/*.php', GLOB_ERR);
 
         foreach ($files as $entry) {
+            //get file name
             $class = basename(str_replace('.php', '', $entry));
-            $ruleKeyword = strtolower($class);
+            $keyword = strtolower($class);
+            //get full class name
+            $class = __NAMESPACE__."\Rules\\{$class}";
+            //get config for the rule
+            $rules[$keyword] = $class::$config;
 
-            $reflection = new ReflectionClass(__NAMESPACE__."\Rules\\{$class}");
-            $args = $reflection->getDefaultProperties()['arguments'];
-            $hasValidate = $reflection->hasMethod('validate');
-            $hasSanitize = $reflection->hasMethod('sanitize');
+            //fill array with alias
+            $keys = $values = $rules[$keyword]['alias'];
+            //fill array of values with name of the class
+            $values = array_fill(0, count($keys), $keyword);
+            //combine keys and values
+            $array = array_combine($keys, $values);
+            //add all to alias array
+            $alias = array_merge($alias, $array);
 
-            $rules[$ruleKeyword] = [
-                'class' => $class,
-                'full_class' => 'Linna\Filter\Rules\\'.$class,
-                'keyword' => $ruleKeyword,
-                'args_count' => count($args),
-                'args_type' => $args,
-                'has_validate' => $hasValidate,
-                'has_sanitize' => $hasSanitize
-            ];
+            //free memory
+            unset($rules[$keyword]['alias']);
         }
 
-        return $rules;
+        return [$rules, $alias];
     }
 }

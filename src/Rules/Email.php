@@ -17,9 +17,17 @@ namespace Linna\Filter\Rules;
 class Email implements RuleInterface
 {
     /**
-     * @var array Arguments expected.
+     * @var array Rule properties
      */
-    private $arguments = [];
+    public static $config = [
+        'class' => 'Email',
+        'full_class' => __CLASS__,
+        'alias' => ['email', 'mail', 'e@'],
+        'args_count' => 0,
+        'args_type' => [],
+        'has_validate' => true,
+        'has_sanitize' => false
+    ];
 
     /**
      * @var string Error message

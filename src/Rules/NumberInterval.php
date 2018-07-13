@@ -19,9 +19,17 @@ use UnexpectedValueException;
 class NumberInterval extends AbstractNumber implements RuleSanitizeInterface
 {
     /**
-     * @var array Arguments expected.
+     * @var array Rule properties
      */
-    private $arguments = ['string', 'number', 'number'];
+    public static $config = [
+        'class' => 'NumberInterval',
+        'full_class' => __CLASS__,
+        'alias' => ['numberinterval', 'numint', 'ni'],
+        'args_count' => 3,
+        'args_type' => ['string', 'number', 'number'],
+        'has_validate' => true,
+        'has_sanitize' => true
+    ];
 
     /**
      * @var string Error message

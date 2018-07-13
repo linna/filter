@@ -15,29 +15,43 @@ use Linna\Filter\Rules\Number;
 use OutOfBoundsException;
 
 /**
- * Parser
+ * Parser.
+ *
  */
 class Parser
 {
     /**
-     * @var array Parsing rules.
+     * @var array Filters rules.
      */
-    private $rules;
+    private $rules = [];
 
     /**
-     * Parser.
-     *
-     * @param array $array
+     * @var array Rule aliases.
      */
-    public function parse(array $array, array $rules): array
+    private $alias = [];
+
+    /**
+     * Parse user defined rules.
+     *
+     * @param array $tokens Tokens from lexer
+     * @param array $rules  Rule properties
+     * @param array $alias  Alises for a rule
+     *
+     * @return array
+     */
+    public function parse(array $tokens, array $rules, array $alias): array
     {
         $this->rules = $rules;
+        $this->alias = $alias;
+        //var_dump($rules);
 
-        $this->extractParams($array);
-        $this->applyTypes($array);
-        $this->normalizeParam($array);
+        $this->extractParams($tokens);
+        $this->applyTypesToParams($tokens);
+        $this->normalizeParam($tokens);
 
-        return $array;
+        //var_dump($array);
+
+        return $tokens;
     }
 
     /**
@@ -51,19 +65,20 @@ class Parser
         $field = $words[0];
         $count = count($words);
 
-        $arguments = 0;
-
-        for ($i = 1, $c = -1; $i < $count; $i++) {
+        for ($i = 1, $c = -1, $args = 0; $i < $count; $i++) {
             $word = strtolower($words[$i]);
 
-            if (isset($this->rules[$word])) {
-                $arguments = $this->rules[$word]['args_count'];
+            if (isset($this->alias[$word])) {
+                //override word with the real name of the class
+                $word = $this->alias[$word];
+
+                $args = $this->rules[$word]['args_count'];
                 $array[$field][++$c] = [$word];
 
                 continue;
             }
 
-            if (--$arguments < 0) {
+            if (--$args < 0) {
                 throw new OutOfBoundsException("Unknown filter provided ({$word})");
             }
 
@@ -78,7 +93,7 @@ class Parser
      *
      * @param array $words
      */
-    private function applyTypes(array &$words): void
+    private function applyTypesToParams(array &$words): void
     {
         $rules = $this->rules;
         $field = key($words);

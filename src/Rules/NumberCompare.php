@@ -19,9 +19,17 @@ use UnexpectedValueException;
 class NumberCompare extends AbstractNumber implements RuleSanitizeInterface
 {
     /**
-     * @var array Arguments expected.
+     * @var array Rule properties
      */
-    private $arguments = ['string', 'number'];
+    public static $config = [
+        'class' => 'NumberCompare',
+        'full_class' => __CLASS__,
+        'alias' => ['numbercompare', 'numcmp', 'nc'],
+        'args_count' => 2,
+        'args_type' => ['string', 'number'],
+        'has_validate' => true,
+        'has_sanitize' => true
+    ];
 
     /**
      * @var string Error message

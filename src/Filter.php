@@ -42,22 +42,27 @@ class Filter
     private $errors = 0;
 
     /**
-     * @var array Filters working rules.
+     * @var array Filters rules.
      */
-    private $rules;
+    private $rules = [];
+
+    /**
+     * @var array Rule aliases.
+     */
+    private $alias = [];
 
     /**
      * Class Constructor.
      */
     public function __construct()
     {
-        $this->rules = RuleBuilder::build();
+        [$this->rules, $this->alias] = RuleBuilder::build();
     }
 
     /**
      * Filter one element with given rules.
      *
-     * @param mixed $data
+     * @param mixed  $data
      * @param string $rule
      *
      * @return object
@@ -164,7 +169,8 @@ class Filter
             $this->ruleToField(
                 $parser->parse(
                     $lexer->tokenize($rule),
-                    $this->rules
+                    $this->rules,
+                    $this->alias
                 )
             );
         }

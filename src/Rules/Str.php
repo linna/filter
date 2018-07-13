@@ -12,17 +12,18 @@ declare(strict_types = 1);
 namespace Linna\Filter\Rules;
 
 /**
- * Check if provided value is a number.
+ * Check if provided value is a string.
+ *
  */
-class Number extends AbstractNumber implements RuleSanitizeInterface
+class Str extends AbstractString implements RuleSanitizeInterface
 {
     /**
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'Number',
+        'class' => 'Str1ng',
         'full_class' => __CLASS__,
-        'alias' => ['number', 'num', 'n'],
+        'alias' => ['string', 'str', 's'],
         'args_count' => 0,
         'args_type' => [],
         'has_validate' => true,
@@ -37,14 +38,14 @@ class Number extends AbstractNumber implements RuleSanitizeInterface
     /**
      * Validate.
      *
-     * @param int|float $received
+     * @param mixed $received
      *
      * @return bool
      */
     public function validate($received): bool
     {
-        if (!is_numeric($received)) {
-            $this->message = "Received value is not a number";
+        if (!is_string($received)) {
+            $this->message = "Received value is not a string";
             return true;
         }
 
