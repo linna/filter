@@ -9,27 +9,27 @@
  */
 declare(strict_types = 1);
 
-use Linna\Filter\Rules\Number;
+use Linna\Filter\Rules\Str;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Number Test
+ * Str Test
  */
-class NumberTest extends TestCase
+class StrTest extends TestCase
 {
     /**
-     * Number provider.
+     * String provider.
      *
      * @return array
      */
-    public function numberProvider(): array
+    public function stringProvider(): array
     {
         return [
-            [1, false],
-            [1.1, false],
+            [1, true],
+            [1.1, true],
             ['1', false],
             ['1.1', false],
-            ['1a', true],
+            ['1a', false],
             [true, true],
             [[], true],
             [(object)[], true],
@@ -39,76 +39,13 @@ class NumberTest extends TestCase
     /**
      * Test validate.
      *
-     * @dataProvider numberProvider
+     * @dataProvider stringProvider
      *
-     * @param mixed $number
+     * @param mixed $string
      * @param bool $result
      */
-    public function testValidate($number, bool $result): void
+    public function testValidate($string, bool $result): void
     {
-        $this->assertEquals($result, (new Number())->validate($number));
-    }
-
-    /**
-     * Test sanitize.
-     *
-     * @dataProvider numberProvider
-     *
-     * @param mixed $number
-     * @param bool $result
-     */
-    public function testSanitize($number, bool $result): void
-    {
-        $instance = new Number();
-        $validated = $instance->validate($number);
-
-        if (!$validated) {
-            $temp = $number;
-            $instance->sanitize($temp);
-
-            if ((fmod((float) $number, 1.0) === 0.0)) {
-                $this->assertSame((int)$number, $temp);
-            }
-
-            if ((fmod((float) $number, 1.0) !== 0.0)) {
-                $this->assertSame((float)$number, $temp);
-            }
-        }
-
-        $this->assertEquals($result, $validated);
-    }
-
-    /**
-     * Number type provider.
-     *
-     * @return array
-     */
-    public function numberTypeProvider(): array
-    {
-        return [
-            ['0', 'integer'],
-            ['0.0', 'integer'],
-            ['0.5', 'double'],
-            ['1', 'integer'],
-            ['1.1', 'double'],
-            ['1.2', 'double'],
-            ['2', 'integer']
-        ];
-    }
-
-    /**
-     * Test sanitize.
-     *
-     * @dataProvider numberTypeProvider
-     *
-     * @param string $number
-     * @param string $result
-     */
-    public function testSanitizeType(string $number, string $result): void
-    {
-        $instance = new Number();
-        $instance->sanitize($number);
-
-        $this->assertEquals($result, gettype($number));
+        $this->assertEquals($result, (new Str())->validate($string));
     }
 }

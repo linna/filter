@@ -12,9 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Rule aliases
 * New rule and more human readable message system
 * `Linna\Filter->filterOne()` and `Linna\Filter->filterMulti()` methods now return a results object
-* `Linna\Filter\Rules\NumberIntervall` validate if a number inside or outside a range with operators ><, <>, >=<, <=
-* `Linna\Filter\Rules\NumberCompare` validate and compare numbers with operators <, >, >=, <=, =
-* `Linna\Filter\Rules\StringLenCompare` validate and compare length of a string with operators <, >, >=, <=, =, !=
+* `Linna\Filter\Rules\NumberIntervall` check if a number is inside or outside a range with operators ><, <>, >=<, <=
+* `Linna\Filter\Rules\NumberCompare` check and compare numbers with operators <, >, >=, <=, =
+* `Linna\Filter\Rules\Regex` check if value match a regex
+* `Linna\Filter\Rules\StringLenCompare` check length of a string with operators <, >, >=, <=, =, !=
 * `Linna\Filter\Rules\Str` sanitize strings (convert data type to string)
 
 ### Removed

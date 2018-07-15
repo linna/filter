@@ -11,32 +11,23 @@ declare(strict_types = 1);
 
 namespace Linna\Filter\Rules;
 
-use DateTime;
-
 /**
- * Check if one date is valid.
+ * Check if passed string match a regex
  */
-class Date extends AbstractDate implements RuleInterface
+class Regex implements RuleInterface
 {
+    /**
+     * @var array Rule properties
+     */
     public static $config = [
-        'class' => 'Date',
+        'class' => 'Regex',
         'full_class' => __CLASS__,
-        'alias' => ['date', 'dat', 'd'],
+        'alias' => ['regex', 'rex', 'rx'],
         'args_count' => 1,
         'args_type' => ['string'],
         'has_validate' => true,
-        'has_sanitize' => true
+        'has_sanitize' => false
     ];
-
-    /**
-     * @var string Valid date.
-     */
-    private $date;
-
-    /**
-     * @var DateTime Valid date in DateTime object.
-     */
-    private $dateTimeObject;
 
     /**
      * @var string Error message
@@ -47,66 +38,27 @@ class Date extends AbstractDate implements RuleInterface
      * Validate.
      *
      * @param string $received
-     * @param string $format
+     * @param string $regex
      *
      * @return bool
      */
-    public function validate(string $received, string $format): bool
+    public function validate(string $received, string $regex): bool
     {
-        if ($this->parseDate($received, $format)) {
+        $matches = [];
+        
+        $result = preg_match($regex, $received, $matches);
+        
+        if ($result === 0){
+            $this->message = "Received value must match regex {$regex}";
             return true;
         }
-
-        //da spostare nella funzione apposita
-        $dateTimeObject = DateTime::createFromFormat($format, $received);
-
-        if (!($dateTimeObject instanceof DateTime)) {
-            return true;
-        }
-        $this->dateTimeObject = $dateTimeObject;
-        //spostare fino a qui
-
-        $this->date = $received;
-
-
-        return false;
-    }
-
-    /**
-     * Parse date.
-     *
-     * @param string $received
-     * @param string $format
-     *
-     * @return bool
-     */
-    private function parseDate(string $received, string $format): bool
-    {
-        $date = date_parse_from_format($format, $received);
-
-        $message = "Received date is not in expected format {$format}";
-
-        if ($date['warning_count']) {
-            $this->message = $message;
-            return true;
-        }
-
-        if ($date['error_count']) {
-            $this->message = $message;
+        
+        if ($result === false){
+            $this->message = "Invalid regex provided {$regex}";
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * Return DateTime object.
-     *
-     * @return DateTime
-     */
-    public function getDateTimeObject(): DateTime
-    {
-        return $this->dateTimeObject;
     }
 
     /**
