@@ -83,7 +83,11 @@ $filter->filterOne(20, 'number numberinterval >< 15 25');
 //int 0
 var_dump($filter->getErrors());
 
-//array empty
+//messages
+//array (size=1)
+//  'data' => 
+//    array (size=0)
+//      empty
 var_dump($filter->getMessages());
 
 //filtered data
@@ -118,7 +122,20 @@ $filter->filterMulti($_POST, [
 //int 0
 var_dump($filter->getErrors());
 
-//array empty
+//messages
+//array (size=4)
+//  'email' => 
+//    array (size=0)
+//      empty
+//  'password' => 
+//    array (size=0)
+//      empty
+//  'age' => 
+//    array (size=0)
+//      empty
+//  'born' => 
+//    array (size=0)
+//      empty
 var_dump($filter->getMessages());
 
 //filtered data
