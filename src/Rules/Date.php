@@ -18,6 +18,9 @@ use DateTime;
  */
 class Date extends AbstractDate implements RuleInterface
 {
+    /**
+     * @var array Rule properties
+     */
     public static $config = [
         'class' => 'Date',
         'full_class' => __CLASS__,
