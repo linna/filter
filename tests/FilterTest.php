@@ -68,10 +68,12 @@ class FilterTest extends TestCase
         $filter->filterOne($data, $rule);
 
         $this->assertSame($errors, $filter->getErrors());
+        $this->assertSame($errors, count($filter->getMessages()['data']));
     }
 
     /**
      * Skip sanitize data provider
+     *
      * @return array
      */
     public function skipSanitizeProvider(): array
@@ -80,6 +82,7 @@ class FilterTest extends TestCase
           ['number', 1, 0, 1],
           ['number', '2', 0, 2],
           ['number', '1a', 1, '1a'],
+          ['required email', 'foo@baz.com', 0, 'foo@baz.com'],
         ];
     }
 
@@ -109,9 +112,9 @@ class FilterTest extends TestCase
     public function multiRulesDataResultProvider(): array
     {
         return [
+          [['age numbercompare > 18'],['agge' => '18'],1], //testing missing field
           [['age numbercompare > 18'],['age' => '19'],0],
           [['age numbercompare > 18'],['age' => '18'],1],
-          //[['age minnumbercompare > 18'],['agge' => '18'],1], //testing missing field
           [['age numbercompare > 18'],['age' => '17'],1],
           [['age numbercompare < 18'],['age' => '19'],1],
           [['age numbercompare < 18'],['age' => '18'],1],

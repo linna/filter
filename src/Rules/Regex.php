@@ -45,15 +45,15 @@ class Regex implements RuleInterface
     public function validate(string $received, string $regex): bool
     {
         $matches = [];
-        
+
         $result = preg_match($regex, $received, $matches);
-        
-        if ($result === 0){
+
+        if ($result === 0) {
             $this->message = "Received value must match regex {$regex}";
             return true;
         }
-        
-        if ($result === false){
+
+        if ($result === false) {
             $this->message = "Invalid regex provided {$regex}";
             return true;
         }

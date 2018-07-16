@@ -258,7 +258,7 @@ class Filter
 
             $message = $instance->getMessage();
 
-            if (strlen($message) > 0) {
+            if (strlen($message)) {
                 $this->messages[$field][] = $message;
             }
 
