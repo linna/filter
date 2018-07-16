@@ -12,6 +12,7 @@ declare(strict_types = 1);
 namespace Linna\Filter\Rules;
 
 use DateTime;
+use UnexpectedValueException;
 
 /**
  * Check if one date is valid.
@@ -37,9 +38,9 @@ class Date extends AbstractDate implements RuleInterface
     private $date;
 
     /**
-     * @var DateTime Valid date in DateTime object.
+     * @var string Date format.
      */
-    private $dateTimeObject;
+    private $format;
 
     /**
      * @var string Error message
@@ -60,17 +61,8 @@ class Date extends AbstractDate implements RuleInterface
             return true;
         }
 
-        //da spostare nella funzione apposita
-        $dateTimeObject = DateTime::createFromFormat($format, $received);
-
-        if (!($dateTimeObject instanceof DateTime)) {
-            return true;
-        }
-        $this->dateTimeObject = $dateTimeObject;
-        //spostare fino a qui
-
         $this->date = $received;
-
+        $this->format = $format;
 
         return false;
     }
@@ -106,10 +98,18 @@ class Date extends AbstractDate implements RuleInterface
      * Return DateTime object.
      *
      * @return DateTime
+     *
+     * @throws UnexpectedValueException
      */
     public function getDateTimeObject(): DateTime
     {
-        return $this->dateTimeObject;
+        $dateTimeObject = DateTime::createFromFormat($this->format, $this->date);
+
+        if (!($dateTimeObject instanceof DateTime)) {
+            throw new UnexpectedValueException();
+        }
+
+        return $dateTimeObject;
     }
 
     /**
