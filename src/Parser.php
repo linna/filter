@@ -43,13 +43,10 @@ class Parser
     {
         $this->rules = $rules;
         $this->alias = $alias;
-        //var_dump($rules);
 
         $this->extractParams($tokens);
         $this->applyTypesToParams($tokens);
         $this->normalizeParam($tokens);
-
-        //var_dump($array);
 
         return $tokens;
     }
@@ -62,27 +59,20 @@ class Parser
     private function extractParams(array &$words): void
     {
         $array = [];
-        $field = $words[0];
-        $count = count($words);
+        $field = array_shift($words);
 
-        for ($i = 1, $c = -1, $args = 0; $i < $count; $i++) {
-            $word = strtolower($words[$i]);
+        while (count($words)) {
+            $word = strtolower($words[0]);
 
             if (isset($this->alias[$word])) {
-                //override word with the real name of the class
                 $word = $this->alias[$word];
-
                 $args = $this->rules[$word]['args_count'];
-                $array[$field][++$c] = [$word];
 
+                $array[$field][] = array_splice($words, 0, (int) ++$args);
                 continue;
             }
 
-            if (--$args < 0) {
-                throw new OutOfBoundsException("Unknown filter provided ({$word})");
-            }
-
-            $array[$field][$c][] = $words[$i];
+            throw new OutOfBoundsException("Unknown filter provided ({$word})");
         }
 
         $words = $array;
