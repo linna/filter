@@ -16,7 +16,7 @@ use UnexpectedValueException;
 /**
  * Compare the length of provided string using >, <, >=, <=, = operators.
  */
-class StringLenCompare extends AbstractString implements RuleSanitizeInterface
+class StringLenCompare extends AbstractString implements RuleSanitizeInterface, RuleValidateInterface
 {
     /**
      * @var array Rule properties
@@ -28,7 +28,7 @@ class StringLenCompare extends AbstractString implements RuleSanitizeInterface
         'args_count' => 2,
         'args_type' => ['string', 'number'],
         'has_validate' => true,
-        'has_sanitize' => true
+        //'has_sanitize' => true
     ];
 
     /**
@@ -39,12 +39,25 @@ class StringLenCompare extends AbstractString implements RuleSanitizeInterface
     /**
      * Validate.
      *
+     * @return bool
+     */
+    public function validate(): bool
+    {
+        $args = func_get_args();
+
+        return $this->concreteValidate($args[0], $args[1], $args[2]);
+    }
+
+    /**
+     * Concrete validate.
+     *
      * @param string $received
      * @param string $operator
      * @param int    $compare
+     *
      * @return bool
      */
-    public function validate(string $received, string $operator, int $compare): bool
+    private function concreteValidate(string $received, string $operator, int $compare): bool
     {
         if ($this->switchOperator($operator, $received, $compare)) {
             return false;

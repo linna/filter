@@ -15,7 +15,7 @@ namespace Linna\Filter\Rules;
  * Check if provided value is a string.
  *
  */
-class Str extends AbstractString implements RuleSanitizeInterface
+class Str extends AbstractString implements RuleSanitizeInterface, RuleValidateInterface
 {
     /**
      * @var array Rule properties
@@ -27,7 +27,7 @@ class Str extends AbstractString implements RuleSanitizeInterface
         'args_count' => 0,
         'args_type' => [],
         'has_validate' => true,
-        'has_sanitize' => true
+        //'has_sanitize' => true
     ];
 
     /**
@@ -38,11 +38,23 @@ class Str extends AbstractString implements RuleSanitizeInterface
     /**
      * Validate.
      *
+     * @return bool
+     */
+    public function validate(): bool
+    {
+        $args = func_get_args();
+
+        return $this->concreteValidate($args[0]);
+    }
+
+    /**
+     * Concrete validate.
+     *
      * @param mixed $received
      *
      * @return bool
      */
-    public function validate($received): bool
+    private function concreteValidate($received): bool
     {
         if (!is_string($received)) {
             $this->message = "Received value is not a string";

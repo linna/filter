@@ -26,7 +26,7 @@ class Escape implements RuleSanitizeInterface
         'args_count' => 0,
         'args_type' => [],
         'has_validate' => false,
-        'has_sanitize' => true
+        //'has_sanitize' => true
     ];
 
     /**

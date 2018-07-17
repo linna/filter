@@ -16,7 +16,7 @@ use UnexpectedValueException;
 /**
  * Compare two numbers using >, <, >=, <=, = operators.
  */
-class NumberCompare extends AbstractNumber implements RuleSanitizeInterface
+class NumberCompare extends AbstractNumber implements RuleSanitizeInterface, RuleValidateInterface
 {
     /**
      * @var array Rule properties
@@ -28,7 +28,7 @@ class NumberCompare extends AbstractNumber implements RuleSanitizeInterface
         'args_count' => 2,
         'args_type' => ['string', 'number'],
         'has_validate' => true,
-        'has_sanitize' => true
+        //'has_sanitize' => true
     ];
 
     /**
@@ -39,13 +39,25 @@ class NumberCompare extends AbstractNumber implements RuleSanitizeInterface
     /**
      * Validate.
      *
+     * @return bool
+     */
+    public function validate(): bool
+    {
+        $args = func_get_args();
+
+        return $this->concreteValidate($args[0], $args[1], $args[2]);
+    }
+
+    /**
+     * Concrete validate.
+     *
      * @param int|float $received
      * @param string    $operator
      * @param int|float $compare
      *
      * @return bool
      */
-    public function validate($received, string $operator, $compare): bool
+    private function concreteValidate($received, string $operator, $compare): bool
     {
         if (!is_numeric($received)) {
             return true;

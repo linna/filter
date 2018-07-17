@@ -13,6 +13,7 @@ namespace Linna\Filter;
 
 use Linna\Filter\Rules\RuleInterface;
 use Linna\Filter\Rules\RuleSanitizeInterface;
+use Linna\Filter\Rules\RuleValidateInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -188,7 +189,7 @@ class Filter
             $ruleProps = $this->rules[$rule[1]];
             $ruleParams = $rule[2];
 
-            $instance = (new ReflectionClass($ruleProps['full_class']))->newInstance();
+            $instance = new $ruleProps['full_class']();
 
             //initialize message array
             $this->messages[$field] = $this->messages[$field] ?? [];
@@ -200,7 +201,7 @@ class Filter
 
             //invoke sanitize section of the filter
             //if filter fail go to next rule
-            if ($this->invokeValidate($instance, $field, $ruleProps, $ruleParams)) {
+            if ($this->invokeValidate($instance, $field, $ruleParams)) {
                 continue;
             }
 
@@ -236,24 +237,19 @@ class Filter
      *
      * @param RuleInterface $instance
      * @param string        $field
-     * @param array         $ruleProps
      * @param array         $ruleParams
      *
      * @return bool
      */
-    private function invokeValidate(
-        RuleInterface &$instance,
-        string $field,
-        array $ruleProps,
-        array $ruleParams
-    ): bool {
-        if (!$ruleProps['has_validate']) {
+    private function invokeValidate(RuleInterface &$instance, string $field, array $ruleParams): bool
+    {
+        if (!($instance instanceof RuleValidateInterface)) {
             return true;
         }
 
         array_unshift($ruleParams, $this->data[$field]);
 
-        if ((new ReflectionMethod($ruleProps['full_class'], 'validate'))->invokeArgs($instance, $ruleParams)) {
+        if (call_user_func_array(array($instance, 'validate'), $ruleParams)) {
             $this->errors++;
 
             $message = $instance->getMessage();

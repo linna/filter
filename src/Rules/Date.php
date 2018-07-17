@@ -17,7 +17,7 @@ use UnexpectedValueException;
 /**
  * Check if one date is valid.
  */
-class Date extends AbstractDate implements RuleInterface
+class Date extends AbstractDate implements RuleValidateInterface
 {
     /**
      * @var array Rule properties
@@ -29,7 +29,7 @@ class Date extends AbstractDate implements RuleInterface
         'args_count' => 1,
         'args_type' => ['string'],
         'has_validate' => true,
-        'has_sanitize' => true
+        //'has_sanitize' => false
     ];
 
     /**
@@ -50,12 +50,24 @@ class Date extends AbstractDate implements RuleInterface
     /**
      * Validate.
      *
+     * @return bool
+     */
+    public function validate(): bool
+    {
+        $args = func_get_args();
+
+        return $this->concreteValidate($args[0], $args[1]);
+    }
+
+    /**
+     * Concrete validate.
+     *
      * @param string $received
      * @param string $format
      *
      * @return bool
      */
-    public function validate(string $received, string $format): bool
+    private function concreteValidate(string $received, string $format): bool
     {
         if ($this->parseDate($received, $format)) {
             return true;

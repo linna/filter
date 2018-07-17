@@ -14,7 +14,7 @@ namespace Linna\Filter\Rules;
 /**
  * Check if passed string match a regex
  */
-class Regex implements RuleInterface
+class Regex implements RuleValidateInterface
 {
     /**
      * @var array Rule properties
@@ -26,7 +26,7 @@ class Regex implements RuleInterface
         'args_count' => 1,
         'args_type' => ['string'],
         'has_validate' => true,
-        'has_sanitize' => false
+        //'has_sanitize' => false
     ];
 
     /**
@@ -37,12 +37,24 @@ class Regex implements RuleInterface
     /**
      * Validate.
      *
+     * @return bool
+     */
+    public function validate(): bool
+    {
+        $args = func_get_args();
+
+        return $this->concreteValidate($args[0], $args[1]);
+    }
+
+    /**
+     * Concrete validate.
+     *
      * @param string $received
      * @param string $regex
      *
      * @return bool
      */
-    public function validate(string $received, string $regex): bool
+    private function concreteValidate(string $received, string $regex): bool
     {
         $matches = [];
 

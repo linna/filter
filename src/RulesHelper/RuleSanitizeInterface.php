@@ -12,12 +12,12 @@ declare(strict_types = 1);
 namespace Linna\Filter\Rules;
 
 /**
- * Rule Interface
+ * Rule Sanitize Interface
  */
 interface RuleSanitizeInterface extends RuleInterface
 {
     /**
-     * Sanitize and input.
+     * Sanitize an input.
      *
      * @param mixed $value
      */

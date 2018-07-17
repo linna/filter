@@ -15,7 +15,7 @@ namespace Linna\Filter\Rules;
  * Check required, value passed must be not null or not 0 length string.
  *
  */
-class Required implements RuleInterface
+class Required implements RuleValidateInterface
 {
     /**
      * @var array Rule properties
@@ -27,7 +27,7 @@ class Required implements RuleInterface
         'args_count' => 0,
         'args_type' => [],
         'has_validate' => true,
-        'has_sanitize' => false
+        //'has_sanitize' => false
     ];
 
     /**
@@ -38,11 +38,23 @@ class Required implements RuleInterface
     /**
      * Validate.
      *
+     * @return bool
+     */
+    public function validate(): bool
+    {
+        $args = func_get_args();
+
+        return $this->concreteValidate($args[0]);
+    }
+
+    /**
+     * Concrete validate.
+     *
      * @param mixed $received
      *
      * @return bool
      */
-    public function validate($received): bool
+    private function concreteValidate($received): bool
     {
         if ($received === null) {
             $this->message = "Received value is null";

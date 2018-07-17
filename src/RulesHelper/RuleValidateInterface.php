@@ -14,12 +14,12 @@ namespace Linna\Filter\Rules;
 /**
  * Rule Interface
  */
-interface RuleSanitizeInterface extends RuleInterface
+interface RuleValidateInterface extends RuleInterface
 {
     /**
-     * Sanitize and input.
+     * Validate an input.
      *
-     * @param mixed $value
+     * @return bool
      */
-    public function sanitize(&$value): void;
+    public function validate(): bool;
 }

@@ -14,7 +14,7 @@ namespace Linna\Filter\Rules;
 /**
  * Check if provided value is a number.
  */
-class Number extends AbstractNumber implements RuleSanitizeInterface
+class Number extends AbstractNumber implements RuleSanitizeInterface, RuleValidateInterface
 {
     /**
      * @var array Rule properties
@@ -26,7 +26,7 @@ class Number extends AbstractNumber implements RuleSanitizeInterface
         'args_count' => 0,
         'args_type' => [],
         'has_validate' => true,
-        'has_sanitize' => true
+        //'has_sanitize' => true
     ];
 
     /**
@@ -37,11 +37,23 @@ class Number extends AbstractNumber implements RuleSanitizeInterface
     /**
      * Validate.
      *
+     * @return bool
+     */
+    public function validate(): bool
+    {
+        $args = func_get_args();
+
+        return $this->concreteValidate($args[0]);
+    }
+
+    /**
+     * Concrete validate.
+     *
      * @param int|float $received
      *
      * @return bool
      */
-    public function validate($received): bool
+    private function concreteValidate($received): bool
     {
         if (!is_numeric($received)) {
             $this->message = "Received value is not a number";

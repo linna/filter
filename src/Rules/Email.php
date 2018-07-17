@@ -14,7 +14,7 @@ namespace Linna\Filter\Rules;
 /**
  * Check if provided email is valid.
  */
-class Email implements RuleInterface
+class Email implements RuleValidateInterface
 {
     /**
      * @var array Rule properties
@@ -26,7 +26,7 @@ class Email implements RuleInterface
         'args_count' => 0,
         'args_type' => [],
         'has_validate' => true,
-        'has_sanitize' => false
+        //'has_sanitize' => false
     ];
 
     /**
@@ -37,11 +37,23 @@ class Email implements RuleInterface
     /**
      * Validate.
      *
+     * @return bool
+     */
+    public function validate(): bool
+    {
+        $args = func_get_args();
+
+        return $this->concreteValidate($args[0]);
+    }
+
+    /**
+     * Concrete validate.
+     *
      * @param string $received
      *
      * @return bool
      */
-    public function validate(string $received): bool
+    private function concreteValidate(string $received): bool
     {
         if (!filter_var($received, FILTER_VALIDATE_EMAIL)) {
             $this->message = "Received string is an invalid e-mail address";
