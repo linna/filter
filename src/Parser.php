@@ -65,14 +65,16 @@ class Parser
             $word = strtolower($words[0]);
 
             if (isset($this->alias[$word])) {
-                $word = $this->alias[$word];
+                //replace the alias fo fix missing class error
+                //when call applyTypesToParams
+                $word = $words[0] = $this->alias[$word];
                 $args = $this->rules[$word]['args_count'];
 
                 $array[$field][] = array_splice($words, 0, (int) ++$args);
                 continue;
             }
 
-            throw new OutOfBoundsException("Unknown filter provided ({$word})");
+            throw new OutOfBoundsException("Unknown filter provided for field ({$field})");
         }
 
         $words = $array;
@@ -86,13 +88,31 @@ class Parser
     private function applyTypesToParams(array &$words): void
     {
         $rules = $this->rules;
-        $field = key($words);
+        $field = &$words[key($words)];
 
-        foreach ($words[$field] as $key => $word) {
-            $rule = $words[$field][$key][0];
+        //needed
+        $number = new Number();
 
-            //first param passed as reference
-            $this->castTypes($words[$field][$key], $rules[$rule]['args_type']);
+        //word variable need reference for point to value
+        foreach ($field as &$word) {
+
+            //old call
+            //$rule = $word[0];
+            //$this->castTypes($word, $rules[$word[0]]['args_type']);
+
+            //new code without call
+            $types = $rules[$word[0]]['args_type'];
+
+            foreach ($types as $key => $type) {
+                $param = &$word[$key+1];
+
+                if ($type === 'number') {
+                    $number->sanitize($param);
+                    continue;
+                }
+
+                settype($param, $type);
+            }
         }
     }
 
@@ -102,14 +122,12 @@ class Parser
      * @param array $params
      * @param array $types
      */
-    private function castTypes(array &$params, array $types): void
+    /*private function castTypes(array &$params, array $types): void
     {
         $number = new Number();
-        $count = count($params);
 
-        for ($i = 1,$k = 0; $i < $count; $i++) {
-            $type = &$types[$k++];
-            $param = &$params[$i];
+        foreach ($types as $key => $type) {
+            $param = &$params[$key+1];
 
             if ($type === 'number') {
                 $number->sanitize($param);
@@ -118,7 +136,7 @@ class Parser
 
             settype($param, $type);
         }
-    }
+    }*/
 
     /**
      * Organize rules' array.
@@ -130,9 +148,11 @@ class Parser
         $field = array_keys($words)[0];
         $temp = [];
 
-        foreach ($words[$field] as $key => $word) {
+        foreach ($words[$field] as $word) {
             $rule = $word[0];
 
+            //remove the first element from the array
+            //it's the name of the rule
             array_shift($word);
 
             $temp[] = [$field, $rule, $word];
