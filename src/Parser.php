@@ -7,7 +7,7 @@
  * @copyright (c) 2018, Sebastian Rapetti
  * @license http://opensource.org/licenses/MIT MIT License
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Linna\Filter;
 
@@ -104,7 +104,7 @@ class Parser
             $types = $rules[$word[0]]['args_type'];
 
             foreach ($types as $key => $type) {
-                $param = &$word[$key+1];
+                $param = &$word[$key + 1];
 
                 if ($type === 'number') {
                     $number->sanitize($param);

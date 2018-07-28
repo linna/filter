@@ -7,7 +7,7 @@
  * @copyright (c) 2018, Sebastian Rapetti
  * @license http://opensource.org/licenses/MIT MIT License
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Linna\Filter\Rules;
 
@@ -107,7 +107,7 @@ class NumberInterval extends AbstractNumber implements RuleSanitizeInterface, Ru
             case '<>': //outside interval exclusive
                 return $numberReceived < $min || $numberReceived > $max;
             case '<=>': //outside interval inclusive
-                return $numberReceived <= $min || $numberReceived >= $max;;
+                return $numberReceived <= $min || $numberReceived >= $max; ;
             default:
                 throw new UnexpectedValueException("Unknown comparson operator ({$operator}). Permitted ><, <>, >=<, <=>");
         }

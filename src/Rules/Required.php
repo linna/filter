@@ -7,7 +7,7 @@
  * @copyright (c) 2018, Sebastian Rapetti
  * @license http://opensource.org/licenses/MIT MIT License
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Linna\Filter\Rules;
 
@@ -61,7 +61,7 @@ class Required implements RuleValidateInterface
             return true;
         }
 
-        if (!strlen((string)$received)) {
+        if (!strlen((string) $received)) {
             $this->message = "Received value is a void string";
             return true;
         }
