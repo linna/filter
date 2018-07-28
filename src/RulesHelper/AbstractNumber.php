@@ -7,7 +7,7 @@
  * @copyright (c) 2018, Sebastian Rapetti
  * @license http://opensource.org/licenses/MIT MIT License
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Linna\Filter\Rules;
 
@@ -25,7 +25,7 @@ class AbstractNumber
     {
         settype($value, 'float');
 
-        if (fmod((float)$value, 1.0) === 0.0) {
+        if (fmod((float) $value, 1.0) === 0.0) {
             settype($value, 'integer');
         }
     }

@@ -7,7 +7,7 @@
  * @copyright (c) 2018, Sebastian Rapetti
  * @license http://opensource.org/licenses/MIT MIT License
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Linna\Filter\Rules;
 
@@ -24,7 +24,7 @@ class AbstractDate
      */
     protected function dateHaveNoTime(string $format): bool
     {
-        foreach (['a','A','B','g','G','h','H','i','s','u','v'] as $char) {
+        foreach (['a', 'A', 'B', 'g', 'G', 'h', 'H', 'i', 's', 'u', 'v'] as $char) {
             if (strpos($format, $char) !== false) {
                 return false;
             }
