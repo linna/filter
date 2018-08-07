@@ -23,6 +23,6 @@ class AbstractString
      */
     public function sanitize(&$value): void
     {
-        settype($value, 'string');
+        $value = (string) $value;
     }
 }

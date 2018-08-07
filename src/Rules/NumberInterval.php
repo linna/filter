@@ -72,9 +72,9 @@ class NumberInterval extends AbstractNumber implements RuleSanitizeInterface, Ru
             return true;
         }
 
-        settype($received, 'float');
-        settype($min, 'float');
-        settype($max, 'float');
+        $received = (float) $received;
+        $min = (float) $min;
+        $max = (float) $max;
 
         if ($this->switchOperator($operator, $received, $min, $max)) {
             return false;
