@@ -29,7 +29,6 @@ class Date extends AbstractDate implements RuleValidateInterface
         'args_count' => 1,
         'args_type' => ['string'],
         'has_validate' => true,
-        //'has_sanitize' => false
     ];
 
     /**
@@ -118,7 +117,7 @@ class Date extends AbstractDate implements RuleValidateInterface
         $dateTimeObject = DateTime::createFromFormat($this->format, $this->date);
 
         if (!($dateTimeObject instanceof DateTime)) {
-            throw new UnexpectedValueException();
+            throw new UnexpectedValueException('Failed to create DateTime object.');
         }
 
         return $dateTimeObject;
