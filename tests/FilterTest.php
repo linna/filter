@@ -65,7 +65,7 @@ class FilterTest extends TestCase
     public function testFilterOne(string $rule, string $data, int $errors): void
     {
         $filter = new Filter();
-        $filter->filterOne($data, $rule);
+        $filter->filter($data, $rule);
 
         $this->assertSame($errors, $filter->getErrors());
         $this->assertSame($errors, count($filter->getMessages()['data']));
@@ -98,7 +98,7 @@ class FilterTest extends TestCase
     public function testFilterSkipSanitize(string $rule, $data, int $error, $expectedData): void
     {
         $filter = new Filter();
-        $filter->filterOne($data, $rule);
+        $filter->filter($data, $rule);
 
         $this->assertEquals($error, $filter->getErrors());
         $this->assertSame($expectedData, $filter->getData()['data']);
@@ -153,7 +153,7 @@ class FilterTest extends TestCase
     public function testFilterMulti(array $rule, array $data, int $error): void
     {
         $filter = new Filter();
-        $filter->filterMulti($data, $rule);
+        $filter->filter($data, $rule);
 
         $this->assertEquals($error, $filter->getErrors());
     }
@@ -170,7 +170,7 @@ class FilterTest extends TestCase
     public function testFilterMultiResultStyle(array $rule, array $data, int $error): void
     {
         /** @var mixed */
-        $result = (new Filter())->filterMulti($data, $rule);
+        $result = (new Filter())->filter($data, $rule);
 
         $this->assertEquals($error, $result->errors());
     }
@@ -185,7 +185,7 @@ class FilterTest extends TestCase
         $result = ['age' => 19, 'born' => '1998-01-01'];
 
         $filter = new Filter();
-        $filter->filterMulti($data, $rule);
+        $filter->filter($data, $rule);
 
         $this->assertEquals(0, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
@@ -202,7 +202,7 @@ class FilterTest extends TestCase
         $result = ['age' => 19, 'born' => '1998-01-01'];
 
         /** @var mixed */
-        $r = (new Filter())->filterMulti($data, $rule);
+        $r = (new Filter())->filter($data, $rule);
 
         $this->assertEquals(0, $r->errors());
         $this->assertEquals($result, $r->data());
@@ -219,7 +219,7 @@ class FilterTest extends TestCase
         $result = ['born' => '1998-01-01'];
 
         $filter = new Filter();
-        $filter->filterMulti($data, $rule);
+        $filter->filter($data, $rule);
 
         $this->assertEquals(2, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());

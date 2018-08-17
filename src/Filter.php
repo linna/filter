@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Linna\Filter;
 
+use InvalidArgumentException;
 use Linna\Filter\Rules\RuleInterface;
 use Linna\Filter\Rules\RuleSanitizeInterface;
 use Linna\Filter\Rules\RuleValidateInterface;
@@ -61,35 +62,34 @@ class Filter
     }
 
     /**
-     * Filter one element with given rules.
+     * Filter.
      *
-     * @param mixed  $data
-     * @param string $rule
+     * @param mixed        $data
+     * @param array|string $rule
      *
-     * @return object
-     */
-    public function filterOne($data, string $rule)
-    {
-        $this->sanitizedData = $this->data = ['data' => $data];
-        $this->interpreteRules(['data '.$rule]);
-
-        return $this->buildResultObject();
-    }
-
-    /**
-     * Filter an array of elementes with given rules.
-     *
-     * @param array $data
-     * @param array $rules
+     * @throws InvalidArgumentException If rule isn't a string when used for only
+     *                                  one value. If data and rule aren't array
+     *                                  when used for multi values.
      *
      * @return object
      */
-    public function filterMulti(array $data, array $rules)
+    public function filter($data, $rule)
     {
-        $this->sanitizedData = $this->data = $data;
-        $this->interpreteRules($rules);
+        if (is_array($data) && is_array($rule)) {
+            $this->sanitizedData = $this->data = $data;
+            $this->interpreteRules($rule);
 
-        return $this->buildResultObject();
+            return $this->buildResultObject();
+        }
+
+        if (is_string($rule)) {
+            $this->sanitizedData = $this->data = ['data' => $data];
+            $this->interpreteRules(['data '.$rule]);
+
+            return $this->buildResultObject();
+        }
+
+        throw new InvalidArgumentException('Invalid types passed for data or rules.');
     }
 
     /**

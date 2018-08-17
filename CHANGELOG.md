@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.3.0](https://github.com/linna/filter/compare/v0.2.0...v0.3.0) - 2018-XX-XX 
+
+## Changed
+* `Linna\Filter->filterOne()` and `Linna\Filter->filterMulti()` merged in `Linna\Filter->filter()`
+
+## Fixed
+* [Issue #2](https://github.com/linna/filter/issues/2)
+
 ## [v0.2.0](https://github.com/linna/filter/compare/v0.1.0...v0.2.0) - 2018-07-28
 
 ### Added
