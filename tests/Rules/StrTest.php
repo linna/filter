@@ -9,6 +9,8 @@
  */
 declare(strict_types = 1);
 
+namespace Linna\Tests;
+
 use Linna\Filter\Rules\Str;
 use PHPUnit\Framework\TestCase;
 

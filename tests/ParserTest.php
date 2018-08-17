@@ -9,6 +9,8 @@
  */
 declare(strict_types = 1);
 
+namespace Linna\Tests;
+
 use Linna\Filter\Lexer;
 use Linna\Filter\Parser;
 use Linna\Filter\RuleBuilder;

@@ -9,6 +9,8 @@
  */
 declare(strict_types = 1);
 
+namespace Linna\Tests;
+
 use Linna\Filter\Rules\NumberCompare;
 use PHPUnit\Framework\TestCase;
 

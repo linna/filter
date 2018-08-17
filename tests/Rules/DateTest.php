@@ -9,6 +9,9 @@
  */
 declare(strict_types = 1);
 
+namespace Linna\Tests;
+
+use DateTime;
 use Linna\Filter\Rules\Date;
 use PHPUnit\Framework\TestCase;
 
