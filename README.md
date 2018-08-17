@@ -77,23 +77,23 @@ Apply one or more rules to one value:
 ```php
 use Linna\Filter\Filter;
 
-$filter = new Filter();
-$filter->filterOne(20, 'number numberinterval >< 15 25');
+$f = new Filter();
+$f->filter(20, 'number numberinterval >< 15 25');
 
 //int 0
-var_dump($filter->getErrors());
+var_dump($f->getErrors());
 
 //messages
 //array (size=1)
 //  'data' => 
 //    array (size=0)
 //      empty
-var_dump($filter->getMessages());
+var_dump($f->getMessages());
 
 //filtered data
 //array (size=1)
 //  'data' => int 20
-var_dump($filter->getData());
+var_dump($f->getData());
 ```
 
 ### Filter Multi
@@ -102,7 +102,7 @@ Apply one or more rules to many values:
 ```php
 use Linna\Filter\Filter;
 
-//simulate data from user form
+//force data on $_POST for simulate data from user form
 $_POST = [
     'email' => 'user@email.com',
     'password' => 'p4ssw0rd200!',
@@ -111,8 +111,8 @@ $_POST = [
 ];
 
 //create instance
-$filter = new Filter();
-$filter->filterMulti($_POST, [
+$fm = new Filter();
+$fm->filter($_POST, [
     'email: required, email',
     'password: required, stringlencompare >= 12',
     'age: number, numbercompare < 30',
@@ -120,7 +120,7 @@ $filter->filterMulti($_POST, [
 ]);
 
 //int 0
-var_dump($filter->getErrors());
+var_dump($fm->getErrors());
 
 //messages
 //array (size=4)
@@ -136,7 +136,7 @@ var_dump($filter->getErrors());
 //  'born' => 
 //    array (size=0)
 //      empty
-var_dump($filter->getMessages());
+var_dump($fm->getMessages());
 
 //filtered data
 //array (size=4)
@@ -144,7 +144,7 @@ var_dump($filter->getMessages());
 //  'password' => string 'p4ssw0rd200!' (length=12)
 //  'age' => int 25
 //  'born' => string '1980-06-01' (length=10)
-var_dump($filter->getData());
+var_dump($fm->getData());
 ```
 
 ## Retriving results
@@ -154,8 +154,8 @@ Using methods from `Filter` instance.
 ```php
 use Linna\Filter\Filter;
 
-$filter = new Filter();
-$filter->filterOne(20, 'number numberinterval >< 15 25');
+$f = new Filter();
+$f->filter(20, 'number numberinterval >< 15 25');
 
 $errors = $filter->getErrors();
 $messages = $filter->getMessages();
@@ -166,11 +166,11 @@ Using result object:
 ```php
 use Linna\Filter\Filter;
 
-$filter = new Filter();
-$result = $filter->filterOne(20, 'number numberinterval >< 15 25');
+$f = new Filter();
+$result = $f->filter(20, 'number numberinterval >< 15 25');
 
 //or with a single expression
-$result = (new Filter())->filterOne(20, 'number numberinterval >< 15 25');
+$result = (new Filter())->filter(20, 'number numberinterval >< 15 25');
 
 $errors = $result->errors();
 $messages = $result->messages();
