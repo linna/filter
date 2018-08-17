@@ -67,8 +67,8 @@ class NumberCompare extends AbstractNumber implements RuleSanitizeInterface, Rul
             return true;
         }
 
-        settype($received, 'float');
-        settype($compare, 'float');
+        $received = (float) $received;
+        $compare = (float) $compare;
 
         if ($this->switchOperator($operator, $received, $compare)) {
             return false;
