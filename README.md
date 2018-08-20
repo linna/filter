@@ -1,14 +1,26 @@
-![Linna Filter](logo-filter.png)
+<div align="center">
+    <a href="#"><img src="logo-linna-96.png" alt="Linna Logo"></a>
+</div>
+
 <br/>
+
+<div align="center">
+    <a href="#"><img src="logo-filter.png" alt="Linna dotenv Logo"></a>
+</div>
+
 <br/>
-<br/>
+
+<div align="center">
+
 [![Build Status](https://travis-ci.org/linna/filter.svg?branch=master)](https://travis-ci.org/linna/filter)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/linna/filter/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/linna/filter/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/linna/filter/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/linna/filter/?branch=master)
 [![StyleCI](https://styleci.io/repos/111321128/shield?branch=master&style=flat)](https://styleci.io/repos/111321128)
 
+</div>
 
-This package provide filters for user input data.
+## About
+This package provide filters for validate and sanitize user input data.
 
 ## Requirements
 This package require php 7.1
@@ -71,7 +83,7 @@ $rule = 'age: n, nc < 30';
 ## Usage
 Filters can be used in two different ways.
 
-### Filter One
+### Filter one field
 Apply one or more rules to one value:
 
 ```php
@@ -96,8 +108,8 @@ var_dump($f->getMessages());
 var_dump($f->getData());
 ```
 
-### Filter Multi
-Apply one or more rules to many values:
+### Filter multiple fields
+Apply one or more rules to many values, it is useful for validating forms:
 
 ```php
 use Linna\Filter\Filter;
