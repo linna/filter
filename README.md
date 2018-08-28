@@ -19,21 +19,21 @@
 
 </div>
 
-## About
+# About
 This package provide filters for validate and sanitize user input data.
 
-## Requirements
+# Requirements
 This package require php 7.1
 
-## Installation
+# Installation
 With composer:
 ```
 composer require linna/filter
 ```
 
-## Available Filters
+# Available Filters
 
-### Filters
+## Filters
 | Rule Name        | Aliases        | Description                                      | Rule Arguments | Operators           | Example Data from `$_POST`   | Example Rule                             |
 |------------------|----------------|--------------------------------------------------|----------------|---------------------|------------------------------|------------------------------------------|
 | date             | dat, d         | Check for a valid date                           | 1              | none                | `['born'] = '1980-06-01'`    | `'born: date Y-m-d'`                     |
@@ -58,7 +58,7 @@ $rule = 'age: number, numbercompare < 30';
 $rule = 'age: n, nc < 30';
 ```
 
-### Operators
+## Operators
 | Filter           | Operator | Description                   | Notes                             |
 |------------------|----------|-------------------------------|-----------------------------------|
 | DateCompare      | <        | less than                     |                                   |
@@ -81,10 +81,10 @@ $rule = 'age: n, nc < 30';
 |                  | =        | length equal                  | PHP strlen(string) === number     |
 |                  | !=       | length not equal              | PHP strlen(string) !== number     |
 
-## Usage
+# Usage
 Filters can be used in two different ways.
 
-### Filter one field
+## Filter one field
 Apply one or more rules to one value:
 
 ```php
@@ -109,7 +109,7 @@ var_dump($f->getMessages());
 var_dump($f->getData());
 ```
 
-### Filter multiple fields
+## Filter multiple fields
 Apply one or more rules to many values, it is useful for validating forms:
 
 ```php
@@ -160,7 +160,7 @@ var_dump($fm->getMessages());
 var_dump($fm->getData());
 ```
 
-## Retriving results
+# Retriving results
 There are two ways for get results from filter.
 
 Using methods from `Filter` instance.
@@ -190,7 +190,7 @@ $messages = $result->messages();
 $data = $result->data();
 ```
 
-## Rule syntax
+# Rule syntax
 Parser can accept rules formatted in varius way.  
 
 First word must be the name of the input, same present as index in input array.
