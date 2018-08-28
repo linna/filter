@@ -40,6 +40,7 @@ composer require linna/filter
 | datecompare      | datcmp, dc     | Compare one date with another                    | 3              | >, <, >=, <=, =     | `['born'] = '1980-06-01'`    | `'born: datecompare < Y-m-d 1990-01-01'` |
 | email            | mail, e@       | Check for a valid email                          | 0              | none                | `['email'] = 'foo@mail.com'` | `'email: email'`                         |
 | escape           | escp, es       | Convert special chars in html entities           | 0              | none                | `['name'] = 'foo<script>'`   | `'name: escape'`                         |
+| ip               | ip             | Check for a valid ip (ipv4 and ipv4)             | 0              | none                | `['host'] = 192.168.0.1`     | `'host: ip'`                             |
 | number           | num, n         | Check for a valid number and cast to number      | 0              | none                | `['age'] = 25`               | `'age: number'`                          |
 | numbercompare    | numcmp, nc     | Compare one number with another                  | 2              | >, <, >=, <=, =     | `['age'] = 25`               | `'age: numbercompare > 18'`              |
 | numberinterval   | numint, ni     | Check if a number is included or not on interval | 3              | <>, ><, <=>, >=<    | `['age'] = 25`               | `'age: numberinterval >< 18 80'`         |
@@ -114,7 +115,7 @@ Apply one or more rules to many values, it is useful for validating forms:
 ```php
 use Linna\Filter\Filter;
 
-//force data on $_POST for simulate data from user form
+//override $_POST superglobal for simulate data from user form
 $_POST = [
     'email' => 'user@email.com',
     'password' => 'p4ssw0rd200!',
@@ -194,7 +195,7 @@ Parser can accept rules formatted in varius way.
 
 First word must be the name of the input, same present as index in input array.
 ```php
-//simulate data from user form
+//override $_POST superglobal for simulate data from user form
 $_POST = [
     'email' => 'pippo@gmail.com',
     'password' => 'p4ssw0rd200!',

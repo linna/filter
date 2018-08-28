@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][v0.3.0](https://github.com/linna/filter/compare/v0.2.0...v0.3.0) - 2018-XX-XX 
 
 ### Added
+* `Linna\Filter\Rules\Ip` check for valid ipv4 and ipv6 address
 * Namespace for tests
 
 ### Changed
