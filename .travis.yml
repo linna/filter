@@ -10,4 +10,4 @@ script:
 #- ./vendor/bin/phpstan analyse --level 7 src
 #- ./vendor/bin/phpstan analyse --level 7 tests
 - ./vendor/bin/phpunit
-- ./vendor/bin/infection --min-msi=75 --min-covered-msi=75
+#- ./vendor/bin/infection --min-msi=75 --min-covered-msi=75
