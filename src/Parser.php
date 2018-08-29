@@ -95,12 +95,6 @@ class Parser
 
         //word variable need reference for point to value
         foreach ($field as &$word) {
-
-            //old call
-            //$rule = $word[0];
-            //$this->castTypes($word, $rules[$word[0]]['args_type']);
-
-            //new code without call
             $types = $rules[$word[0]]['args_type'];
 
             foreach ($types as $key => $type) {
@@ -115,28 +109,6 @@ class Parser
             }
         }
     }
-
-    /**
-     * Apply types when there is one parameter.
-     *
-     * @param array $params
-     * @param array $types
-     */
-    /*private function castTypes(array &$params, array $types): void
-    {
-        $number = new Number();
-
-        foreach ($types as $key => $type) {
-            $param = &$params[$key+1];
-
-            if ($type === 'number') {
-                $number->sanitize($param);
-                continue;
-            }
-
-            settype($param, $type);
-        }
-    }*/
 
     /**
      * Organize rules' array.

@@ -25,30 +25,17 @@ class Lexer
     public function tokenize(string $period): array
     {
         $chars = str_split(rtrim(ltrim($period)));
+        $count = count($chars);
         $words = $temp = [];
-        $string = 0;
 
-        if ($chars === false) {
-            return [];
-        }
-
-        foreach ($chars as $char) {
+        for ($i = 0; $i < $count; $i++) {
+            $char = $chars[$i];
             $ord = ord($char);
 
-            if (in_array($ord, [34, 39])) {
-                $string++;
-                continue;
-            }
-
-            if ($string === 1) {
-                $temp[] = $char;
-                continue;
-            }
-
-            if ($string === 2) {
-                $words[] = implode('', $temp);
-                $temp = [];
-                $string = 0;
+            //treat delimited string separately
+            //this fix some problems with regex rule
+            if (in_array($ord, [34, 35, 39, 47, 126])) {
+                $temp[] = $this->mergeDelimitedString($count, $ord, $i, $chars);
                 continue;
             }
 
@@ -64,5 +51,38 @@ class Lexer
         $words[] = implode('', $temp);
 
         return array_values(array_filter($words, 'trim'));
+    }
+
+    /**
+     * Merge delimited string separately from main lexer cicle.
+     *
+     * @param int   $count Size of chars array.
+     * @param int   $ord   Delimiter that triggered this method.
+     * @param int   $i     Main cilce counter.
+     * @param array $chars Chars of period.
+     *
+     * @return string
+     */
+    private function mergeDelimitedString(int $count, int $ord, int &$i, array &$chars): string
+    {
+        $tmp = [];
+
+        while (++$i < $count) {
+            $char = $chars[$i];
+
+            if ($ord === ord($char)) {
+                break;
+            }
+
+            $tmp[] = $char;
+        }
+
+        //fix for regex, add delimiter
+        if (in_array($ord, [35, 47, 126])) {
+            array_unshift($tmp, chr($ord));
+            array_push($tmp, chr($ord));
+        }
+
+        return implode('', $tmp);
     }
 }

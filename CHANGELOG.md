@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 * `Linna\Filter->filterOne()` and `Linna\Filter->filterMulti()` merged in `Linna\Filter->filter()`
+* `Linna\Filter\Lexer` class improved
 
 ### Fixed
 * [Issue #2](https://github.com/linna/filter/issues/2)
