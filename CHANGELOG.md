@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Namespace for tests
 
 ### Changed
-* `Linna\Filter->filterOne()` and `Linna\Filter->filterMulti()` merged in `Linna\Filter->filter()`
+* `Linna\Filter\Filter->filterOne()` and `Linna\Filter\Filter->filterMulti()` merged in `Linna\Filter\Filter->filter()`
 * `Linna\Filter\Lexer` class improved
 
 ### Fixed
@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Rule aliases
 * New rule and more human readable message system
-* `Linna\Filter->filterOne()` and `Linna\Filter->filterMulti()` methods now return a results object
+* `Linna\Filter\Filter->filterOne()` and `Linna\Filter\Filter->filterMulti()` methods now return a results object
 * `Linna\Filter\Rules\NumberIntervall` check if a number is inside or outside a range with operators ><, <>, >=<, <=
 * `Linna\Filter\Rules\NumberCompare` check and compare numbers with operators <, >, >=, <=, =
 * `Linna\Filter\Rules\Regex` check if value match a regex
