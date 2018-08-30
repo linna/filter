@@ -50,4 +50,17 @@ class StrTest extends TestCase
     {
         $this->assertEquals($result, (new Str())->validate($string));
     }
+
+    /**
+     * Test get message.
+     */
+    public function testGetMessage(): void
+    {
+        $notString = 1;
+
+        $instance = new Str();
+        $instance->validate($notString);
+
+        $this->assertSame('Received value is not a string', $instance->getMessage());
+    }
 }

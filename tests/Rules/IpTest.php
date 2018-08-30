@@ -54,4 +54,15 @@ class IpTest extends TestCase
     {
         $this->assertSame($result, (new Ip())->validate($ip));
     }
+
+    /**
+     * Test get message.
+     */
+    public function testGetMessage(): void
+    {
+        $instance = new Ip();
+        $instance->validate('127.0.0');
+
+        $this->assertSame('Received value is not a valid ip address', $instance->getMessage());
+    }
 }

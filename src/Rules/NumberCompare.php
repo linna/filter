@@ -28,7 +28,6 @@ class NumberCompare extends AbstractNumber implements RuleSanitizeInterface, Rul
         'args_count' => 2,
         'args_type' => ['string', 'number'],
         'has_validate' => true,
-        //'has_sanitize' => true
     ];
 
     /**

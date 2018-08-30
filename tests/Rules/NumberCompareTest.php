@@ -108,4 +108,15 @@ class NumberCompareTest extends TestCase
     {
         (new NumberCompare())->validate(1, '!', 1);
     }
+
+    /**
+     * Test get message.
+     */
+    public function testGetMessage(): void
+    {
+        $instance = new NumberCompare();
+        $instance->validate('1', '=', '2');
+
+        $this->assertSame('Received number is not = 2', $instance->getMessage());
+    }
 }

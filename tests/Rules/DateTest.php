@@ -79,4 +79,15 @@ class DateTest extends TestCase
         $this->assertInstanceOf(DateTime::class, $instance->getDateTimeObject());
         $this->assertSame($date, $instance->getDateTimeObject()->format($format));
     }
+
+    /**
+     * Test get message.
+     */
+    public function testGetMessage(): void
+    {
+        $instance = new Date();
+        $instance->validate('2017-11-01', 'Y-m');
+
+        $this->assertSame('Received date is not in expected format Y-m', $instance->getMessage());
+    }
 }

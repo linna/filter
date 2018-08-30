@@ -83,4 +83,15 @@ class NumberIntervalTest extends TestCase
     {
         (new NumberInterval())->validate(1, '!', 2, 4);
     }
+
+    /**
+     * Test get message.
+     */
+    public function testGetMessage(): void
+    {
+        $instance = new NumberInterval();
+        $instance->validate('1', '><', '2', '4');
+
+        $this->assertSame('Received number is not 2 >< 4', $instance->getMessage());
+    }
 }

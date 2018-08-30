@@ -20,6 +20,7 @@ class AbstractDate
      * Check if format contain time keywords.
      *
      * @param string $format
+     *
      * @return bool
      */
     protected function dateHaveNoTime(string $format): bool

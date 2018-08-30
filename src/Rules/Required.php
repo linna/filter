@@ -27,7 +27,6 @@ class Required implements RuleValidateInterface
         'args_count' => 0,
         'args_type' => [],
         'has_validate' => true,
-        //'has_sanitize' => false
     ];
 
     /**

@@ -120,4 +120,15 @@ class DateCompareTest extends TestCase
 
         $this->assertSame('20180105000000', $instance->getDateTimeObject()->format('YmdHis'));
     }
+
+    /**
+     * Test get message.
+     */
+    public function testGetMessage(): void
+    {
+        $instance = new DateCompare();
+        $instance->validate('2018-01-05', '=', 'Y-m-d', '2018-01-06');
+
+        $this->assertSame('Received date is not = 2018-01-06', $instance->getMessage());
+    }
 }

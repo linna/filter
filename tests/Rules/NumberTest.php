@@ -113,4 +113,17 @@ class NumberTest extends TestCase
 
         $this->assertEquals($result, gettype($number));
     }
+
+    /**
+     * Test get message.
+     */
+    public function testGetMessage(): void
+    {
+        $number = '1';
+
+        $instance = new Number();
+        $instance->sanitize($number);
+
+        $this->assertSame('', $instance->getMessage());
+    }
 }

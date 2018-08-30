@@ -60,8 +60,8 @@ class StringLenCompareTest extends TestCase
      *
      * @param string $received
      * @param string $operator
-     * @param int $compare
-     * @param bool $result
+     * @param int    $compare
+     * @param bool   $result
      */
     public function testValidate(string $received, string $operator, int $compare, bool $result): void
     {
@@ -76,5 +76,16 @@ class StringLenCompareTest extends TestCase
     public function testUnknownOperator(): void
     {
         (new StringLenCompare())->validate('1', '!', 1);
+    }
+
+    /**
+     * Test get message for zero length string.
+     */
+    public function testGetMessageForZeroLength(): void
+    {
+        $instance = new StringLenCompare();
+        $instance->validate('A', '>', 2);
+
+        $this->assertSame('Received string length is not > of 2', $instance->getMessage());
     }
 }

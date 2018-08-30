@@ -28,7 +28,6 @@ class NumberInterval extends AbstractNumber implements RuleSanitizeInterface, Ru
         'args_count' => 3,
         'args_type' => ['string', 'number', 'number'],
         'has_validate' => true,
-        //'has_sanitize' => true
     ];
 
     /**

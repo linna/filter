@@ -20,6 +20,7 @@ class Lexer
      * Split period in tokens.
      *
      * @param string $period
+     *
      * @return array
      */
     public function tokenize(string $period): array

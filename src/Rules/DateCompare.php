@@ -29,7 +29,6 @@ class DateCompare extends AbstractDate implements RuleValidateInterface
         'args_count' => 3,
         'args_type' => ['string', 'string', 'string'],
         'has_validate' => true,
-        //'has_sanitize' => false
     ];
 
     /**

@@ -28,7 +28,6 @@ class StringLenCompare extends AbstractString implements RuleSanitizeInterface, 
         'args_count' => 2,
         'args_type' => ['string', 'number'],
         'has_validate' => true,
-        //'has_sanitize' => true
     ];
 
     /**

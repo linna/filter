@@ -48,4 +48,26 @@ class RequiredTest extends TestCase
     {
         $this->assertSame($result, (new Required())->validate($value));
     }
+
+    /**
+     * Test get message for null value.
+     */
+    public function testGetMessageForNull(): void
+    {
+        $instance = new Required();
+        $instance->validate(null);
+
+        $this->assertSame('Received value is null', $instance->getMessage());
+    }
+
+    /**
+     * Test get message for zero length string.
+     */
+    public function testGetMessageForZeroLength(): void
+    {
+        $instance = new Required();
+        $instance->validate('');
+
+        $this->assertSame('Received value is a void string', $instance->getMessage());
+    }
 }

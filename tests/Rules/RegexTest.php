@@ -11,6 +11,7 @@ declare(strict_types = 1);
 
 namespace Linna\Tests;
 
+use InvalidArgumentException;
 use Linna\Filter\Rules\Regex;
 use PHPUnit\Framework\TestCase;
 
@@ -44,5 +45,27 @@ class RegexTest extends TestCase
     public function testValidate(string $value, string $regex, bool $result): void
     {
         $this->assertSame($result, (new Regex())->validate($value, $regex));
+    }
+
+    /**
+     * Test invalid regex.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid regex provided /^$/g.
+     */
+    public function testInvalidRegex(): void
+    {
+        $this->assertSame(true, (new Regex())->validate('hello', '/^$/g'));
+    }
+
+    /**
+     * Test get message.
+     */
+    public function testGetMessage(): void
+    {
+        $instance = new Regex();
+        $instance->validate('hello', '/^Hello$/');
+
+        $this->assertSame("Received value not match regex /^Hello$/", $instance->getMessage());
     }
 }

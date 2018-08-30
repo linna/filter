@@ -52,4 +52,17 @@ class EscapeTest extends TestCase
 
         $this->assertSame($result, $string);
     }
+
+    /**
+     * Test get message.
+     */
+    public function testGetMessage(): void
+    {
+        $string = '12345678()';
+
+        $instance = new Escape();
+        $instance->sanitize($string);
+
+        $this->assertSame('', $instance->getMessage());
+    }
 }
