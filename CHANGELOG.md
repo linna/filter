@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 * `Linna\Filter\Filter->filterOne()` and `Linna\Filter\Filter->filterMulti()` merged in `Linna\Filter\Filter->filter()`
 * `Linna\Filter\Lexer` class improved
+* `Linna\Filter\Rules\Regex` now throw an `InvalidArgumentException` if invalid regex is provided
 
 ### Fixed
 * [Issue #2](https://github.com/linna/filter/issues/2)
