@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Linna\Filter\Rules;
 
+use InvalidArgumentException;
+
 /**
  * Check if passed string match a regex
  */
@@ -26,7 +28,6 @@ class Regex implements RuleValidateInterface
         'args_count' => 1,
         'args_type' => ['string'],
         'has_validate' => true,
-        //'has_sanitize' => false
     ];
 
     /**
@@ -53,20 +54,23 @@ class Regex implements RuleValidateInterface
      * @param string $regex
      *
      * @return bool
+     *
+     * @throws InvalidArgumentException If a bad regex is provided.
      */
     private function concreteValidate(string $received, string $regex): bool
     {
         $matches = [];
 
-        $result = preg_match($regex, $received, $matches);
-
-        if ($result === 0) {
-            $this->message = "Received value must match regex {$regex}";
-            return true;
-        }
+        //error suppressed with @ because if occours preg_match PHP show a warning
+        //error replaced with exception
+        $result = @preg_match($regex, $received, $matches);
 
         if ($result === false) {
-            $this->message = "Invalid regex provided {$regex}";
+            throw new InvalidArgumentException("Invalid regex provided {$regex}.");
+        }
+
+        if ($result === 0) {
+            $this->message = "Received value not match regex {$regex}";
             return true;
         }
 
