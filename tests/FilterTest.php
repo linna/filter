@@ -161,6 +161,18 @@ class FilterTest extends TestCase
     }
 
     /**
+     * Test filter with invalid rule format.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid types passed for data or rules.
+     */
+    public function testFilterWithInvalidRuleFormat(): void
+    {
+        $filter = new Filter();
+        $filter->filter(0, 0);
+    }
+
+    /**
      * Test Filter.
      *
      * @dataProvider multiRulesDataResultProvider
@@ -185,12 +197,15 @@ class FilterTest extends TestCase
         $rule = ['age numbercompare > 18 numbercompare < 22', 'born date Y-m-d'];
         $data = ['age' => '19', 'born' => '1998-01-01'];
         $result = ['age' => 19, 'born' => '1998-01-01'];
+        $messages = ['age' => [], 'born' => []];
 
         $filter = new Filter();
         $filter->filter($data, $rule);
 
         $this->assertEquals(0, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
+        $this->assertEquals($messages, $filter->getMessages());
+
         $this->assertInternalType('integer', $filter->getData()['age']);
     }
 
@@ -202,12 +217,15 @@ class FilterTest extends TestCase
         $rule = ['age numbercompare > 18 numbercompare < 22', 'born date Y-m-d'];
         $data = ['age' => '19', 'born' => '1998-01-01'];
         $result = ['age' => 19, 'born' => '1998-01-01'];
+        $messages = ['age' => [], 'born' => []];
 
         /** @var mixed */
         $r = (new Filter())->filter($data, $rule);
 
         $this->assertEquals(0, $r->errors());
         $this->assertEquals($result, $r->data());
+        $this->assertEquals($messages, $r->messages());
+
         $this->assertInternalType('integer', $r->data()['age']);
     }
 
