@@ -195,7 +195,7 @@ class Filter
             $this->messages[$field] = $this->messages[$field] ?? [];
 
             //check if value is isset in data
-            if ($this->checkValue($field, $ruleProps['class'])) {
+            if ($this->checkValue($field)) {
                 continue;
             }
 
@@ -216,11 +216,10 @@ class Filter
      * Check if a field exist in data.
      *
      * @param string $field
-     * @param string $filter
      *
      * @return bool
      */
-    private function checkValue(string &$field, string &$filter): bool
+    private function checkValue(string &$field): bool
     {
         if (isset($this->data[$field])) {
             return false;
@@ -235,18 +234,14 @@ class Filter
     /**
      * Invoke validate.
      *
-     * @param RuleInterface $instance
-     * @param string        $field
-     * @param array         $ruleParams
+     * @param RuleValidateInterface $instance
+     * @param string                $field
+     * @param array                 $ruleParams
      *
      * @return bool
      */
-    private function invokeValidate(RuleInterface &$instance, string $field, array $ruleParams): bool
+    private function invokeValidate(RuleValidateInterface &$instance, string $field, array $ruleParams): bool
     {
-        if (!($instance instanceof RuleValidateInterface)) {
-            return true;
-        }
-
         array_unshift($ruleParams, $this->data[$field]);
 
         if (call_user_func_array(array($instance, 'validate'), $ruleParams)) {
