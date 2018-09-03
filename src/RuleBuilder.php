@@ -37,7 +37,7 @@ class RuleBuilder
             $rules[$keyword] = $class::$config;
 
             //fill array with alias
-            $keys = $values = $rules[$keyword]['alias'];
+            $keys = $rules[$keyword]['alias'];
             //fill array of values with name of the class
             $values = array_fill(0, count($keys), $keyword);
             //combine keys and values
