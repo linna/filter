@@ -63,7 +63,7 @@ class Ip implements RuleValidateInterface
             return false;
         }
 
-        $this->message = "Received value is not a valid ip address";
+        $this->message = 'Received value is not a valid ip address';
         return true;
     }
 
