@@ -16,37 +16,37 @@ use Linna\Filter\Rules\IPRange;
 use PHPUnit\Framework\TestCase;
 
 /**
- * IPv4Range Test
+ * IPv6Range Test
  */
-class IPv4RangeTest extends TestCase
+class IPv6RangeTest extends TestCase
 {
     /**
-     * valid IPv4 range provider.
+     * valid IPv6 range provider.
      *
      * @return array
      */
-    public function validIPv4RangeProvider(): array
+    public function validIPv6RangeProvider(): array
     {
         return [
-            ['192.168.0.46', '192.168.0.48/29', true],
-            ['192.168.0.47', '192.168.0.48/29', true],
-            ['192.168.0.48', '192.168.0.48/29', false],
-            ['192.168.0.49', '192.168.0.48/29', false],
-            ['192.168.0.50', '192.168.0.48/29', false],
-            ['192.168.0.51', '192.168.0.48/29', false],
-            ['192.168.0.52', '192.168.0.48/29', false],
-            ['192.168.0.53', '192.168.0.48/29', false],
-            ['192.168.0.54', '192.168.0.48/29', false],
-            ['192.168.0.55', '192.168.0.48/29', false],
-            ['192.168.0.56', '192.168.0.48/29', true],
-            ['192.168.0.57', '192.168.0.48/29', true],
+            ['2001:abcd::0008', '2001:abcd::0010/125', true],
+            ['2001:abcd::0009', '2001:abcd::0010/125', true],
+            ['2001:abcd::0010', '2001:abcd::0010/125', false],
+            ['2001:abcd::0011', '2001:abcd::0010/125', false],
+            ['2001:abcd::0012', '2001:abcd::0010/125', false],
+            ['2001:abcd::0013', '2001:abcd::0010/125', false],
+            ['2001:abcd::0014', '2001:abcd::0010/125', false],
+            ['2001:abcd::0015', '2001:abcd::0010/125', false],
+            ['2001:abcd::0016', '2001:abcd::0010/125', false],
+            ['2001:abcd::0017', '2001:abcd::0010/125', false],
+            ['2001:abcd::0018', '2001:abcd::0010/125', true],
+            ['2001:abcd::0019', '2001:abcd::0010/125', true],
         ];
     }
 
     /**
      * Test validate.
      *
-     * @dataProvider validIPv4RangeProvider
+     * @dataProvider validIPv6RangeProvider
      *
      * @param string $received
      * @param string $range
@@ -63,7 +63,7 @@ class IPv4RangeTest extends TestCase
     public function testGetMessageForInvalidIp(): void
     {
         $instance = new IPRange();
-        $instance->validate('192.168.50', '192.168.0.48/29');
+        $instance->validate('2001:abcdf::0010', '2001:abcd::0010/125');
 
         $this->assertSame('Received value is not a valid ip address', $instance->getMessage());
     }
@@ -74,9 +74,9 @@ class IPv4RangeTest extends TestCase
     public function testGetMessageForNotInRangeIp(): void
     {
         $instance = new IPRange();
-        $instance->validate('192.168.0.10', '192.168.0.48/29');
+        $instance->validate('2001:abcd::0009', '2001:abcd::0010/125');
 
-        $this->assertSame('Received ip is not in (192.168.0.48/29) range', $instance->getMessage());
+        $this->assertSame('Received ip is not in (2001:abcd::0010/125) range', $instance->getMessage());
     }
 
     /**
@@ -88,7 +88,7 @@ class IPv4RangeTest extends TestCase
     {
         $tmp = [];
 
-        for ($i = 1; $i < 33; $i++) {
+        for ($i = 1; $i < 129; $i++) {
             $tmp[] = [$i];
         }
 
@@ -102,7 +102,7 @@ class IPv4RangeTest extends TestCase
      */
     public function testValidCidrForAllValidSuffixes(int $suffix): void
     {
-        $this->assertSame(false, (new IPRange())->validate('192.168.0.48', "192.168.0.48/{$suffix}"));
+        $this->assertSame(false, (new IPRange())->validate('2001:abcd::0010', "2001:abcd::0010/{$suffix}"));
     }
 
     /**
@@ -113,9 +113,9 @@ class IPv4RangeTest extends TestCase
     public function emptySuffixProvider(): array
     {
         return [
-            ['192.168.0.48'],
-            ['192.168.0.48/'],
-            ['192.168.0.48/0']
+            ['2001:abcd::0010'],
+            ['2001:abcd::0010/'],
+            ['2001:abcd::0010/0']
         ];
     }
 
@@ -130,7 +130,7 @@ class IPv4RangeTest extends TestCase
     public function testInvalidCidrForEmptySuffix(string $range): void
     {
         $instance = new IPRange();
-        $instance->validate('192.168.0.50', $range);
+        $instance->validate('2001:abcd::0010', $range);
     }
 
     /**
@@ -141,7 +141,7 @@ class IPv4RangeTest extends TestCase
     public function invalidSuffixRangeProvider(): array
     {
         return[
-            [-3],[-2],[-1],[33],[34],[35]
+            [-3],[-2],[-1],[129],[130],[131]
         ];
     }
 
@@ -156,7 +156,7 @@ class IPv4RangeTest extends TestCase
     public function testInvalidCidrForInvalidSuffixRange(int $suffix): void
     {
         $instance = new IPRange();
-        $instance->validate('192.168.0.50', "192.168.0.48/{$suffix}");
+        $instance->validate('2001:abcd::0010', "2001:abcd::0010/{$suffix}");
     }
 
     /**
@@ -168,6 +168,6 @@ class IPv4RangeTest extends TestCase
     public function testInvalidCidrForInvalidAddress(): void
     {
         $instance = new IPRange();
-        $instance->validate('192.168.0.10', '192.168.48/29');
+        $instance->validate('2001:abcd::0010', '2001:abcdf::0010/29');
     }
 }

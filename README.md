@@ -16,6 +16,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/linna/filter/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/linna/filter/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/linna/filter/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/linna/filter/?branch=master)
 [![StyleCI](https://styleci.io/repos/111321128/shield?branch=master&style=flat)](https://styleci.io/repos/111321128)
+[![PHP 7.1](https://img.shields.io/badge/PHP-7.1-8892BF.svg)](http://php.net)
 
 </div>
 
@@ -34,20 +35,20 @@ composer require linna/filter
 # Available Filters
 
 ## Filters
-| Rule Name        | Aliases        | Description                                      | Rule Arguments | Operators           | Example Data from `$_POST`   | Example Rule                             |
-|------------------|----------------|--------------------------------------------------|----------------|---------------------|------------------------------|------------------------------------------|
-| date             | dat, d         | Check for a valid date                           | 1              | none                | `['born'] = '1980-06-01'`    | `'born: date Y-m-d'`                     |
-| datecompare      | datcmp, dc     | Compare one date with another                    | 3              | >, <, >=, <=, =     | `['born'] = '1980-06-01'`    | `'born: datecompare < Y-m-d 1990-01-01'` |
-| email            | mail, e@       | Check for a valid email                          | 0              | none                | `['email'] = 'foo@mail.com'` | `'email: email'`                         |
-| escape           | escp, es       | Convert special chars in html entities           | 0              | none                | `['name'] = 'foo<script>'`   | `'name: escape'`                         |
-| ip               | ip             | Check for a valid ip (ipv4 and ipv4)             | 0              | none                | `['host'] = 192.168.0.1`     | `'host: ip'`                             |
-| ipv4range        | ipv4range, ip4r| Check if provided ipv4 is in CIDR range          | 1              | none                | `['host'] = 192.168.0.1`     | `'host: ipv4range 192.168.0.1/24'`       |
-| number           | num, n         | Check for a valid number and cast to number      | 0              | none                | `['age'] = 25`               | `'age: number'`                          |
-| numbercompare    | numcmp, nc     | Compare one number with another                  | 2              | >, <, >=, <=, =     | `['age'] = 25`               | `'age: numbercompare > 18'`              |
-| numberinterval   | numint, ni     | Check if a number is included or not on interval | 3              | <>, ><, <=>, >=<    | `['age'] = 25`               | `'age: numberinterval >< 18 80'`         |
-| required         | req, rq        | Check for null values                            | 0              | none                | `['name'] = 'foo'`           | `'name: required'`                       |
-| str              | string, s      | Cast to string                                   | 0              | none                | `['name'] = 'foo'`           | `'name: str'`                            |
-| stringlencompare | strlencmp, slc | Check the length of a string                     | 2              | >, <, >=, <=, =, != | `['name'] = 'foo'`           | `'name: stringlencompare > 2'`           |
+| Rule Name        | Aliases              | Description                                      | Rule Arguments | Operators           | Example Data from `$_POST`   | Example Rule                             |
+|------------------|----------------------|--------------------------------------------------|----------------|---------------------|------------------------------|------------------------------------------|
+| date             | dat, d               | check for a valid date                           | 1              | none                | `['born'] = '1980-06-01'`    | `'born: date Y-m-d'`                     |
+| datecompare      | datcmp, dc           | compare one date with another                    | 3              | >, <, >=, <=, =     | `['born'] = '1980-06-01'`    | `'born: datecompare < Y-m-d 1990-01-01'` |
+| email            | mail, e@             | check for a valid email                          | 0              | none                | `['email'] = 'foo@mail.com'` | `'email: email'`                         |
+| escape           | escp, es             | convert special chars in html entities           | 0              | none                | `['name'] = 'foo<script>'`   | `'name: escape'`                         |
+| ip               | ip                   | check for a valid ip (ipv4 and ipv4)             | 0              | none                | `['host'] = 192.168.0.1`     | `'host: ip'`                             |
+| ipvrange         | iprng, ipr           | check if provided ipv4 or ipv6 is in CIDR range  | 1              | none                | `['host'] = 192.168.0.1`     | `'host: iprange 192.168.0.1/24'`         |
+| number           | num, n               | check for a valid number and cast to number      | 0              | none                | `['age'] = 25`               | `'age: number'`                          |
+| numbercompare    | numcmp, nc           | compare one number with another                  | 2              | >, <, >=, <=, =     | `['age'] = 25`               | `'age: numbercompare > 18'`              |
+| numberinterval   | numint, ni           | check if a number is included or not on interval | 3              | <>, ><, <=>, >=<    | `['age'] = 25`               | `'age: numberinterval >< 18 80'`         |
+| required         | req, rq              | check for null values                            | 0              | none                | `['name'] = 'foo'`           | `'name: required'`                       |
+| str              | string, s            | cast to string                                   | 0              | none                | `['name'] = 'foo'`           | `'name: str'`                            |
+| stringlencompare | strlencmp, slc       | check the length of a string                     | 2              | >, <, >=, <=, =, != | `['name'] = 'foo'`           | `'name: stringlencompare > 2'`           |
 
 A rule could be called with the name or with the alias. An alias help to write rules more quickly.
 
