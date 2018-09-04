@@ -42,7 +42,7 @@ composer require linna/filter
 | email            | mail, e@             | check for a valid email                          | 0              | none                | `['email'] = 'foo@mail.com'` | `'email: email'`                         |
 | escape           | escp, es             | convert special chars in html entities           | 0              | none                | `['name'] = 'foo<script>'`   | `'name: escape'`                         |
 | ip               | ip                   | check for a valid ip (ipv4 and ipv4)             | 0              | none                | `['host'] = 192.168.0.1`     | `'host: ip'`                             |
-| ipvrange         | iprng, ipr           | check if provided ipv4 or ipv6 is in CIDR range  | 1              | none                | `['host'] = 192.168.0.1`     | `'host: iprange 192.168.0.1/24'`         |
+| iprange          | iprng, ipr           | check if provided ipv4 or ipv6 is in CIDR range  | 1              | none                | `['host'] = 192.168.0.1`     | `'host: iprange 192.168.0.1/24'`         |
 | number           | num, n               | check for a valid number and cast to number      | 0              | none                | `['age'] = 25`               | `'age: number'`                          |
 | numbercompare    | numcmp, nc           | compare one number with another                  | 2              | >, <, >=, <=, =     | `['age'] = 25`               | `'age: numbercompare > 18'`              |
 | numberinterval   | numint, ni           | check if a number is included or not on interval | 3              | <>, ><, <=>, >=<    | `['age'] = 25`               | `'age: numberinterval >< 18 80'`         |
