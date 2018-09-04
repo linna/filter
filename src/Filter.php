@@ -12,12 +12,8 @@ declare(strict_types=1);
 namespace Linna\Filter;
 
 use InvalidArgumentException;
-//use Linna\Filter\Rules\RuleInterface;
 use Linna\Filter\Rules\RuleSanitizeInterface;
 use Linna\Filter\Rules\RuleValidateInterface;
-
-//use ReflectionClass;
-//use ReflectionMethod;
 
 /**
  * Filter.

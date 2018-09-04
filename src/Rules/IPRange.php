@@ -37,11 +37,6 @@ class IPRange extends Ip implements RuleValidateInterface
     private $message = '';
 
     /**
-     * @var string Ipv4 or Ipv6 passed to filter
-     */
-    private $ip = '';
-
-    /**
      * Validate.
      *
      * @return bool
