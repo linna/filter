@@ -14,6 +14,7 @@ namespace Linna\Filter;
 use InvalidArgumentException;
 use Linna\Filter\Rules\RuleSanitizeInterface;
 use Linna\Filter\Rules\RuleValidateInterface;
+use Linna\Filter\Result;
 
 /**
  * Filter.
@@ -68,9 +69,9 @@ class Filter
      *                                  one value. If data and rule aren't array
      *                                  when used for multi values.
      *
-     * @return object
+     * @return Result
      */
-    public function filter($data, $rule)
+    public function filter($data, $rule): Result
     {
         if (is_array($data) && is_array($rule)) {
             $this->sanitizedData = $this->data = $data;
@@ -92,36 +93,11 @@ class Filter
     /**
      * Build anonymous class contain results of filtering.
      *
-     * @return object
+     * @return Result
      */
-    private function buildResultObject()
+    private function buildResultObject(): Result
     {
-        return new class($this->sanitizedData, $this->messages, $this->errors) {
-            private $data;
-            private $message;
-            private $error;
-
-            public function __construct(array $data, array $message, int $error)
-            {
-                $this->data = $data;
-                $this->message = $message;
-                $this->error = $error;
-            }
-
-            public function data()
-            {
-                return $this->data;
-            }
-
-            public function messages()
-            {
-                return $this->message;
-            }
-
-            public function errors()
-            {
-                return $this->error;
-            }
+        return new class($this->sanitizedData, $this->messages, $this->errors) extends Result {
         };
     }
 
