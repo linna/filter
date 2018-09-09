@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][v0.3.0](https://github.com/linna/filter/compare/v0.2.0...v0.3.0) - 2018-XX-XX 
 
 ### Added
+* `Linna\Filter\Result` class, abstract, returned by `Linna\Filter\Filter->filter()` as anonymous class
+* `Linna\Filter\Rules\CustomRule` for declare user custom rules
 * `Linna\Filter\Rules\Ip` check for valid ipv4 and ipv6 address
 * `Linna\Filter\Rules\IPRange` check if provided ipv4/ipv6 is in CIDR range
 * Namespace for tests

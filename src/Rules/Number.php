@@ -20,13 +20,10 @@ class Number extends AbstractNumber implements RuleSanitizeInterface, RuleValida
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'Number',
         'full_class' => __CLASS__,
         'alias' => ['number', 'num', 'n'],
         'args_count' => 0,
-        'args_type' => [],
-        'has_validate' => true,
-        //'has_sanitize' => true
+        'args_type' => []
     ];
 
     /**

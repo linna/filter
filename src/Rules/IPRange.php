@@ -23,12 +23,10 @@ class IPRange extends Ip implements RuleValidateInterface
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'IPRange',
         'full_class' => __CLASS__,
         'alias' => ['iprange', 'iprng', 'ipr'],
         'args_count' => 1,
-        'args_type' => [],
-        'has_validate' => true
+        'args_type' => []
     ];
 
     /**

@@ -23,12 +23,10 @@ class DateCompare extends AbstractDate implements RuleValidateInterface
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'DateCompare',
         'full_class' => __CLASS__,
         'alias' => ['datecompare', 'datcmp', 'dc'],
         'args_count' => 3,
-        'args_type' => ['string', 'string', 'string'],
-        'has_validate' => true,
+        'args_type' => ['string', 'string', 'string']
     ];
 
     /**

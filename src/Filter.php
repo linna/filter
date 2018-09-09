@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Linna\Filter;
 
 use InvalidArgumentException;
+use Linna\Filter\Rules\CustomRule;
 use Linna\Filter\Rules\RuleSanitizeInterface;
 use Linna\Filter\Rules\RuleValidateInterface;
 use Linna\Filter\Result;
@@ -57,6 +58,19 @@ class Filter
     public function __construct()
     {
         [$this->rules, $this->alias] = RuleBuilder::build();
+    }
+
+    /**
+     * Add custom rules to filter.
+     *
+     * @param array $customRules
+     */
+    public function addCustomRules(array $customRules): void
+    {
+        [$rules, $alias] = RuleBuilder::buildCustom($customRules);
+
+        $this->rules = array_merge($this->rules, $rules);
+        $this->alias = array_merge($this->alias, $alias);
     }
 
     /**
@@ -162,8 +176,6 @@ class Filter
             $ruleProps = $this->rules[$rule[1]];
             $ruleParams = $rule[2];
 
-            $instance = new $ruleProps['full_class']();
-
             //initialize message array
             $this->messages[$field] = $this->messages[$field] ?? [];
 
@@ -172,10 +184,17 @@ class Filter
                 continue;
             }
 
-            //invoke sanitize section of the filter
-            //if filter fail go to next rule
-            if ($this->invokeValidate($instance, $field, $ruleParams)) {
+            $instance = $ruleProps['instance'] ?? new $ruleProps['full_class']();
+
+            //invoke custom rule validate
+            if ($instance instanceof CustomRule) {
+                $this->invokeValidate($instance, $field, $ruleParams);
                 continue;
+            }
+
+            //invoke validate section of the filter
+            if ($instance instanceof RuleValidateInterface) {
+                $this->invokeValidate($instance, $field, $ruleParams);
             }
 
             //invoke sanitize section of the filter
@@ -210,10 +229,8 @@ class Filter
      * @param RuleValidateInterface $instance
      * @param string                $field
      * @param array                 $ruleParams
-     *
-     * @return bool
      */
-    private function invokeValidate(RuleValidateInterface &$instance, string $field, array $ruleParams): bool
+    private function invokeValidate(RuleValidateInterface &$instance, string $field, array $ruleParams): void
     {
         array_unshift($ruleParams, $this->data[$field]);
 
@@ -225,10 +242,6 @@ class Filter
             if (strlen($message)) {
                 $this->messages[$field][] = $message;
             }
-
-            return true;
         }
-
-        return false;
     }
 }

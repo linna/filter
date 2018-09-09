@@ -22,12 +22,10 @@ class Regex implements RuleValidateInterface
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'Regex',
         'full_class' => __CLASS__,
         'alias' => ['regex', 'rex', 'rx'],
         'args_count' => 1,
-        'args_type' => ['string'],
-        'has_validate' => true,
+        'args_type' => ['string']
     ];
 
     /**

@@ -22,12 +22,10 @@ class NumberInterval extends AbstractNumber implements RuleSanitizeInterface, Ru
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'NumberInterval',
         'full_class' => __CLASS__,
         'alias' => ['numberinterval', 'numint', 'ni'],
         'args_count' => 3,
-        'args_type' => ['string', 'number', 'number'],
-        'has_validate' => true,
+        'args_type' => ['string', 'number', 'number']
     ];
 
     /**

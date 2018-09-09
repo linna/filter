@@ -21,12 +21,10 @@ class Str extends AbstractString implements RuleSanitizeInterface, RuleValidateI
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'Str1ng',
         'full_class' => __CLASS__,
         'alias' => ['string', 'str', 's'],
         'args_count' => 0,
-        'args_type' => [],
-        'has_validate' => true,
+        'args_type' => []
     ];
 
     /**

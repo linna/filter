@@ -61,7 +61,7 @@ $rule = 'age: n, nc < 30';
 ```
 
 ## Operators
-| Filter           | Operator | Description                   | Notes                             |
+| Rule Name        | Operator | Description                   | Notes                             |
 |------------------|----------|-------------------------------|-----------------------------------|
 | DateCompare      | <        | less than                     |                                   |
 |                  | >        | greater than                  |                                   |

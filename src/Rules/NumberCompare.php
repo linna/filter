@@ -22,12 +22,10 @@ class NumberCompare extends AbstractNumber implements RuleSanitizeInterface, Rul
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'NumberCompare',
         'full_class' => __CLASS__,
         'alias' => ['numbercompare', 'numcmp', 'nc'],
         'args_count' => 2,
-        'args_type' => ['string', 'number'],
-        'has_validate' => true,
+        'args_type' => ['string', 'number']
     ];
 
     /**

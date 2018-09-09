@@ -74,39 +74,6 @@ class FilterTest extends TestCase
     }
 
     /**
-     * Skip sanitize data provider
-     *
-     * @return array
-     */
-    public function skipSanitizeProvider(): array
-    {
-        return [
-          ['number', 1, 0, 1],
-          ['number', '2', 0, 2],
-          ['number', '1a', 1, '1a'],
-          ['required email', 'foo@baz.com', 0, 'foo@baz.com'],
-        ];
-    }
-
-    /**
-     * Test filter when skip sanitize.
-     *
-     * @dataProvider skipSanitizeProvider
-     *
-     * @param string $rule
-     * @param mixed  $data
-     * @param int    $error
-     */
-    public function testFilterSkipSanitize(string $rule, $data, int $error, $expectedData): void
-    {
-        $filter = new Filter();
-        $filter->filter($data, $rule);
-
-        $this->assertEquals($error, $filter->getErrors());
-        $this->assertSame($expectedData, $filter->getData()['data']);
-    }
-
-    /**
      * Rules and data provider.
      *
      * @return array

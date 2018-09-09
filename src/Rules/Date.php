@@ -23,12 +23,10 @@ class Date extends AbstractDate implements RuleValidateInterface
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'Date',
         'full_class' => __CLASS__,
         'alias' => ['date', 'dat', 'd'],
         'args_count' => 1,
-        'args_type' => ['string'],
-        'has_validate' => true,
+        'args_type' => ['string']
     ];
 
     /**

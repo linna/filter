@@ -22,12 +22,10 @@ class StringLenCompare extends AbstractString implements RuleSanitizeInterface, 
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'StringLenCompare',
         'full_class' => __CLASS__,
         'alias' => ['stringlencompare', 'strlencmp', 'slc'],
         'args_count' => 2,
-        'args_type' => ['string', 'number'],
-        'has_validate' => true,
+        'args_type' => ['string', 'number']
     ];
 
     /**

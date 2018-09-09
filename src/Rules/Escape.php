@@ -20,12 +20,10 @@ class Escape implements RuleSanitizeInterface
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'Escape',
         'full_class' => __CLASS__,
         'alias' => ['escape', 'escp', 'es'],
         'args_count' => 0,
-        'args_type' => [],
-        'has_validate' => false,
+        'args_type' => []
     ];
 
     /**

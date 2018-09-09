@@ -20,12 +20,10 @@ class Email implements RuleValidateInterface
      * @var array Rule properties
      */
     public static $config = [
-        'class' => 'Email',
         'full_class' => __CLASS__,
         'alias' => ['email', 'mail', 'e@'],
         'args_count' => 0,
-        'args_type' => [],
-        'has_validate' => true,
+        'args_type' => []
     ];
 
     /**
