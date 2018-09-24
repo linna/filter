@@ -120,6 +120,7 @@ class CustomRule implements RuleValidateInterface
             if ($param->hasType()) {
                 if (in_array((string) $param->getType(), ['int', 'float'])) {
                     $this->config['args_type'][] = 'number';
+                    continue;
                 }
             }
 

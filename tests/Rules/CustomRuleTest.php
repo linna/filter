@@ -11,6 +11,7 @@ declare(strict_types = 1);
 
 namespace Linna\Tests;
 
+use Closure;
 use Linna\Filter\Rules\CustomRule;
 use PHPUnit\Framework\TestCase;
 
@@ -131,6 +132,59 @@ class CustomRuleTest extends TestCase
                 return true;
             }
         ));
+    }
+
+    /**
+     * Arguments type provider.
+     * Test for custom rule arguments reconneissance.
+     *
+     * @return array
+     */
+    public function argumentsTypeProvider(): array
+    {
+        return [
+            [function (string $received): bool {
+                if ($received === 'test') {
+                    return true;
+                }
+                return false;
+            }, 0, []],
+            [function (string $received, $value): bool {
+                if ($received === $value) {
+                    return true;
+                }
+                return false;
+            }, 1, ['string']],
+            [function (string $received, int $min): bool {
+                if ($received >= $min) {
+                    return true;
+                }
+                return false;
+            }, 1, ['number']],
+            [function (string $received, float $min, float $max): bool {
+                if ($received >= $min && $received <= $max) {
+                    return true;
+                }
+                return false;
+            }, 2, ['number', 'number']]
+        ];
+    }
+
+    /**
+     * Test closure argument type.
+     *
+     * @dataProvider argumentsTypeProvider
+     *
+     * @param Closure $closure
+     * @param int     $argsCount
+     * @param array   $argsType
+     */
+    public function testClosureArgumentsType(Closure $closure, int $argsCount, array $argsType): void
+    {
+        $instance = new CustomRule(['test'], $closure);
+
+        $this->assertEquals($instance->config['args_count'], $argsCount);
+        $this->assertEquals($instance->config['args_type'], $argsType);
     }
 
     /**
