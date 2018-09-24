@@ -80,6 +80,60 @@ class CustomRuleTest extends TestCase
     }
 
     /**
+     * Test closure with no return type.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Rule test function do not have return type.
+     */
+    public function testClosureWithNoReturnType(): void
+    {
+        (new CustomRule(
+            ['test'],
+            function (string $received) {
+                if ($received === 'test') {
+                    return true;
+                }
+                return false;
+            }
+        ));
+    }
+
+    /**
+     * Test closure with wrong return type.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Rule test function return type must be bool or void.
+     */
+    public function testClosureWithWrongReturnType(): void
+    {
+        (new CustomRule(
+            ['test'],
+            function (string $received): int {
+                if ($received === 'test') {
+                    return 1;
+                }
+                return 0;
+            }
+        ));
+    }
+
+    /**
+     * Test closure with no arguments.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Rule test function must have at least one argument.
+     */
+    public function testClosureWithNoArguments(): void
+    {
+        (new CustomRule(
+            ['test'],
+            function (): bool {
+                return true;
+            }
+        ));
+    }
+
+    /**
      * Test get message.
      */
     public function testGetMessage(): void

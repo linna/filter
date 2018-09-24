@@ -91,17 +91,24 @@ class CustomRule implements RuleValidateInterface
             throw new InvalidArgumentException('Rule test function return type must be bool or void.');
         }
 
-        $this->parseClosureParams($reflection);
+        $this->parseClosureArgs($reflection);
 
         $this->callback = $test;
     }
 
-    private function parseClosureParams(ReflectionFunction &$reflection): void
+    /**
+     * Parse test function arguments.
+     *
+     * @param ReflectionFunction $reflection
+     *
+     * @throws InvalidArgumentException if test function do not have parameters.
+     */
+    private function parseClosureArgs(ReflectionFunction &$reflection): void
     {
         $parameters = $reflection->getParameters();
 
         if (count($parameters) === 0) {
-            throw new InvalidArgumentException('Rule test function must have at least one parameter.');
+            throw new InvalidArgumentException('Rule test function must have at least one argument.');
         }
 
         //remove firs param, the received value
