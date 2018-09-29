@@ -12,6 +12,7 @@ declare(strict_types = 1);
 namespace Linna\Tests;
 
 use Linna\Filter\Filter;
+use Linna\Filter\Rules\CustomRule;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -210,5 +211,28 @@ class FilterTest extends TestCase
 
         $this->assertEquals(2, $filter->getErrors());
         $this->assertEquals($result, $filter->getData());
+    }
+
+    /**
+     * Test filter with custom rule.
+     */
+    public function testFilterWithCustomRule(): void
+    {
+        $filter = new Filter();
+        $filter->addCustomRules([new CustomRule(
+            ['checktest'],
+            function (string $received): bool {
+                if ($received === 'test') {
+                    return true;
+                }
+                return false;
+            }
+        )]);
+
+        $filter->filter('test', 'string slc = 4 checktest');
+
+        $this->assertEquals(['data' => 'test'], $filter->getData());
+        $this->assertEquals(0, $filter->getErrors());
+        $this->assertEquals(['data' => []], $filter->getMessages());
     }
 }
