@@ -44,7 +44,7 @@ class CustomRuleTest extends TestCase
      * @dataProvider wrongAliasTypeProvider
      *
      * @expectedException TypeError
-     * @expectedExceptionMessageRegExp /Argument 1 passed to Linna\\Filter\\Rules\\CustomRule::__construct\(\) must be of the type array, (string|boolean|float|integer|object) given/
+     * @expectedExceptionMessageRegExp /Argument 1 passed to Linna\\Filter\\Rules\\CustomRule::__construct\(\) must be of the type array, (string|bool|boolean|float|integer|object) given/
      *
      * @param mixed $argument
      */
