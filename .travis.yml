@@ -3,6 +3,12 @@ php:
 - 7.1
 - 7.2
 
+jobs:
+  include:
+    - php: 7.3
+      dist: xenial
+      sudo: required
+
 before_script:
 - composer install
 
