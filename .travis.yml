@@ -8,6 +8,10 @@ jobs:
     - php: 7.3.0RC1
       dist: xenial
       sudo: required
+      addons:
+        apt:
+          packages:
+            - libzip4
 
 before_script:
 - composer install
