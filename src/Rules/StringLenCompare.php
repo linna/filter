@@ -23,7 +23,7 @@ class StringLenCompare extends AbstractString implements RuleSanitizeInterface, 
      */
     public static $config = [
         'full_class' => __CLASS__,
-        'alias' => ['stringlencompare', 'strlencmp', 'slc'],
+        'alias' => ['stringlencompare', 'strlencmp', 'strlen', 'slc'],
         'args_count' => 2,
         'args_type' => ['string', 'number']
     ];
