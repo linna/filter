@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * `Linna\Filter\Rules\CustomRule` for declare user custom rules
 * `Linna\Filter\Rules\Ip` check for valid ipv4 and ipv6 address
 * `Linna\Filter\Rules\IPRange` check if provided ipv4/ipv6 is in CIDR range
+* `Linna\Filter\Rules\StringLenCompare` new alias `strlen`
 * Namespace for tests
 
 ### Changed
