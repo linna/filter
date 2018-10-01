@@ -186,13 +186,8 @@ class Filter
 
             $instance = $ruleProps['instance'] ?? new $ruleProps['full_class']();
 
+            //invoke validate section of the filter or
             //invoke custom rule validate
-            if ($instance instanceof CustomRule) {
-                $this->invokeValidate($instance, $field, $ruleParams);
-                continue;
-            }
-
-            //invoke validate section of the filter
             if ($instance instanceof RuleValidateInterface) {
                 $this->invokeValidate($instance, $field, $ruleParams);
             }
