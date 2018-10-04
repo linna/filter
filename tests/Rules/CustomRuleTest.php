@@ -13,6 +13,8 @@ namespace Linna\Tests;
 
 use Closure;
 use Linna\Filter\Rules\CustomRule;
+use Linna\Filter\Rules\CustomSanitize;
+use Linna\Filter\Rules\CustomValidate;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -182,15 +184,17 @@ class CustomRuleTest extends TestCase
     public function testClosureArgumentsType(Closure $closure, int $argsCount, array $argsType): void
     {
         $instance = new CustomRule(['test'], $closure);
+        $concrete = $instance->instance;
 
-        $this->assertEquals($instance->config['args_count'], $argsCount);
-        $this->assertEquals($instance->config['args_type'], $argsType);
+        $this->assertInstanceOf(CustomValidate::class, $concrete);
+        $this->assertEquals($concrete->config['args_count'], $argsCount);
+        $this->assertEquals($concrete->config['args_type'], $argsType);
     }
 
     /**
-     * Test get message.
+     * Test custom validate.
      */
-    public function testGetMessage(): void
+    public function testCustomValidate(): void
     {
         $instance = new CustomRule(
             ['test'],
@@ -202,8 +206,38 @@ class CustomRuleTest extends TestCase
             }
         );
 
-        $instance->validate('other test');
+        $concrete = $instance->instance;
+        $concrete->validate('other test');
 
-        $this->assertSame('Value provided not pass CustomRule (test) test', $instance->getMessage());
+        $this->assertSame(true, $concrete->validate('other test'));
+        $this->assertSame('Value provided not pass CustomRule (test) test', $concrete->getMessage());
+
+        $concrete->validate('test');
+
+        $this->assertSame(false, $concrete->validate('test'));
+        $this->assertSame('Value provided not pass CustomRule (test) test', $concrete->getMessage());
+    }
+
+    /**
+     * Test Custom Sanitize
+     */
+    public function testCustomSanitize(): void
+    {
+        $instance = new CustomRule(
+            ['emailtoletters'],
+            function (string &$received): void {
+                $received = str_replace('@', ' at ', $received);
+                $received = str_replace('.', ' dot ', $received);
+            }
+        );
+
+        $concrete = $instance->instance;
+
+        $value = 'test@linna.tools';
+
+        $concrete->sanitize($value);
+
+        $this->assertSame('test at linna dot tools', $value);
+        $this->assertSame('Value provided not pass CustomRule (emailtoletters) test', $concrete->getMessage());
     }
 }

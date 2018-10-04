@@ -60,11 +60,15 @@ class RuleBuilder
         $rules = [];
 
         foreach ($customRules as $rule) {
-            $config = $rule->config;
-            $config['instance'] = $rule;
+            $instance = $rule->instance;
+
+            $config = $instance->config;
+            $config['instance'] = $instance;
 
             self::makeAlias($rules, $alias, $config['alias'][0], $config);
         }
+
+        unset($customRules);
 
         return [$rules, $alias];
     }

@@ -18,12 +18,17 @@ use ReflectionFunction;
 /**
  * Add custom rule to filter.
  */
-class CustomRule implements RuleValidateInterface
+class CustomRule
 {
+    /**
+     * @var RuleInterface Instance of concrete custom rule.
+     */
+    public $instance;
+
     /**
      * @var array Rule properties
      */
-    public $config = [
+    private $config = [
         'full_class' => __CLASS__,
         'alias' => [],
         'args_count' => 0,
@@ -36,9 +41,9 @@ class CustomRule implements RuleValidateInterface
     private $callback;
 
     /**
-     * @var string Error message
+     * @var bool Filter type: false validate, true sanitize.
      */
-    private $message = '';
+    private $sanitize = false;
 
     /**
      * Class Constructor.
@@ -51,7 +56,13 @@ class CustomRule implements RuleValidateInterface
         $this->parseAlias($alias);
         $this->parseClosure($test);
 
-        $this->message = "Value provided not pass CustomRule ({$alias[0]}) test";
+        $message = "Value provided not pass CustomRule ({$alias[0]}) test";
+
+        $this->instance = new CustomValidate($test, $this->config, $message);
+
+        if ($this->sanitize) {
+            $this->instance = new CustomSanitize($test, $this->config, $message);
+        }
     }
 
     /**
@@ -82,6 +93,7 @@ class CustomRule implements RuleValidateInterface
     private function parseClosure(Closure $test): void
     {
         $reflection = new ReflectionFunction($test);
+        $parameters = $reflection->getParameters();
 
         if (!$reflection->hasReturnType()) {
             throw new InvalidArgumentException('Rule test function do not have return type.');
@@ -91,7 +103,11 @@ class CustomRule implements RuleValidateInterface
             throw new InvalidArgumentException('Rule test function return type must be bool or void.');
         }
 
-        $this->parseClosureArgs($reflection);
+        if (count($parameters) === 0) {
+            throw new InvalidArgumentException('Rule test function must have at least one argument.');
+        }
+
+        $this->parseClosureArgs($parameters);
 
         $this->callback = $test;
     }
@@ -99,16 +115,13 @@ class CustomRule implements RuleValidateInterface
     /**
      * Parse test function arguments.
      *
-     * @param ReflectionFunction $reflection
-     *
-     * @throws InvalidArgumentException if test function do not have parameters.
+     * @param array $parameters
      */
-    private function parseClosureArgs(ReflectionFunction &$reflection): void
+    private function parseClosureArgs(array $parameters): void
     {
-        $parameters = $reflection->getParameters();
-
-        if (count($parameters) === 0) {
-            throw new InvalidArgumentException('Rule test function must have at least one argument.');
+        //check for sanitizing
+        if (($first = $parameters[0]) && $first->isPassedByReference()) {
+            $this->sanitize = true;
         }
 
         //remove firs param, the received value
@@ -117,36 +130,12 @@ class CustomRule implements RuleValidateInterface
         $this->config['args_count'] = count($parameters);
 
         foreach ($parameters as $param) {
-            if ($param->hasType()) {
-                if (in_array((string) $param->getType(), ['int', 'float'])) {
-                    $this->config['args_type'][] = 'number';
-                    continue;
-                }
+            if (in_array((string) $param->getType(), ['int', 'float'])) {
+                $this->config['args_type'][] = 'number';
+                continue;
             }
 
             $this->config['args_type'][] = 'string';
         }
-    }
-
-    /**
-     * Validate.
-     *
-     * @return bool
-     */
-    public function validate(): bool
-    {
-        $args = func_get_args();
-
-        return !call_user_func_array($this->callback, $args);
-    }
-
-    /**
-     * Return error message.
-     *
-     * @return string Error message
-     */
-    public function getMessage(): string
-    {
-        return $this->message;
     }
 }
