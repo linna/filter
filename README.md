@@ -377,7 +377,7 @@ Custom Rule should have:
 - At least one alias.
 
 And for callback function:
-- At least one parameter, rapresenting the received value.
+- At least one argument, rapresenting the received value.
 - Return type, bool or void.
 
-> **Note:** For implementing a sanitize custom rule, closure must have only one argument passed for reference.
+> **Note:** For implementing a sanitize custom rule, closure must have only one argument and this argument must be passed for reference.
