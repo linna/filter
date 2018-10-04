@@ -87,7 +87,7 @@ $rule = 'age: n, nc < 30';
 Filters can be of two types: Validation filters or Sanitization filters. Validation filters check only if the
 data respect a certain criterion, instead sanitization filters alter passed data to make them conform to a given rule.
 
-In this package are sanitization filters only **Number** and **Str**
+In this package are sanitization filters only **Number** and **Escape**
 
 > **Note:** For security reasons a Validation filter should be preferred, don't try to sanitize a bad user input, discard it!
 
@@ -196,71 +196,6 @@ $messages = $result->messages();
 $data = $result->data();
 ```
 
-# Custom Rules
-Custom rules give the possibility of expand the filter predefined ruleset.
-
-```php
-$customRules = [];
-$customRules[] = new CustomRule(
-    //alias
-    ['hellocheck'],
-    //callback
-    //check if word hello is inside of a phrase
-    function (string $received): bool {
-        if (strpos(strtolower($received), 'hello') === false) {
-            return false;
-        }
-
-        return true;
-    }
-);
-
-$filter = new Filter();
-$filter->addCustomRules($customRules);
-
-//test passed
-$r = $filter->filter('Hello World', 'hellocheck');
-
-//array (size=1)
-//  'data' => string 'Hello World' (length=11)
-var_dump($r->data());
-
-//int 0
-var_dump($r->errors());
-
-//array (size=1)
-//  'data' => 
-//    array (size=0)
-//      empty
-var_dump($r->messages());
-
-
-//test fails
-$r = $filter->filter('Heo World', 'hellocheck');
-
-//array (size=1)
-//  'data' => string 'Heo World' (length=9)
-var_dump($r->data());
-
-//int 1
-var_dump($r->errors());
-
-//array (size=1)
-//  'data' => 
-//    array (size=1)
-//      0 => string 'Value provided not pass CustomRule (hellocheck) test' (length=52)
-var_dump($r->messages());
-```
-
-Custom Rule should have:
-- At least one alias.
-
-And for callback function:
-- At least one parameter, rapresenting the received value.
-- Return type, bool or void.
-
-> **Note:** Implementing a sanitize custom rule is currently not possible.
-
 # Rule syntax
 Parser can accept rules formatted in varius way.  
 
@@ -347,3 +282,102 @@ $rules = [
     'born: date \'Y m d\' datecompare <= \'Y m d\' \'1990 12 31\'',
 ];
 ```
+
+# Custom Rules
+Custom rules give the possibility of expand the filter predefined ruleset.
+
+## Validate
+```php
+$customRules = [];
+$customRules[] = new CustomRule(
+    //alias
+    ['hellocheck'],
+    //callback
+    //check if word hello is inside of a phrase
+    function (string $received): bool {
+        if (strpos(strtolower($received), 'hello') === false) {
+            return false;
+        }
+
+        return true;
+    }
+);
+
+$filter = new Filter();
+$filter->addCustomRules($customRules);
+
+//test passed
+$r = $filter->filter('Hello World', 'hellocheck');
+
+//array (size=1)
+//  'data' => string 'Hello World' (length=11)
+var_dump($r->data());
+
+//int 0
+var_dump($r->errors());
+
+//array (size=1)
+//  'data' => 
+//    array (size=0)
+//      empty
+var_dump($r->messages());
+
+
+//test fails
+$r = $filter->filter('Heo World', 'hellocheck');
+
+//array (size=1)
+//  'data' => string 'Heo World' (length=9)
+var_dump($r->data());
+
+//int 1
+var_dump($r->errors());
+
+//array (size=1)
+//  'data' => 
+//    array (size=1)
+//      0 => string 'Value provided not pass CustomRule (hellocheck) test' (length=52)
+var_dump($r->messages());
+```
+
+## Sanitize
+```php
+$customRules = [];
+$customRules[] = new CustomRule(
+    //alias
+    ['emailtoletters'],
+    //callback
+    //replace dot and at chars with literal name
+    function (string &$received): void {
+        $received = str_replace('@', ' at ', $received);
+        $received = str_replace('.', ' dot ', $received);
+    }
+);
+
+$filter = new Filter();
+$filter->addCustomRules($customRules);
+
+$r = $filter->filter('sebastian.rapetti@alice.it', 'emailtoletters');
+
+//array (size=1)
+//  'data' => string 'sebastian dot rapetti at alice dot it' (length=37)
+var_dump($r->data());
+
+//int 0
+var_dump($r->errors());
+
+//array (size=1)
+//  'data' => 
+//    array (size=0)
+//      empty
+var_dump($r->messages());
+```
+
+Custom Rule should have:
+- At least one alias.
+
+And for callback function:
+- At least one parameter, rapresenting the received value.
+- Return type, bool or void.
+
+> **Note:** For implementing a sanitize custom rule, closure must have only one argument passed for reference.
