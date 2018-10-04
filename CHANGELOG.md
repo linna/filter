@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased][v0.3.0](https://github.com/linna/filter/compare/v0.2.0...v0.3.0) - 2018-XX-XX 
+## [v0.3.0](https://github.com/linna/filter/compare/v0.2.0...v0.3.0) - 2018-10-04 
 
 ### Added
 * `Linna\Filter\Result` class, abstract, returned by `Linna\Filter\Filter->filter()` as anonymous class
