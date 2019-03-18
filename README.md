@@ -16,7 +16,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/linna/filter/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/linna/filter/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/linna/filter/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/linna/filter/?branch=master)
 [![StyleCI](https://styleci.io/repos/111321128/shield?branch=master&style=flat)](https://styleci.io/repos/111321128)
-[![PHP 7.1](https://img.shields.io/badge/PHP-7.1-8892BF.svg)](http://php.net)
+[![PHP 7.2](https://img.shields.io/badge/PHP-7.2-8892BF.svg)](http://php.net)
 
 </div>
 
@@ -24,7 +24,7 @@
 This package provide filters for validate and sanitize user input data.
 
 # Requirements
-This package require php 7.1
+This package require php 7.2
 
 # Installation
 With composer:
