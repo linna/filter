@@ -41,6 +41,8 @@ class RegexTest extends TestCase
      * @param string $value
      * @param string $regex
      * @param bool   $result
+     *
+     * @return void
      */
     public function testValidate(string $value, string $regex, bool $result): void
     {
@@ -50,16 +52,20 @@ class RegexTest extends TestCase
     /**
      * Test invalid regex.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid regex provided /^$/g.
+     * @return void
      */
     public function testInvalidRegex(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid regex provided /^$/g.');
+
         $this->assertSame(true, (new Regex())->validate('hello', '/^$/g'));
     }
 
     /**
      * Test get message.
+     *
+     * @return void
      */
     public function testGetMessage(): void
     {

@@ -14,6 +14,7 @@ namespace Linna\Tests;
 use DateTime;
 use Linna\Filter\Rules\DateCompare;
 use PHPUnit\Framework\TestCase;
+use UnexpectedValueException;
 
 /**
  * Date Compare Test
@@ -81,7 +82,7 @@ class DateCompareTest extends TestCase
      * @param string $operator
      * @param string $format
      * @param string $compare
-     * @param bool $result
+     * @param bool   $result
      *
      * @return void
      */
@@ -103,15 +104,19 @@ class DateCompareTest extends TestCase
     /**
      * Test unknown comparison operator.
      *
-     * @expectedException UnexpectedValueException
+     * @retunr void
      */
     public function testUnknownOperator(): void
     {
+        $this->expectException(UnexpectedValueException::class);
+
         (new DateCompare())->validate('2018-01-04', '!', 'Y-m-d', '2018-01-05');
     }
 
     /**
      * Test date without time.
+     *
+     * @retunr void
      */
     public function testDateWithoutTime(): void
     {
@@ -123,6 +128,8 @@ class DateCompareTest extends TestCase
 
     /**
      * Test get message.
+     *
+     * @return void
      */
     public function testGetMessage(): void
     {

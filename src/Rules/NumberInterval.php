@@ -40,7 +40,7 @@ class NumberInterval extends AbstractNumber implements RuleSanitizeInterface, Ru
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0], $args[1], $args[2], $args[3]);
     }
@@ -57,15 +57,15 @@ class NumberInterval extends AbstractNumber implements RuleSanitizeInterface, Ru
      */
     private function concreteValidate($received, string $operator, $min, $max): bool
     {
-        if (!is_numeric($received)) {
+        if (!\is_numeric($received)) {
             return true;
         }
 
-        if (!is_numeric($min)) {
+        if (!\is_numeric($min)) {
             return true;
         }
 
-        if (!is_numeric($max)) {
+        if (!\is_numeric($max)) {
             return true;
         }
 

@@ -39,7 +39,7 @@ class Required implements RuleValidateInterface
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0]);
     }
@@ -58,7 +58,7 @@ class Required implements RuleValidateInterface
             return true;
         }
 
-        if (strlen((string) $received) === 0) {
+        if (\strlen((string) $received) === 0) {
             $this->message = "Received value is a void string";
             return true;
         }

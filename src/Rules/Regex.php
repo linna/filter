@@ -40,7 +40,7 @@ class Regex implements RuleValidateInterface
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0], $args[1]);
     }
@@ -61,7 +61,7 @@ class Regex implements RuleValidateInterface
 
         //error suppressed with @ because if occours preg_match PHP show a warning
         //error replaced with exception
-        $result = @preg_match($regex, $received, $matches);
+        $result = @\preg_match($regex, $received, $matches);
 
         if ($result === false) {
             throw new InvalidArgumentException("Invalid regex provided {$regex}.");

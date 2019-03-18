@@ -49,6 +49,8 @@ class IpTest extends TestCase
      *
      * @param string $ip
      * @param bool   $result
+     *
+     * @return void
      */
     public function testValidate($ip, bool $result): void
     {
@@ -57,6 +59,8 @@ class IpTest extends TestCase
 
     /**
      * Test get message.
+     *
+     * @return void
      */
     public function testGetMessage(): void
     {

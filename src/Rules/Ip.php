@@ -39,7 +39,7 @@ class Ip implements RuleValidateInterface
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0]);
     }
@@ -53,11 +53,11 @@ class Ip implements RuleValidateInterface
      */
     private function concreteValidate(string $received): bool
     {
-        if (filter_var($received, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        if (\filter_var($received, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             return false;
         }
 
-        if (filter_var($received, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        if (\filter_var($received, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             return false;
         }
 

@@ -69,8 +69,8 @@ class Filter
     {
         [$rules, $alias] = RuleBuilder::buildCustom($customRules);
 
-        $this->rules = array_merge($this->rules, $rules);
-        $this->alias = array_merge($this->alias, $alias);
+        $this->rules = \array_merge($this->rules, $rules);
+        $this->alias = \array_merge($this->alias, $alias);
     }
 
     /**
@@ -87,14 +87,14 @@ class Filter
      */
     public function filter($data, $rule): Result
     {
-        if (is_array($data) && is_array($rule)) {
+        if (\is_array($data) && \is_array($rule)) {
             $this->sanitizedData = $this->data = $data;
             $this->interpreteRules($rule);
 
             return $this->buildResultObject();
         }
 
-        if (is_string($rule)) {
+        if (\is_string($rule)) {
             $this->sanitizedData = $this->data = ['data' => $data];
             $this->interpreteRules(['data '.$rule]);
 
@@ -227,14 +227,14 @@ class Filter
      */
     private function invokeValidate(RuleValidateInterface &$instance, string $field, array $ruleParams): void
     {
-        array_unshift($ruleParams, $this->data[$field]);
+        \array_unshift($ruleParams, $this->data[$field]);
 
-        if (call_user_func_array(array($instance, 'validate'), $ruleParams)) {
+        if (\call_user_func_array(array($instance, 'validate'), $ruleParams)) {
             $this->errors++;
 
             $message = $instance->getMessage();
 
-            if (strlen($message)) {
+            if (\strlen($message)) {
                 $this->messages[$field][] = $message;
             }
         }

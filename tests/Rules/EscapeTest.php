@@ -45,6 +45,8 @@ class EscapeTest extends TestCase
      *
      * @param string $string
      * @param string $result
+     *
+     * @return void
      */
     public function testSanitize(string $string, string $result): void
     {
@@ -55,6 +57,8 @@ class EscapeTest extends TestCase
 
     /**
      * Test get message.
+     *
+     * @return void
      */
     public function testGetMessage(): void
     {

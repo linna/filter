@@ -14,6 +14,7 @@ namespace Linna\Tests;
 use Linna\Filter\Lexer;
 use Linna\Filter\Parser;
 use Linna\Filter\RuleBuilder;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -41,8 +42,10 @@ class ParserTest extends TestCase
      *
      * @dataProvider ruleProvider
      *
-     * @param array $test
+     * @param array  $test
      * @param string $rule
+     *
+     * @return void
      */
     public function testParser(array $test, string $rule): void
     {
@@ -77,13 +80,15 @@ class ParserTest extends TestCase
      *
      * @dataProvider unknownRuleProvider
      *
-     * @expectedException OutOfBoundsException
-     *
      * @param string $rule
      * @param string $test
+     *
+     * @return void
      */
     public function testParserWithUnknownRules(string $rule, string $test): void
     {
+        $this->expectException(OutOfBoundsException::class);
+
         $parser = new Parser();
         $lexer = new Lexer();
 

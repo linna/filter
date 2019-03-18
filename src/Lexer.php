@@ -25,23 +25,23 @@ class Lexer
      */
     public function tokenize(string $period): array
     {
-        $chars = str_split(rtrim(ltrim($period)));
-        $count = count($chars);
+        $chars = \str_split(\rtrim(\ltrim($period)));
+        $count = \count($chars);
         $words = $temp = [];
 
         for ($i = 0; $i < $count; $i++) {
             $char = $chars[$i];
-            $ord = ord($char);
+            $ord = \ord($char);
 
             //treat delimited string separately
             //this fix some problems with regex rule
-            if (in_array($ord, [34, 35, 39, 47, 126])) {
+            if (\in_array($ord, [34, 35, 39, 47, 126])) {
                 $temp[] = $this->mergeDelimitedString($count, $ord, $i, $chars);
                 continue;
             }
 
-            if (in_array($ord, [32, 44, 58, 59])) {
-                $words[] = implode('', $temp);
+            if (\in_array($ord, [32, 44, 58, 59])) {
+                $words[] = \implode('', $temp);
                 $temp = [];
                 continue;
             }
@@ -49,9 +49,9 @@ class Lexer
             $temp[] = $char;
         }
 
-        $words[] = implode('', $temp);
+        $words[] = \implode('', $temp);
 
-        return array_values(array_filter($words, 'trim'));
+        return \array_values(\array_filter($words, 'trim'));
     }
 
     /**
@@ -71,7 +71,7 @@ class Lexer
         while (++$i < $count) {
             $char = $chars[$i];
 
-            if ($ord === ord($char)) {
+            if ($ord === \ord($char)) {
                 break;
             }
 
@@ -79,11 +79,11 @@ class Lexer
         }
 
         //fix for regex, add delimiter
-        if (in_array($ord, [35, 47, 126])) {
-            array_unshift($tmp, chr($ord));
-            array_push($tmp, chr($ord));
+        if (\in_array($ord, [35, 47, 126])) {
+            \array_unshift($tmp, \chr($ord));
+            \array_push($tmp, \chr($ord));
         }
 
-        return implode('', $tmp);
+        return \implode('', $tmp);
     }
 }

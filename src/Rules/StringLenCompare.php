@@ -40,7 +40,7 @@ class StringLenCompare extends AbstractString implements RuleSanitizeInterface, 
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0], $args[1], $args[2]);
     }
@@ -80,17 +80,17 @@ class StringLenCompare extends AbstractString implements RuleSanitizeInterface, 
     {
         switch ($operator) {
             case '>': //greater than
-                return strlen($strReceived) > $strCompare;
+                return \strlen($strReceived) > $strCompare;
             case '<': //less than
-                return strlen($strReceived) < $strCompare;
+                return \strlen($strReceived) < $strCompare;
             case '>=': //greater than or equal
-                return strlen($strReceived) >= $strCompare;
+                return \strlen($strReceived) >= $strCompare;
             case '<=': //less than or equal
-                return strlen($strReceived) <= $strCompare;
+                return \strlen($strReceived) <= $strCompare;
             case '=': //equal
-                return strlen($strReceived) === $strCompare;
+                return \strlen($strReceived) === $strCompare;
             case '!=': //equal
-                return strlen($strReceived) !== $strCompare;
+                return \strlen($strReceived) !== $strCompare;
             default:
                 throw new UnexpectedValueException("Unknown comparson operator ({$operator}). Permitted >, <, >=, <=, =, !=");
         }

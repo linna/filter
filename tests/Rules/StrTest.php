@@ -44,7 +44,9 @@ class StrTest extends TestCase
      * @dataProvider stringProvider
      *
      * @param mixed $string
-     * @param bool $result
+     * @param bool  $result
+     *
+     * @return void
      */
     public function testValidate($string, bool $result): void
     {
@@ -53,6 +55,8 @@ class StrTest extends TestCase
 
     /**
      * Test get message.
+     *
+     * @return void
      */
     public function testGetMessage(): void
     {

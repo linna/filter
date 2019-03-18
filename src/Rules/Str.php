@@ -39,7 +39,7 @@ class Str extends AbstractString implements RuleSanitizeInterface, RuleValidateI
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0]);
     }
@@ -53,7 +53,7 @@ class Str extends AbstractString implements RuleSanitizeInterface, RuleValidateI
      */
     private function concreteValidate($received): bool
     {
-        if (!is_string($received)) {
+        if (!\is_string($received)) {
             $this->message = "Received value is not a string";
             return true;
         }

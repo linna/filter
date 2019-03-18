@@ -38,7 +38,7 @@ class Number extends AbstractNumber implements RuleSanitizeInterface, RuleValida
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0]);
     }
@@ -52,7 +52,7 @@ class Number extends AbstractNumber implements RuleSanitizeInterface, RuleValida
      */
     private function concreteValidate($received): bool
     {
-        if (!is_numeric($received)) {
+        if (!\is_numeric($received)) {
             $this->message = "Received value is not a number";
             return true;
         }

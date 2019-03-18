@@ -51,7 +51,7 @@ class Date extends AbstractDate implements RuleValidateInterface
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0], $args[1]);
     }
@@ -86,7 +86,7 @@ class Date extends AbstractDate implements RuleValidateInterface
      */
     private function parseDate(string $received, string $format): bool
     {
-        $date = date_parse_from_format($format, $received);
+        $date = \date_parse_from_format($format, $received);
 
         $message = "Received date is not in expected format {$format}";
 

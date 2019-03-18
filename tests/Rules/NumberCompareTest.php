@@ -13,6 +13,7 @@ namespace Linna\Tests;
 
 use Linna\Filter\Rules\NumberCompare;
 use PHPUnit\Framework\TestCase;
+use UnexpectedValueException;
 
 /**
  * Number Compare Test
@@ -93,6 +94,8 @@ class NumberCompareTest extends TestCase
      * @param string    $operator
      * @param int|float $compare
      * @param bool      $result
+     *
+     * @return void
      */
     public function testValidate($received, string $operator, $compare, bool $result): void
     {
@@ -102,15 +105,19 @@ class NumberCompareTest extends TestCase
     /**
      * Test unknown comparison operator.
      *
-     * @expectedException UnexpectedValueException
+     * @return void
      */
     public function testUnknownOperator(): void
     {
+        $this->expectException(UnexpectedValueException::class);
+
         (new NumberCompare())->validate(1, '!', 1);
     }
 
     /**
      * Test get message.
+     *
+     * @return void
      */
     public function testGetMessage(): void
     {

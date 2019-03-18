@@ -13,6 +13,7 @@ namespace Linna\Tests;
 
 use Linna\Filter\Rules\StringLenCompare;
 use PHPUnit\Framework\TestCase;
+use UnexpectedValueException;
 
 /**
  * String Length Compare Test
@@ -62,6 +63,8 @@ class StringLenCompareTest extends TestCase
      * @param string $operator
      * @param int    $compare
      * @param bool   $result
+     *
+     * @return void
      */
     public function testValidate(string $received, string $operator, int $compare, bool $result): void
     {
@@ -71,15 +74,19 @@ class StringLenCompareTest extends TestCase
     /**
      * Test unknown comparison operator.
      *
-     * @expectedException UnexpectedValueException
+     * @return void
      */
     public function testUnknownOperator(): void
     {
+        $this->expectException(UnexpectedValueException::class);
+
         (new StringLenCompare())->validate('1', '!', 1);
     }
 
     /**
      * Test get message for zero length string.
+     *
+     * @return void
      */
     public function testGetMessageForZeroLength(): void
     {

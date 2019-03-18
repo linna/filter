@@ -13,6 +13,7 @@ namespace Linna\Tests;
 
 use Linna\Filter\Rules\NumberInterval;
 use PHPUnit\Framework\TestCase;
+use UnexpectedValueException;
 
 /**
  * Number Interval Test
@@ -63,11 +64,13 @@ class NumberIntervalTest extends TestCase
      *
      * @dataProvider numberProvider
      *
-     * @param mixed $received
+     * @param mixed  $received
      * @param string $operator
-     * @param mixed $min
-     * @param mixed $max
-     * @param bool $result
+     * @param mixed  $min
+     * @param mixed  $max
+     * @param bool   $result
+     *
+     * @return void
      */
     public function testValidate($received, string $operator, $min, $max, bool $result): void
     {
@@ -77,15 +80,19 @@ class NumberIntervalTest extends TestCase
     /**
      * Test unknown comparison operator.
      *
-     * @expectedException UnexpectedValueException
+     * @return void
      */
     public function testUnknownOperator(): void
     {
+        $this->expectException(UnexpectedValueException::class);
+
         (new NumberInterval())->validate(1, '!', 2, 4);
     }
 
     /**
      * Test get message.
+     *
+     * @return void
      */
     public function testGetMessage(): void
     {

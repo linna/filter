@@ -51,7 +51,7 @@ class DateCompare extends AbstractDate implements RuleValidateInterface
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0], $args[1], $args[2], $args[3]);
     }

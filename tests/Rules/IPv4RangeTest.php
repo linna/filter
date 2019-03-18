@@ -51,6 +51,8 @@ class IPv4RangeTest extends TestCase
      * @param string $received
      * @param string $range
      * @param bool   $result
+     *
+     * @return void
      */
     public function testValidate(string $received, string $range, bool $result): void
     {
@@ -59,6 +61,8 @@ class IPv4RangeTest extends TestCase
 
     /**
      * Test get message for invalid ip.
+     *
+     * @return void
      */
     public function testGetMessageForInvalidIp(): void
     {
@@ -70,6 +74,8 @@ class IPv4RangeTest extends TestCase
 
     /**
      * Test get message for not in range ip.
+     *
+     * @return void
      */
     public function testGetMessageForNotInRangeIp(): void
     {
@@ -99,6 +105,8 @@ class IPv4RangeTest extends TestCase
      * Test valid CIDR with all valid suffix.
      *
      * @dataProvider validSuffixProvider
+     *
+     * @return void
      */
     public function testValidCidrForAllValidSuffixes(int $suffix): void
     {
@@ -124,11 +132,13 @@ class IPv4RangeTest extends TestCase
      *
      * @dataProvider emptySuffixProvider
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Range must be in valid IP/CIDR format, empty bits for suffix.
+     * @return void
      */
     public function testInvalidCidrForEmptySuffix(string $range): void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Range must be in valid IP/CIDR format, empty bits for suffix.');
+
         $instance = new IPRange();
         $instance->validate('192.168.0.50', $range);
     }
@@ -150,11 +160,13 @@ class IPv4RangeTest extends TestCase
      *
      * @dataProvider invalidSuffixRangeProvider
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Range must be in valid IP/CIDR format, invalid bits suffix range.
+     * @return void
      */
     public function testInvalidCidrForInvalidSuffixRange(int $suffix): void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Range must be in valid IP/CIDR format, invalid bits suffix range.');
+
         $instance = new IPRange();
         $instance->validate('192.168.0.50', "192.168.0.48/{$suffix}");
     }
@@ -162,11 +174,13 @@ class IPv4RangeTest extends TestCase
     /**
      * Test invalid CIDR with invalid address.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Range must be in valid IP/CIDR format, invalid address.
+     * @return void
      */
     public function testInvalidCidrForInvalidAddress(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Range must be in valid IP/CIDR format, invalid address.');
+
         $instance = new IPRange();
         $instance->validate('192.168.0.10', '192.168.48/29');
     }

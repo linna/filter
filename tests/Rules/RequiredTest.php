@@ -51,6 +51,8 @@ class RequiredTest extends TestCase
 
     /**
      * Test get message for null value.
+     *
+     * @return void
      */
     public function testGetMessageForNull(): void
     {
@@ -62,6 +64,8 @@ class RequiredTest extends TestCase
 
     /**
      * Test get message for zero length string.
+     *
+     * @return void
      */
     public function testGetMessageForZeroLength(): void
     {

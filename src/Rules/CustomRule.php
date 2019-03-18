@@ -74,11 +74,11 @@ class CustomRule
      */
     private function parseAlias(array $alias): void
     {
-        if (count($alias) === 0) {
+        if (\count($alias) === 0) {
             throw new InvalidArgumentException('Rule test function must have at least one alias.');
         }
 
-        $this->config['alias'] = array_map('strtolower', $alias);
+        $this->config['alias'] = \array_map('strtolower', $alias);
     }
 
     /**
@@ -99,11 +99,11 @@ class CustomRule
             throw new InvalidArgumentException('Rule test function do not have return type.');
         }
 
-        if (!in_array((string) $reflection->getReturnType(), ['bool', 'void'])) {
+        if (!\in_array((string) $reflection->getReturnType(), ['bool', 'void'])) {
             throw new InvalidArgumentException('Rule test function return type must be bool or void.');
         }
 
-        if (count($parameters) === 0) {
+        if (\count($parameters) === 0) {
             throw new InvalidArgumentException('Rule test function must have at least one argument.');
         }
 
@@ -125,12 +125,12 @@ class CustomRule
         }
 
         //remove firs param, the received value
-        array_shift($parameters);
+        \array_shift($parameters);
 
-        $this->config['args_count'] = count($parameters);
+        $this->config['args_count'] = \count($parameters);
 
         foreach ($parameters as $param) {
-            if (in_array((string) $param->getType(), ['int', 'float'])) {
+            if (\in_array((string) $param->getType(), ['int', 'float'])) {
                 $this->config['args_type'][] = 'number';
                 continue;
             }

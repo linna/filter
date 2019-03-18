@@ -12,10 +12,12 @@ declare(strict_types = 1);
 namespace Linna\Tests;
 
 use Closure;
+use InvalidArgumentException;
 use Linna\Filter\Rules\CustomRule;
-use Linna\Filter\Rules\CustomSanitize;
+//use Linna\Filter\Rules\CustomSanitize;
 use Linna\Filter\Rules\CustomValidate;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 /**
  * Custom Rule Test
@@ -45,13 +47,14 @@ class CustomRuleTest extends TestCase
      *
      * @dataProvider wrongAliasTypeProvider
      *
-     * @expectedException TypeError
-     * @expectedExceptionMessageRegExp /Argument 1 passed to Linna\\Filter\\Rules\\CustomRule::__construct\(\) must be of the type array, (string|bool|boolean|float|int|integer|object) given/
-     *
      * @param mixed $argument
+     *
+     * @return void
      */
     public function testAliasWithWrongType($argument): void
     {
+        $this->expectException(TypeError::class);
+
         (new CustomRule(
             $argument,
             function (string $received): bool {
@@ -66,11 +69,13 @@ class CustomRuleTest extends TestCase
     /**
      * Test void alias.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage  Rule test function must have at least one alias.
+     * @return void
      */
     public function testVoidAlias(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Rule test function must have at least one alias.');
+
         (new CustomRule(
             [],
             function (string $received): bool {
@@ -85,11 +90,13 @@ class CustomRuleTest extends TestCase
     /**
      * Test closure with no return type.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Rule test function do not have return type.
+     * @return void
      */
     public function testClosureWithNoReturnType(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Rule test function do not have return type.');
+
         (new CustomRule(
             ['test'],
             function (string $received) {
@@ -104,11 +111,13 @@ class CustomRuleTest extends TestCase
     /**
      * Test closure with wrong return type.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Rule test function return type must be bool or void.
+     * @return void
      */
     public function testClosureWithWrongReturnType(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Rule test function return type must be bool or void.');
+
         (new CustomRule(
             ['test'],
             function (string $received): int {
@@ -123,11 +132,13 @@ class CustomRuleTest extends TestCase
     /**
      * Test closure with no arguments.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Rule test function must have at least one argument.
+     * @return void
      */
     public function testClosureWithNoArguments(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Rule test function must have at least one argument.');
+
         (new CustomRule(
             ['test'],
             function (): bool {
@@ -180,6 +191,8 @@ class CustomRuleTest extends TestCase
      * @param Closure $closure
      * @param int     $argsCount
      * @param array   $argsType
+     *
+     * @return void
      */
     public function testClosureArgumentsType(Closure $closure, int $argsCount, array $argsType): void
     {
@@ -193,6 +206,8 @@ class CustomRuleTest extends TestCase
 
     /**
      * Test custom validate.
+     *
+     * @return void
      */
     public function testCustomValidate(): void
     {
@@ -220,14 +235,16 @@ class CustomRuleTest extends TestCase
 
     /**
      * Test Custom Sanitize
+     *
+     * @return void
      */
     public function testCustomSanitize(): void
     {
         $instance = new CustomRule(
             ['emailtoletters'],
             function (string &$received): void {
-                $received = str_replace('@', ' at ', $received);
-                $received = str_replace('.', ' dot ', $received);
+                $received = \str_replace('@', ' at ', $received);
+                $received = \str_replace('.', ' dot ', $received);
             }
         );
 

@@ -25,12 +25,12 @@ class RuleBuilder
     {
         $alias = [];
         $rules = [];
-        $files = glob(__DIR__.'/Rules/*.php', GLOB_ERR);
+        $files = \glob(__DIR__.'/Rules/*.php', GLOB_ERR);
 
         foreach ($files as $entry) {
             //get file name
-            $class = basename(str_replace('.php', '', $entry));
-            $keyword = strtolower($class);
+            $class = \basename(\str_replace('.php', '', $entry));
+            $keyword = \strtolower($class);
 
             //exclude from rules array because
             //custom ruless will be built separately
@@ -88,11 +88,11 @@ class RuleBuilder
         //fill array with alias
         $keys = $rules[$keyword]['alias'];
         //fill array of values with name of the class
-        $values = array_fill(0, count($keys), $keyword);
+        $values = \array_fill(0, \count($keys), $keyword);
         //combine keys and values
-        $array = array_combine($keys, $values);
+        $array = \array_combine($keys, $values);
         //add all to alias array
-        $alias = array_merge($alias, $array);
+        $alias = \array_merge($alias, $array);
         //free memory
         unset($rules[$keyword]['alias']);
     }

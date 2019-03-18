@@ -60,7 +60,7 @@ class Escape implements RuleSanitizeInterface
      */
     private function htmlEscape(string $string): string
     {
-        $chars = preg_split('//u', $string, strlen($string), PREG_SPLIT_NO_EMPTY);
+        $chars = \preg_split('//u', $string, \strlen($string), PREG_SPLIT_NO_EMPTY);
         $escaped = '';
 
         if ($chars === false) {
@@ -68,9 +68,9 @@ class Escape implements RuleSanitizeInterface
         }
 
         foreach ($chars as $char) {
-            $ord = ord($char);
+            $ord = \ord($char);
 
-            if (in_array($ord, $this->special)) {
+            if (\in_array($ord, $this->special)) {
                 $escaped .= "&#{$ord};";
                 continue;
             }

@@ -26,7 +26,7 @@ class AbstractDate
     protected function dateHaveNoTime(string $format): bool
     {
         foreach (['a', 'A', 'B', 'g', 'G', 'h', 'H', 'i', 's', 'u', 'v'] as $char) {
-            if (strpos($format, $char) !== false) {
+            if (\strpos($format, $char) !== false) {
                 return false;
             }
         }

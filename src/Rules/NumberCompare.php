@@ -40,7 +40,7 @@ class NumberCompare extends AbstractNumber implements RuleSanitizeInterface, Rul
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0], $args[1], $args[2]);
     }
@@ -56,11 +56,11 @@ class NumberCompare extends AbstractNumber implements RuleSanitizeInterface, Rul
      */
     private function concreteValidate($received, string $operator, $compare): bool
     {
-        if (!is_numeric($received)) {
+        if (!\is_numeric($received)) {
             return true;
         }
 
-        if (!is_numeric($compare)) {
+        if (!\is_numeric($compare)) {
             return true;
         }
 

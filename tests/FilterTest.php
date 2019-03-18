@@ -11,6 +11,7 @@ declare(strict_types = 1);
 
 namespace Linna\Tests;
 
+use InvalidArgumentException;
 use Linna\Filter\Filter;
 use Linna\Filter\Rules\CustomRule;
 use PHPUnit\Framework\TestCase;
@@ -64,6 +65,8 @@ class FilterTest extends TestCase
      * @param string $rule
      * @param string $data
      * @param int    $errors
+     *
+     * @return void
      */
     public function testFilterOne(string $rule, string $data, int $errors): void
     {
@@ -71,7 +74,7 @@ class FilterTest extends TestCase
         $filter->filter($data, $rule);
 
         $this->assertSame($errors, $filter->getErrors());
-        $this->assertSame($errors, count($filter->getMessages()['data']));
+        $this->assertSame($errors, \count($filter->getMessages()['data']));
     }
 
     /**
@@ -119,6 +122,8 @@ class FilterTest extends TestCase
      * @param array $rule
      * @param array $data
      * @param int $error
+     *
+     * @return void
      */
     public function testFilterMulti(array $rule, array $data, int $error): void
     {
@@ -131,11 +136,13 @@ class FilterTest extends TestCase
     /**
      * Test filter with invalid rule format.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid types passed for data or rules.
+     * @return void
      */
     public function testFilterWithInvalidRuleFormat(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid types passed for data or rules.');
+
         $filter = new Filter();
         $filter->filter(0, 0);
     }
@@ -147,7 +154,9 @@ class FilterTest extends TestCase
      *
      * @param array $rule
      * @param array $data
-     * @param int $error
+     * @param int   $error
+     *
+     * @return void
      */
     public function testFilterMultiResultStyle(array $rule, array $data, int $error): void
     {
@@ -159,6 +168,8 @@ class FilterTest extends TestCase
 
     /**
      * Test filter with multiple rules.
+     *
+     * @return void
      */
     public function testFilterMultipleRules(): void
     {
@@ -174,11 +185,13 @@ class FilterTest extends TestCase
         $this->assertEquals($result, $filter->getData());
         $this->assertEquals($messages, $filter->getMessages());
 
-        $this->assertInternalType('integer', $filter->getData()['age']);
+        $this->assertIsInt($filter->getData()['age']);
     }
 
     /**
      * Test filter with multiple rules.
+     *
+     * @return void
      */
     public function testFilterMultipleRulesResultStyle(): void
     {
@@ -194,11 +207,13 @@ class FilterTest extends TestCase
         $this->assertEquals($result, $r->data());
         $this->assertEquals($messages, $r->messages());
 
-        $this->assertInternalType('integer', $r->data()['age']);
+        $this->assertIsInt($r->data()['age']);
     }
 
     /**
      * Test filter with multiple rules with missing field.
+     *
+     * @return void
      */
     public function testFilterMultipleRulesWithMissingField(): void
     {
@@ -215,6 +230,8 @@ class FilterTest extends TestCase
 
     /**
      * Test filter with custom rule.
+     *
+     * @return void
      */
     public function testFilterWithCustomRule(): void
     {

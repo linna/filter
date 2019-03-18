@@ -23,8 +23,8 @@ class CustomValidate extends AbstractCustom implements RuleValidateInterface
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
-        return !call_user_func_array($this->callback, $args);
+        return !\call_user_func_array($this->callback, $args);
     }
 }

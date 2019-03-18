@@ -48,12 +48,14 @@ class LexerTest extends TestCase
     }
 
     /**
-     * Test Filter.
+     * Test Lexer.
      *
      * @dataProvider rulesProvider
      *
      * @param string $data
-     * @param array $expected
+     * @param array  $expected
+     *
+     * @return void
      */
     public function testFilterOne(string $data, array $expected): void
     {

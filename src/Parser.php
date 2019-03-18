@@ -59,10 +59,10 @@ class Parser
     private function extractParams(array &$words): void
     {
         $array = [];
-        $field = array_shift($words);
+        $field = \array_shift($words);
 
-        while (count($words)) {
-            $word = strtolower($words[0]);
+        while (\count($words)) {
+            $word = \strtolower($words[0]);
 
             if (isset($this->alias[$word])) {
                 //replace the alias fo fix missing class error
@@ -70,7 +70,7 @@ class Parser
                 $word = $words[0] = $this->alias[$word];
                 $args = $this->rules[$word]['args_count'];
 
-                $array[$field][] = array_splice($words, 0, (int) ++$args);
+                $array[$field][] = \array_splice($words, 0, (int) ++$args);
                 continue;
             }
 
@@ -88,7 +88,7 @@ class Parser
     private function applyTypesToParams(array &$words): void
     {
         $rules = $this->rules;
-        $field = &$words[key($words)];
+        $field = &$words[\key($words)];
 
         //needed
         $number = new Number();
@@ -105,7 +105,7 @@ class Parser
                     continue;
                 }
 
-                settype($param, $type);
+                \settype($param, $type);
             }
         }
     }
@@ -117,7 +117,7 @@ class Parser
      */
     private function normalizeParam(array &$words): void
     {
-        $field = array_keys($words)[0];
+        $field = \array_keys($words)[0];
         $temp = [];
 
         foreach ($words[$field] as $word) {
@@ -125,7 +125,7 @@ class Parser
 
             //remove the first element from the array
             //it's the name of the rule
-            array_shift($word);
+            \array_shift($word);
 
             $temp[] = [$field, $rule, $word];
         }

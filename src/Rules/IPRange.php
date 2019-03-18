@@ -41,7 +41,7 @@ class IPRange extends Ip implements RuleValidateInterface
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0], $args[1]);
     }
@@ -62,7 +62,7 @@ class IPRange extends Ip implements RuleValidateInterface
         }
 
         //separate address and bit suffix
-        $cidr = explode('/', $range, 2);
+        $cidr = \explode('/', $range, 2);
 
         $address = $cidr[0];
         $version = $this->checkVersion($cidr[0]);
@@ -99,11 +99,11 @@ class IPRange extends Ip implements RuleValidateInterface
      */
     private function checkVersion(string $ip): int
     {
-        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        if (\filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             return 4;
         }
 
-        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        if (\filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             return 6;
         }
 
@@ -121,10 +121,10 @@ class IPRange extends Ip implements RuleValidateInterface
      */
     private function inRangeIpv4(string $received, string $address, int $bits): bool
     {
-        $decimalWildcard = pow(2, (32 - $bits)) - 1;
+        $decimalWildcard = \pow(2, (32 - $bits)) - 1;
         $decimalBits = ~ $decimalWildcard;
 
-        return ((ip2long($received) & $decimalBits) === (ip2long($address) & $decimalBits));
+        return ((\ip2long($received) & $decimalBits) === (\ip2long($address) & $decimalBits));
     }
 
     /**
@@ -141,8 +141,8 @@ class IPRange extends Ip implements RuleValidateInterface
         $binaryIp = $this->inetToBits($received);
         $binaryNet = $this->inetToBits($address);
 
-        $ipNetBits = substr($binaryIp, 0, $bits);
-        $netBits = substr($binaryNet, 0, $bits);
+        $ipNetBits = \substr($binaryIp, 0, $bits);
+        $netBits = \substr($binaryNet, 0, $bits);
 
         return $ipNetBits === $netBits;
     }
@@ -156,13 +156,13 @@ class IPRange extends Ip implements RuleValidateInterface
      */
     private function inetToBits(string $ipv6): string
     {
-        $unpck = str_split(unpack('A16', inet_pton($ipv6))[1]);
+        $unpck = \str_split(\unpack('A16', \inet_pton($ipv6))[1]);
 
         foreach ($unpck as $key => $char) {
-            $unpck[$key] = str_pad(decbin(ord($char)), 8, '0', STR_PAD_LEFT);
+            $unpck[$key] = \str_pad(\decbin(\ord($char)), 8, '0', STR_PAD_LEFT);
         }
 
-        return implode('', $unpck);
+        return \implode('', $unpck);
     }
 
     /**

@@ -44,7 +44,9 @@ class NumberTest extends TestCase
      * @dataProvider numberProvider
      *
      * @param mixed $number
-     * @param bool $result
+     * @param bool  $result
+     *
+     * @return void
      */
     public function testValidate($number, bool $result): void
     {
@@ -57,7 +59,9 @@ class NumberTest extends TestCase
      * @dataProvider numberProvider
      *
      * @param mixed $number
-     * @param bool $result
+     * @param bool  $result
+     *
+     * @return void
      */
     public function testSanitize($number, bool $result): void
     {
@@ -68,11 +72,11 @@ class NumberTest extends TestCase
             $temp = $number;
             $instance->sanitize($temp);
 
-            if ((fmod((float) $number, 1.0) === 0.0)) {
+            if ((\fmod((float) $number, 1.0) === 0.0)) {
                 $this->assertSame((int)$number, $temp);
             }
 
-            if ((fmod((float) $number, 1.0) !== 0.0)) {
+            if ((\fmod((float) $number, 1.0) !== 0.0)) {
                 $this->assertSame((float)$number, $temp);
             }
         }
@@ -105,17 +109,21 @@ class NumberTest extends TestCase
      *
      * @param string $number
      * @param string $result
+     *
+     * @return void
      */
     public function testSanitizeType(string $number, string $result): void
     {
         $instance = new Number();
         $instance->sanitize($number);
 
-        $this->assertEquals($result, gettype($number));
+        $this->assertEquals($result, \gettype($number));
     }
 
     /**
      * Test get message.
+     *
+     * @return void
      */
     public function testGetMessage(): void
     {

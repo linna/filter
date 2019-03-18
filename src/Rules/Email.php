@@ -38,7 +38,7 @@ class Email implements RuleValidateInterface
      */
     public function validate(): bool
     {
-        $args = func_get_args();
+        $args = \func_get_args();
 
         return $this->concreteValidate($args[0]);
     }
@@ -52,7 +52,7 @@ class Email implements RuleValidateInterface
      */
     private function concreteValidate(string $received): bool
     {
-        if (!filter_var($received, FILTER_VALIDATE_EMAIL)) {
+        if (!\filter_var($received, FILTER_VALIDATE_EMAIL)) {
             $this->message = "Received string is an invalid e-mail address";
             return true;
         }

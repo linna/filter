@@ -64,6 +64,8 @@ class DateTest extends TestCase
      * @param string $date
      * @param string $format
      * @param bool   $result
+     *
+     * @retunr void
      */
     public function testValidate(string $date, string $format, bool $result): void
     {
@@ -82,6 +84,8 @@ class DateTest extends TestCase
 
     /**
      * Test get message.
+     *
+     * @return void
      */
     public function testGetMessage(): void
     {
