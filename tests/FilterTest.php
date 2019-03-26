@@ -174,7 +174,7 @@ class FilterTest extends TestCase
         $this->assertEquals($result, $filter->getData());
         $this->assertEquals($messages, $filter->getMessages());
 
-        $this->assertInternalType('integer', $filter->getData()['age']);
+        $this->assertIsInt($filter->getData()['age']);
     }
 
     /**
@@ -194,7 +194,7 @@ class FilterTest extends TestCase
         $this->assertEquals($result, $r->data());
         $this->assertEquals($messages, $r->messages());
 
-        $this->assertInternalType('integer', $r->data()['age']);
+        $this->assertIsInt($r->data()['age']);
     }
 
     /**
