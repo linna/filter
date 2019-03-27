@@ -110,7 +110,7 @@ class IPv6RangeTest extends TestCase
      */
     public function testValidCidrForAllValidSuffixes(int $suffix): void
     {
-        $this->assertSame(false, (new IPRange())->validate('2001:abcd::0010', "2001:abcd::0010/{$suffix}"));
+        $this->assertFalse((new IPRange())->validate('2001:abcd::0010', "2001:abcd::0010/{$suffix}"));
     }
 
     /**

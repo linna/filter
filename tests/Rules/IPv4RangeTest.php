@@ -110,7 +110,7 @@ class IPv4RangeTest extends TestCase
      */
     public function testValidCidrForAllValidSuffixes(int $suffix): void
     {
-        $this->assertSame(false, (new IPRange())->validate('192.168.0.48', "192.168.0.48/{$suffix}"));
+        $this->assertFalse((new IPRange())->validate('192.168.0.48', "192.168.0.48/{$suffix}"));
     }
 
     /**

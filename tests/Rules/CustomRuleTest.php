@@ -58,10 +58,7 @@ class CustomRuleTest extends TestCase
         (new CustomRule(
             $argument,
             function (string $received): bool {
-                if ($received === 'test') {
-                    return true;
-                }
-                return false;
+                return $received === 'test';
             }
         ));
     }
@@ -79,10 +76,7 @@ class CustomRuleTest extends TestCase
         (new CustomRule(
             [],
             function (string $received): bool {
-                if ($received === 'test') {
-                    return true;
-                }
-                return false;
+                return $received === 'test';
             }
         ));
     }
@@ -100,10 +94,7 @@ class CustomRuleTest extends TestCase
         (new CustomRule(
             ['test'],
             function (string $received) {
-                if ($received === 'test') {
-                    return true;
-                }
-                return false;
+                return $received === 'test';
             }
         ));
     }
@@ -121,10 +112,7 @@ class CustomRuleTest extends TestCase
         (new CustomRule(
             ['test'],
             function (string $received): int {
-                if ($received === 'test') {
-                    return 1;
-                }
-                return 0;
+                return $received === 'test' ? 1: 0;
             }
         ));
     }
@@ -157,28 +145,16 @@ class CustomRuleTest extends TestCase
     {
         return [
             [function (string $received): bool {
-                if ($received === 'test') {
-                    return true;
-                }
-                return false;
+                return $received === 'test';
             }, 0, []],
             [function (string $received, $value): bool {
-                if ($received === $value) {
-                    return true;
-                }
-                return false;
+                return $received === $value;
             }, 1, ['string']],
             [function (string $received, int $min): bool {
-                if ($received >= $min) {
-                    return true;
-                }
-                return false;
+                return $received >= $min;
             }, 1, ['number']],
             [function (string $received, float $min, float $max): bool {
-                if ($received >= $min && $received <= $max) {
-                    return true;
-                }
-                return false;
+                return $received >= $min && $received <= $max;
             }, 2, ['number', 'number']]
         ];
     }
@@ -214,10 +190,7 @@ class CustomRuleTest extends TestCase
         $instance = new CustomRule(
             ['test'],
             function (string $received): bool {
-                if ($received === 'test') {
-                    return true;
-                }
-                return false;
+                return $received === 'test';
             }
         );
 
